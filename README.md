@@ -24,6 +24,8 @@
 	DDoS攻撃を受けると、サーバーやネットワーク機器などに対して大きな負荷がかかるため、ウェブサイトへのアクセスができなくなったり、ネットワークの遅延が起こったりします。その結果、対象とされた企業や組織では、金銭面だけでなく信用面でも大きなダメージを被ることになります。
 
 ### Internet Relay Chat Structure
-	URL: http://chi.cs.uchicago.edu/chirc/irc_examples.html
+	URL:
+	http://chi.cs.uchicago.edu/chirc/irc_examples.html
+	https://sacraya.610t.org/Press/No3/c2.html
 
 ### 
