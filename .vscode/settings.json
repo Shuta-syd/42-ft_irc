@@ -2,7 +2,6 @@
 	"files.associations": {
 		".*lintrc": "json",
 		"*.css": "tailwindcss",
-		"iostream": "cpp",
-		"locale": "cpp"
+		"istream": "cpp"
 	}
 }
