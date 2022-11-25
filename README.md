@@ -36,3 +36,29 @@
 	https://developers.wonderpla.net/entry/2017/08/23/184106
 	https://www.educba.com/socket-programming-in-c-plus-plus/
 	http://research.nii.ac.jp/~ichiro/syspro98/server.html
+
+### IRC Client Reference
+	https://irssi.org/
+	https://wiki.archlinux.jp/index.php/Irssi#.E3.82.A4.E3.83.B3.E3.82.B9.E3.83.88.E3.83.BC.E3.83.AB
+
+### Blocking I/O
+	ブロッキングI/O(同期I/O)ではI/O処理時に対象のファイルディスクリプタが準備完了になっていない場合、ブロック状態、つまりプロセスはシステムコールの返答待ち状態になり張り付く。その間プログラムの処理が進むことはない。
+![BlockingI/O](https://www.flickr.com/photos/128940604@N03/17027012587)
+
+### Non Blocking I/O
+	ノンブロッキングI/OではI/O対象のファイルディスクリプタの準備完が了していないことをアプリケーション側に伝えるため即座にエラーが返る(errnoにEGAINが格納されて返ってくる)。
+	一般に、O_NONBLOCKフラグを利用してノンブロッキングモードを宣言するが、この時プロセスはブロック状態にならず、CPUを他の処理に回すことができるためI/O待ち時間を有効活用できる。
+	エラーはアプリケーション側でハンドリングしてリトライするタイミングを定義する必要がある。ノンブロッキングI/Oはソケットなどのネットワークに用いられるI/OモデルでディスクI/Oには使わない。
+	C10K問題の対策としてノンブロッキングI/O+イベントループモデルを採用することでシングルスレッドで複数の接続を処理する方法がある。
+![Non BlockingI/O](https://www.flickr.com/photos/128940604@N03/16612010864)
+	
+### 非同期I/O(Asynchronous I/O)
+	I/O処理が完了したタイミングで通知するI/Oモデルを非同期I/Oという。
+	非同期I/Oは、通知はシグナルもしくはコールバックによって行われ、通知があるまではアプリケーション側で他の処理を進めることができる。プロセスがブロック状態にならない点ではノンブロッキングI/Oと一緒だが、非同期I/OはI/Oの処理が完了したら通知をし、ノンブロッキングI/OはI/O処理が可能な状態にないことをエラーで通知するので動きは異なる。
+![AsynchronousI/O](https://www.flickr.com/photos/128940604@N03/16612027114)
+
+### What is  difference between Non Blocking I/O and Asynchronous I/O ?
+	ノンブロッキングI/Oは処理がすぐできない時はエラーを返し、ブロック状態にさせない方式。
+	一方、非同期I/Oは処理がすぐできない時は処理が完了するまでバックグラウンドで待機して、終了したタイミングで通知を返す方式(通知が来たら既に処理が終わっている)。
+
+### 
