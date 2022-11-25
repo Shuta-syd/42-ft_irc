@@ -1,7 +1,0 @@
-{
-	"files.associations": {
-		".*lintrc": "json",
-		"*.css": "tailwindcss",
-		"istream": "cpp"
-	}
-}
