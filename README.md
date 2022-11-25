@@ -28,4 +28,11 @@
 	http://chi.cs.uchicago.edu/chirc/irc_examples.html
 	https://sacraya.610t.org/Press/No3/c2.html
 
-### 
+### Socket Programing
+	ソケット： Socket。TCP/IP アプリケーションを作成するための抽象化されたインターフェース
+	URL:
+	https://qiita.com/Michinosuke/items/0778a5344bdf81488114
+	https://tora-k.com/2019/08/27/socket-c/
+	https://developers.wonderpla.net/entry/2017/08/23/184106
+	https://www.educba.com/socket-programming-in-c-plus-plus/
+	http://research.nii.ac.jp/~ichiro/syspro98/server.html
