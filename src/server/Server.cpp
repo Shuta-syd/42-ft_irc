@@ -73,7 +73,6 @@ void Server::start() {
 			close(clientSockfd);
 			exit(1);
 		}
-		std::cout << 2 << std::endl;
 	}
 	}
 }

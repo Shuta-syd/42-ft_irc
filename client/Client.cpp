@@ -48,7 +48,6 @@ vh	std::cout << "Trying to connect to " << dest << std::endl;
 		exit(1);
 	}
 
-	int i = 1;
 	while (1)
 	{
 		std::string str;
@@ -57,7 +56,6 @@ vh	std::cout << "Trying to connect to " << dest << std::endl;
 		char buf[1024];
 		int revSize = recv(sockfd, buf, 1024, 0);
 		std::cout << buf << std::endl;
-		std::cout << i++ << std::endl;
 	}
 	close(sockfd);
 }
