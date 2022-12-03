@@ -31,7 +31,7 @@
 ### Socket Programing
 	ソケットとは、ユーザにとってのデータの出入り口。
 	ユーザはソケットに対してデータを書き込んだり読み込んだりするだけで通信が行える。ソケットは、2つ以上のソケットが互いに関係を持つことではじめて有効になる。
-![Socket Programing](assets/socket_programing.png)
+![Socket Programing](https://www.techscore.com/page_attachments/0000/0512/ServerSocket.png)
 ![Socket Programing2](assets/SocketProgramTcp-min.jpg)
 
 	URL:
