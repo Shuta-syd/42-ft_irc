@@ -76,3 +76,12 @@ void Server::start() {
 	}
 	}
 }
+
+void Server::startPoll() {
+	int sockfd = socket(PF_INET, SOCK_STREAM, 0);
+	if (sockfd < 0)
+	{
+		std::cerr << "socket error: " << __LINE__ << std::endl;
+		exit(1);
+	}
+}

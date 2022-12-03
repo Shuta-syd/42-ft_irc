@@ -29,7 +29,11 @@
 	https://sacraya.610t.org/Press/No3/c2.html
 
 ### Socket Programing
-	ソケット： Socket。TCP/IP アプリケーションを作成するための抽象化されたインターフェース
+	ソケットとは、ユーザにとってのデータの出入り口。
+	ユーザはソケットに対してデータを書き込んだり読み込んだりするだけで通信が行える。ソケットは、2つ以上のソケットが互いに関係を持つことではじめて有効になる。
+![Socket Programing](assets/socket_programing.png)
+![Socket Programing2](assets/SocketProgramTcp-min.jpg)
+
 	URL:
 	https://qiita.com/Michinosuke/items/0778a5344bdf81488114
 	https://tora-k.com/2019/08/27/socket-c/

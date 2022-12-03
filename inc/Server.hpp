@@ -20,6 +20,7 @@ public:
 
 	// start point
 	void start();
+	void startPoll();
 
 private:
 	int port_;

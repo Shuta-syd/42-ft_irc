@@ -40,7 +40,7 @@ void Client::sendInput(char *arg) {
 	client_addr.sin_family = PF_INET;
 	client_addr.sin_addr.s_addr = inet_addr(dest);
 	client_addr.sin_port = htons(8000);
-vh	std::cout << "Trying to connect to " << dest << std::endl;
+	std::cout << "Trying to connect to " << dest << std::endl;
 	if (connect(sockfd, (sockaddr *)&client_addr, sizeof(client_addr)) < 0)
 	{
 		std::cerr << "[ERROR] Socket Error" << std::endl;
