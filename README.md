@@ -94,10 +94,14 @@
 ####  select()
 	監視対象のファイルディスクリプタn個をループの中で1つずつ状態確認する。
 	そのため，計算量的には*O(n)*になる．また，扱えるファイルディスクリプタの数に上限があるため、現在はこのシステムコールを積極的に利用する理由は特にない。
+	URL:
+	https://www.ibm.com/docs/en/i/7.1?topic=designs-example-nonblocking-io-select
 
 #### poll()
 	selectで問題だったファイルディスクリプタの数が無制限になっている。
 	しかし，select同様監視対象のファイルディスクリプタを1つずつ状態確認するため、その計算量は*O(n)*となる。そのため、ファイルディスクリプタの数が増えるとパフォーマンスが低下する。
+	URL:
+	https://www.ibm.com/docs/ja/i/7.1?topic=designs-using-poll-instead-select
 
 #### epoll()
 	epollはファイルディスクリプタの数に制限が無いのに加えて、ファイルディスクリプタの状態変化監視も改善されている。
