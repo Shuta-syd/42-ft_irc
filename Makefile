@@ -6,7 +6,7 @@
 #    By: shogura <shogura@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/23 20:33:11 by shogura           #+#    #+#              #
-#    Updated: 2022/11/23 23:57:45 by shogura          ###   ########.fr        #
+#    Updated: 2022/12/10 21:08:01 by shogura          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,16 +22,19 @@ SRCS = $(shell find $(SRCDIR) -name "*.cpp" -type f)
 OBJDIR = obj
 OBJS = $(subst $(SRCDIR), ./$(OBJDIR), $(SRCS:%.cpp=%.o))
 
-DEPS    =    $(SRCS:%.cpp=%.d)
+DEPSDIR = deps
+DEPS = $(subst $(SRCDIR), ./$(DEPSDIR), $(SRCS:%.cpp=%.d))
+
+DEPSFLAG = -MMD -MP -MF $(DEPSDIR)/$(*).d
+DEBUGFLAG := -g3 -fsanitize=address
 
 INC = inc
-
-RM = rm -rf
 
 all: $(NAME)
 
 $(OBJDIR)/%.o:$(SRCDIR)/%.cpp
 	@mkdir -p $(@D)
+	@mkdir -p $(DEPSDIR)
 	@$(CXX) $(CXXFLAGS) -I$(INC) -o $@ -c $<
 	@echo "$< =========> $(GRN) $@ $(RES)"
 
@@ -45,8 +48,9 @@ $(NAME):$(OBJS)
 
 clean:
 	$(RM) $(OBJS)
+	$(RM) $(DEPS)
 	$(RM) $(NAME)
-	@$(RM) $(OBJDIR)
+	@$(RM) -rf $(OBJDIR)
 
 fclean:clean
 
@@ -54,7 +58,7 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
--include obj/$(DEPS)
+-include $(DEPS)
 
 RED = \033[31m
 GRN = \033[32m
