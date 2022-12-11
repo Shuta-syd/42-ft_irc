@@ -6,7 +6,7 @@
 #    By: shogura <shogura@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/23 20:33:11 by shogura           #+#    #+#              #
-#    Updated: 2022/12/10 21:08:01 by shogura          ###   ########.fr        #
+#    Updated: 2022/12/11 15:52:44 by shogura          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,9 @@ re: fclean all
 .PHONY: all clean fclean re
 
 -include $(DEPS)
+
+run:
+	./ircserv 8080 password
 
 RED = \033[31m
 GRN = \033[32m

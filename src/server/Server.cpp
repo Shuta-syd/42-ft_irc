@@ -12,7 +12,7 @@ Server::~Server() {}
 void Server::start() {
 
 	this->setupSocket();
-	this->makePoll(master_sd_);
+	this->createPoll(master_sd_);
 
 	while (1)
 	{
@@ -50,9 +50,20 @@ void Server::start() {
 	}
 }
 
+/**
+ * @brief to send message to client
+ *
+ * @param fd client fd
+ * @param msg message
+ * @param flag send option
+ */
+void Server::sendMessage(int fd, std::string msg, int flag)
+{
+	send(fd, msg.c_str(), sizeof(msg.c_str()),flag);
+}
 
 /**
- * @brief
+ * @brief  for communication between server and client
  * @param fd connected client fd
  */
 void Server::chat(int fd)
@@ -62,28 +73,24 @@ void Server::chat(int fd)
 
 	bzero(&buf, sizeof(buf));
 
-	while (bytes < 1)
+	bytes = recv(fd, buf, sizeof(buf), 0);
+	if (bytes < 0) // exception
 	{
-		bytes = recv(fd, buf, sizeof(buf), 0);
-		if (bytes < 0)
-		{
-			if (errno != EWOULDBLOCK)
-			{
-				std::cerr << "recv error" << std::endl;
-			}
-			return ;
-		}
-		else if (bytes == 0)
-		{
-			std::cout << "Connection closed" << std::endl;
-			return ;
-		}
+		if (errno != EWOULDBLOCK)
+			std::cerr << "recv error" << std::endl;
+		return ;
 	}
-	std::cout << bytes << " bytes received" << std::endl;
-
+	else if (bytes == 0) //quit
+	{
+		std::cout << "Connection closed" << std::endl;
+		return ;
+	}
 	buf[bytes] = '\0';
-	std::cout << "Message from " << fd << std::endl;
-	std::cout << "message: " << buf << std::endl;
+
+
+	std::cout << bytes << " bytes received" << std::endl;
+	std::cout << "Message from [" << fd << "]" << std::endl;
+	std::cout << buf << std::endl;
 }
 
 /**
@@ -92,23 +99,18 @@ void Server::chat(int fd)
 void Server::allow() {
 	int connect = -1;
 
-	do
+	connect = accept(this->master_sd_, NULL, NULL);
+	if (connect < 0)
 	{
-		connect = accept(this->master_sd_, NULL, NULL);
-		if (connect < 0)
+		// accept fails with EWOULDBLOCK, then we have accepted all of them.
+		if (errno != EWOULDBLOCK)
 		{
-			// accept fails with EWOULDBLOCK, then we have accepted all of them.
-			if (errno != EWOULDBLOCK)
-			{
-				std::cerr << "accept error" << std::endl;
-				close(this->master_sd_);
-			}
-			break;
+			std::cerr << "accept error" << std::endl;
+			close(this->master_sd_);
 		}
-		std::cout << "New incoming connection - " << connect << std::endl;
-		this->makePoll(connect);
-
-	} while (connect != -1);
+	}
+	std::cout << "New incoming connection - " << connect << std::endl;
+	this->createPoll(connect);
 }
 
 
@@ -117,15 +119,22 @@ void Server::allow() {
  * @param sockfd An indication of which fd for which PollMethod to create
  *
  */
-void Server::makePoll(int sockfd)
+void Server::createPoll(int sockfd)
 {
 	struct pollfd pollfd;
 
 	pollfd.fd = sockfd;
 	pollfd.events = POLLIN;
 	pollfd.revents = 0;
-
 	pollfds_.push_back(pollfd);
+
+	/* server maintain client info(nick fd etc..) if fd isn't server fd */
+	if (sockfd != master_sd_)
+	{
+		nicks_[sockfd] = "unkown" + std::to_string(sockfd);
+		User user(sockfd);
+		users_[nicks_[sockfd]] = user;
+	}
 }
 
 
@@ -151,7 +160,7 @@ void Server::setupSocket() {
 		exit(EXIT_FAILURE);
 	}
 
-	/* Change server socket fd from blocking IO to non-blocking IO*/
+	/* Change server socket fd from blocking IO to non-blocking IO */
 	if (fcntl(master_sd_, O_NONBLOCK, &enable))
 	{
 		std::cerr << "fcntl O_NONBLOCK error" << std::endl;
