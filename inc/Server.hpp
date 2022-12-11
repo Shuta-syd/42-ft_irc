@@ -10,6 +10,7 @@
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <vector>
+#include <map>
 
 #define MAX_SOCKET 10
 #define MSG_MAX 1024
@@ -35,5 +36,7 @@ private:
 	int nfds_; // number of connected file  descriptor
 	int master_sd_; // server socket file descriptor
 	std::string password_;
+	std::map<int, std::string> nicks_; // client nicknames map(fd, nick)
+	// std::map<std::string, User> users_; //client users info map(nick, client);
 	std::vector<struct pollfd> pollfds_;
-}
+};
