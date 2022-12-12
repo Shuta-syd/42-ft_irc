@@ -2,32 +2,33 @@ NAME := ircserv
 CXXFLAGS := c++
 RM := rm -rf
 
-objs_dir += srcs/
-deps_dir += srcs/
+OBJS_DIR += srcs/
+DEPS_DIR += srcs/
 srcs += $(addprefix srcs/, \
     main.cpp \
 )
 
-objs_dir += srcs/server/
-deps_dir += srcs/server/
+OBJS_DIR += srcs/server/
+DEPS_DIR += srcs/server/
 srcs += $(addprefix srcs/server/, \
     Server.cpp\
 		User.cpp\
     )
 
-objs := $(srcs:%.cpp=objs/%.o)
-deps := $(srcs:%.cpp=deps/%.d)
+OBJS := $(srcs:%.cpp=objs/%.o)
+DEPS := $(srcs:%.cpp=deps/%.d)
 
-objs_dir := $(addprefix objs/, $(objs_dir))
-objs_dir := $(addsuffix .keep, $(objs_dir))
+OBJS_DIR := $(addprefix objs/, $(OBJS_DIR))
+OBJS_DIR := $(addsuffix .keep, $(OBJS_DIR))
 
-deps_dir := $(addprefix deps/, $(deps_dir))
-deps_dir := $(addsuffix .keep, $(deps_dir))
+DEPS_DIR := $(addprefix deps/, $(DEPS_DIR))
+DEPS_DIR := $(addsuffix .keep, $(DEPS_DIR))
+
+INC= inc
 
 debugflags := -g3 -fsanitize=address
 headerflags := -MMD -MP
 CXXFLAGS := #-Wall -Werror -Wextra -std=c++98
-
 
 ############# basic rules ##############
 .PHONY: all clean fclean re
@@ -35,23 +36,29 @@ all: $(NAME)
 
 -include $(deps)
 
-$(NAME): $(objs)
-	$(CXX) $(CXXFLAGS) $(objs) -o $(NAME)
+$(NAME): $(OBJS)
+	@$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
+	@echo "$(CYN)\n=====link=====$(RES)"
+	@echo "$(YEL)Objects$(RES): $(OBJS)\n"
+	@echo "$(YEL)Flags$(RES): $(CXXFLAGS)\n"
+	@echo "     $(MGN)--->$(RES) $(GRN)$(NAME)$(RES)"
+	@echo "$(CYN)==============$(RES)"
 
-./objs/%.o: %.cpp $(objs_dir) $(deps_dir)
-	$(CXX) $(CXXFLAGS) -Iinc $(headerflags) -MF ./deps/$(*).d -c $< -o $@
+./objs/%.o: %.cpp $(OBJS_DIR) $(DEPS_DIR)
+	@$(CXX) $(CXXFLAGS) -I$(INC) $(headerflags) -MF ./deps/$(*).d -c $< -o $@
+	@echo "$< =========> $(GRN) $@ $(RES)"
 
-$(objs_dir):
+$(OBJS_DIR):
 	mkdir -p $@
-$(deps_dir):
+$(DEPS_DIR):
 	mkdir -p $@
 
 clean:
-	$(RM) $(objs)
-	$(RM) $(deps)
+	@$(RM) $(OBJS)
+	@$(RM) $(deps)
 
 fclean: clean
-	$(RM) $(NAME)
+	@$(RM) $(NAME)
 
 re: fclean all
 
@@ -62,3 +69,11 @@ debug: re
 
 run:
 	./ircserv 8080 password
+
+RED = \033[31m
+GRN = \033[32m
+YEL = \033[33m
+BLU = \033[34m
+MGN = \033[35m
+CYN = \033[36m
+RES = \033[m
