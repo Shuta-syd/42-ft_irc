@@ -17,7 +17,7 @@ void Server::start()
 
 	while (1)
 	{
-		std::cout << "Waiting on poll()" << std::endl;
+		std::cout << "-------------Waiting on poll()-------------" << std::endl;
 		if (poll(&(*pollfds_.begin()), pollfds_.size(), TIMEOUT) < 0)
 		{
 			std::cerr << "poll error" << std::endl;
@@ -43,9 +43,7 @@ void Server::start()
 				this->allow();
 			}
 			else // This is not the listening socket, therefore an existing connection must be readable
-			{
 				this->chat(pollfds_[i].fd);
-			}
 		}
 	}
 }
@@ -59,7 +57,7 @@ void Server::start()
  */
 void Server::sendMessage(int fd, std::string msg, int flag)
 {
-	send(fd, msg.c_str(), sizeof(msg.c_str()), flag);
+	send(fd, msg.c_str(), msg.size(), flag);
 }
 
 /**
@@ -89,12 +87,10 @@ void Server::chat(int fd)
 
 	std::cout << "client fd: [" << fd << "]" << std::endl;
 	std::cout << "client : " << buf << std::endl;
-	std::cout << "-------------------" << std::endl;
+	std::cout << "-------------Client Message-------------" << std::endl;
 
 	std::cout << nicks_[fd] << std::endl;
-	// sendMessage(fd, RPL_MOTDSTART(nicks_[fd]), 0);
-	// sendMessage(fd, RPL_ENDOFMOTD(nicks_[fd]), 0);
-	// std::cout << "server sended" << std::endl;
+	sendMessage(fd, RPL_WELCOME(nicks_[fd]), 0);
 }
 
 /**
@@ -138,6 +134,7 @@ void Server::createPoll(int sockfd)
 		nicks_[sockfd] = "shogura";
 		User user(sockfd);
 		users_[nicks_[sockfd]] = user;
+		std::string msg = "TEST";
 	}
 }
 

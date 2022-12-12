@@ -59,3 +59,6 @@ re: fclean all
 .PHONY: debug leak
 debug: CXXFLAGS += $(debugflags)
 debug: re
+
+run:
+	./ircserv 8080 password
