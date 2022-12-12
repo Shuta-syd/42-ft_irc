@@ -2,14 +2,15 @@
 
 Server::Server() {}
 
-Server::Server(int port, std::string password): port_(port), password_(password) {}
+Server::Server(int port, std::string password) : port_(port), password_(password) {}
 
 Server::~Server() {}
 
 /**
  *@brief to start IRC Server
-*/
-void Server::start() {
+ */
+void Server::start()
+{
 
 	this->setupSocket();
 	this->createPoll(master_sd_);
@@ -17,10 +18,10 @@ void Server::start() {
 	while (1)
 	{
 		std::cout << "Waiting on poll()" << std::endl;
-		if (poll(pollfds_.data(), pollfds_.size(), TIMEOUT) < 0)
+		if (poll(&(*pollfds_.begin()), pollfds_.size(), TIMEOUT) < 0)
 		{
 			std::cerr << "poll error" << std::endl;
-			break ;
+			break;
 		}
 		for (int i = 0; i < pollfds_.size(); i++)
 		{
@@ -32,7 +33,7 @@ void Server::start() {
 			if (pollfds_[i].revents != POLLIN)
 			{
 				std::cerr << "error revents " << pollfds_[i].revents << std::endl;
-				return ;
+				return;
 			}
 
 			// event fd is server fd
@@ -43,7 +44,6 @@ void Server::start() {
 			}
 			else // This is not the listening socket, therefore an existing connection must be readable
 			{
-				std::cout << "Descriptor " << pollfds_[i].fd << " is readable" << std::endl;
 				this->chat(pollfds_[i].fd);
 			}
 		}
@@ -59,7 +59,7 @@ void Server::start() {
  */
 void Server::sendMessage(int fd, std::string msg, int flag)
 {
-	send(fd, msg.c_str(), sizeof(msg.c_str()),flag);
+	send(fd, msg.c_str(), sizeof(msg.c_str()), flag);
 }
 
 /**
@@ -78,25 +78,30 @@ void Server::chat(int fd)
 	{
 		if (errno != EWOULDBLOCK)
 			std::cerr << "recv error" << std::endl;
-		return ;
+		return;
 	}
-	else if (bytes == 0) //quit
+	else if (bytes == 0) // quit
 	{
 		std::cout << "Connection closed" << std::endl;
-		return ;
+		return;
 	}
 	buf[bytes] = '\0';
 
+	std::cout << "client fd: [" << fd << "]" << std::endl;
+	std::cout << "client : " << buf << std::endl;
+	std::cout << "-------------------" << std::endl;
 
-	std::cout << bytes << " bytes received" << std::endl;
-	std::cout << "Message from [" << fd << "]" << std::endl;
-	std::cout << buf << std::endl;
+	std::cout << nicks_[fd] << std::endl;
+	// sendMessage(fd, RPL_MOTDSTART(nicks_[fd]), 0);
+	// sendMessage(fd, RPL_ENDOFMOTD(nicks_[fd]), 0);
+	// std::cout << "server sended" << std::endl;
 }
 
 /**
  * @brief to accept connections from clients.
  */
-void Server::allow() {
+void Server::allow()
+{
 	int connect = -1;
 
 	connect = accept(this->master_sd_, NULL, NULL);
@@ -112,7 +117,6 @@ void Server::allow() {
 	std::cout << "New incoming connection - " << connect << std::endl;
 	this->createPoll(connect);
 }
-
 
 /**
  * @brief to create polling method corresponding to the num of fds (include server socket fd)
@@ -131,17 +135,17 @@ void Server::createPoll(int sockfd)
 	/* server maintain client info(nick fd etc..) if fd isn't server fd */
 	if (sockfd != master_sd_)
 	{
-		nicks_[sockfd] = "unkown" + std::to_string(sockfd);
+		nicks_[sockfd] = "shogura";
 		User user(sockfd);
 		users_[nicks_[sockfd]] = user;
 	}
 }
 
-
 /**
  * @brief to set up a server socket
  */
-void Server::setupSocket() {
+void Server::setupSocket()
+{
 	int enable = 1;
 
 	/* server socket create */
@@ -176,7 +180,7 @@ void Server::setupSocket() {
 	addr.sin_port = htons(port_);
 
 	/* bind address to server socket fd*/
-	if (bind(master_sd_, (struct sockaddr*)&addr, sizeof(addr)) < 0)
+	if (bind(master_sd_, (struct sockaddr *)&addr, sizeof(addr)) < 0)
 	{
 		std::cerr << "bind error" << std::endl;
 		close(this->master_sd_);

@@ -1,72 +1,61 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: shogura <shogura@student.42tokyo.jp>       +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/11/23 20:33:11 by shogura           #+#    #+#              #
-#    Updated: 2022/12/11 15:52:44 by shogura          ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME := ircserv
+CXXFLAGS := c++
+RM := rm -rf
 
-NAME = ircserv
+objs_dir += srcs/
+deps_dir += srcs/
+srcs += $(addprefix srcs/, \
+    main.cpp \
+)
 
-CXX = c++
+objs_dir += srcs/server/
+deps_dir += srcs/server/
+srcs += $(addprefix srcs/server/, \
+    Server.cpp\
+		User.cpp\
+    )
 
-#CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -MP -MMD -pedantic
+objs := $(srcs:%.cpp=objs/%.o)
+deps := $(srcs:%.cpp=deps/%.d)
 
-SRCDIR = src
-SRCS = $(shell find $(SRCDIR) -name "*.cpp" -type f)
+objs_dir := $(addprefix objs/, $(objs_dir))
+objs_dir := $(addsuffix .keep, $(objs_dir))
 
-OBJDIR = obj
-OBJS = $(subst $(SRCDIR), ./$(OBJDIR), $(SRCS:%.cpp=%.o))
+deps_dir := $(addprefix deps/, $(deps_dir))
+deps_dir := $(addsuffix .keep, $(deps_dir))
 
-DEPSDIR = deps
-DEPS = $(subst $(SRCDIR), ./$(DEPSDIR), $(SRCS:%.cpp=%.d))
+debugflags := -g3 -fsanitize=address
+headerflags := -MMD -MP
+CXXFLAGS := #-Wall -Werror -Wextra -std=c++98
 
-DEPSFLAG = -MMD -MP -MF $(DEPSDIR)/$(*).d
-DEBUGFLAG := -g3 -fsanitize=address
 
-INC = inc
-
+############# basic rules ##############
+.PHONY: all clean fclean re
 all: $(NAME)
 
-$(OBJDIR)/%.o:$(SRCDIR)/%.cpp
-	@mkdir -p $(@D)
-	@mkdir -p $(DEPSDIR)
-	@$(CXX) $(CXXFLAGS) -I$(INC) -o $@ -c $<
-	@echo "$< =========> $(GRN) $@ $(RES)"
+-include $(deps)
 
-$(NAME):$(OBJS)
-	@$(CXX) $(CXXFLAGS) -I$(INC) -o $(NAME) $(OBJS)
-	@echo "$(CYN)\n=====link=====$(RES)"
-	@echo "$(YEL)Objects$(RES): $(OBJS)\n"
-	@echo "$(YEL)Flags$(RES): $(CXXFLAGS)\n"
-	@echo "     $(MGN)--->$(RES) $(GRN)$(NAME)$(RES)"
-	@echo "$(CYN)==============$(RES)"
+$(NAME): $(objs)
+	$(CXX) $(CXXFLAGS) $(objs) -o $(NAME)
+
+./objs/%.o: %.cpp $(objs_dir) $(deps_dir)
+	$(CXX) $(CXXFLAGS) -Iinc $(headerflags) -MF ./deps/$(*).d -c $< -o $@
+
+$(objs_dir):
+	mkdir -p $@
+$(deps_dir):
+	mkdir -p $@
 
 clean:
-	$(RM) $(OBJS)
-	$(RM) $(DEPS)
-	$(RM) $(NAME)
-	@$(RM) -rf $(OBJDIR)
+	$(RM) $(objs)
+	$(RM) $(deps)
 
-fclean:clean
+fclean: clean
+	$(RM) $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re
-
--include $(DEPS)
-
-run:
-	./ircserv 8080 password
-
-RED = \033[31m
-GRN = \033[32m
-YEL = \033[33m
-BLU = \033[34m
-MGN = \033[35m
-CYN = \033[36m
-RES = \033[m
+############## convenient rules ##############
+.PHONY: debug leak
+debug: CXXFLAGS += $(debugflags)
+debug: re
