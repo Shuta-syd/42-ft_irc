@@ -85,12 +85,12 @@ void Server::chat(int fd)
 	}
 	buf[bytes] = '\0';
 
+	std::cout << "-------------Client Message-------------" << std::endl;
 	std::cout << "client fd: [" << fd << "]" << std::endl;
 	std::cout << "client : " << buf << std::endl;
-	std::cout << "-------------Client Message-------------" << std::endl;
+	std::cout << "----------------------------------------" << std::endl;
 
-	std::cout << nicks_[fd] << std::endl;
-	sendMessage(fd, RPL_WELCOME(nicks_[fd]), 0);
+	
 }
 
 /**
