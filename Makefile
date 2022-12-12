@@ -54,11 +54,11 @@ $(DEPS_DIR):
 	mkdir -p $@
 
 clean:
-	@$(RM) $(OBJS)
-	@$(RM) $(deps)
+	$(RM) $(OBJS)
+	$(RM) $(deps)
 
 fclean: clean
-	@$(RM) $(NAME)
+	$(RM) $(NAME)
 
 re: fclean all
 

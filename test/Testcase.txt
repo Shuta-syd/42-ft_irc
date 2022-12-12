@@ -1,0 +1,6 @@
+TEST CASES
+
+Nick <nickname>
+
+
+IRSSI COMMAND
