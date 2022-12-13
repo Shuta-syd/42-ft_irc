@@ -1,6 +1,8 @@
 TEST CASES
 
+1. first connect command
+CAP LS
 Nick <nickname>
+User shuta shuta 127.0.0.1 :Shuta
 
-
-IRSSI COMMAND
+2. 
