@@ -1,8 +1,4 @@
-class Command
-{
-public:
-	Command();
-	~Command();
+#pragma once
+#include <Server.hpp>
 
-private:
-};
+void NICK(Client client, std::string nick);

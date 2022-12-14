@@ -16,6 +16,7 @@ public:
 	// setter getter
 	void addMessage(std::string);
 	const std::string &getMessage() const;
+	const Message &getParsed_msg() const;
 
 private:
 	int fd_;

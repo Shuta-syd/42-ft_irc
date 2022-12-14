@@ -14,6 +14,7 @@
 
 #include <Client.hpp>
 #include <Reply.hpp>
+#include <Command.hpp>
 
 #define BACKLOG 10
 #define MSG_MAX 1024
@@ -44,5 +45,8 @@ private:
 	void allow();
 	void chat(int);
 	void setupClient(int sockfd);
-	void sendMessage(int, std::string, int);
+	void execute(const Client &client);
+
 };
+
+void sendMessage(int, std::string, int);

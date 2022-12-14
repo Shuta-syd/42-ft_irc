@@ -14,9 +14,12 @@ srcs += $(addprefix srcs/server/, \
     Server.cpp \
     Client.cpp\
 	Message.cpp \
-	Command.cpp\
     )
-
+OBJS_DIR += srcs/command/
+DEPS_DIR += srcs/command/
+srcs += $(addprefix srcs/command/, \
+	NICK.cpp\
+    )
 OBJS := $(srcs:%.cpp=objs/%.o)
 DEPS := $(srcs:%.cpp=deps/%.d)
 

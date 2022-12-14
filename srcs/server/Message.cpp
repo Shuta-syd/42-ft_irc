@@ -65,3 +65,5 @@ void Message::parseParams(const std::string &message, int &i) {
 		params_.push_back(param);
 	}
 }
+
+

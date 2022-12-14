@@ -46,7 +46,7 @@ void Server::start() {
  * @param msg message
  * @param flag send option
  */
-void Server::sendMessage(int fd, std::string msg, int flag) {
+void sendMessage(int fd, std::string msg, int flag) {
 	send(fd, msg.c_str(), msg.size(), flag);
 }
 
@@ -79,7 +79,12 @@ void Server::chat(int fd) {
 
 	// find CR-LF (end point)
 	if (message.find("\r\n"))
+	{
 		user.parse();
+		this->execute(user);
+	}
+
+
 }
 
 /**
@@ -160,4 +165,20 @@ void Server::setupServerSocket()
 
 	/* try to specify maximum of sockets pending connections for the server socket */
 	listen(this->master_sd_, SOMAXCONN);
+}
+
+
+/**
+ * @brief execute
+ */
+
+void Server::execute(const Client &client) {
+
+	const std::string &cmd = client.getParsed_msg().getCommand();
+
+	if (cmd == "NICK")
+	{
+		NICK(client, cmd);
+	}
+
 }
