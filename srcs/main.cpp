@@ -8,6 +8,7 @@ int main(int argc, char const *argv[])
 	{
 		int port = atoi(argv[1]);
 		std::string password(argv[2]);
+
 		Server Irc(port, password);
 		Irc.start();
 	}

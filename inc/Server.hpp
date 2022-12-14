@@ -12,7 +12,7 @@
 #include <vector>
 #include <map>
 
-#include <User.hpp>
+#include <Client.hpp>
 #include <Reply.hpp>
 
 #define BACKLOG 10
@@ -42,6 +42,6 @@ private:
 	int nfds_; // number of connected file  descriptor
 	int master_sd_; // server socket file descriptor
 	std::string password_;
-	std::map<int, User> users_; //client users info map(fd, client);
+	std::map<int, Client> users_; //client users info map(fd, client);
 	std::vector<struct pollfd> pollfds_;
 };

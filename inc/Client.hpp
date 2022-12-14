@@ -3,12 +3,12 @@
 #include <Message.hpp>
 #include <string>
 
-class User
+class Client
 {
 public:
-	User();
-	User(int, const std::string&);
-	~User();
+	Client();
+	Client(int, const std::string&);
+	~Client();
 
 	void parse();
 

@@ -4,11 +4,11 @@ IRC Serverに関する包括的な情報を管理するクラス
 ```c++
 	private:
 		Command Class
-		std::map<fd, User Class>
+		std::map<fd, Client Class>
 		std::vector<pollfd>
 ```
 
-#### User Class
+#### Client Class
 IRC Clientに関する包括的な情報を管理するクラス
 ```c++
 	private:

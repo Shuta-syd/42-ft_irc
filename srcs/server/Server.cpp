@@ -74,7 +74,7 @@ void Server::chat(int fd) {
 		return;
 	}
 
-	User &user = users_[fd];
+	Client &user = users_[fd];
 	user.addMessage(buf);
 	const std::string message = user.getMessage();
 
@@ -127,7 +127,7 @@ void Server::createPoll(int sockfd)
 	/* server maintain client info(nick fd etc..) if fd isn't server fd */
 	if (sockfd != master_sd_) {
 		const std::string nick = "unknow" + std::to_string(sockfd);
-		User user(sockfd, nick);
+		Client user(sockfd, nick);
 		users_[sockfd] = user;
 	}
 }
