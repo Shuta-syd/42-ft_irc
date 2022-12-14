@@ -2,6 +2,8 @@
 
 void NICK(Client client, std::string nick)
 {
-	client.nickname_ = nick;
-	// send
+
+//	client.nickname_ = nick;
+//	 send
+	;
 }
