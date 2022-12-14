@@ -2,7 +2,7 @@
 
 Server::Server() {}
 
-Server::Server(int port, std::string password) : port_(port), password_(password) {}
+Server::Server(int port, const std::string &password) : port_(port), password_(password) {}
 
 Server::~Server() {}
 
@@ -74,11 +74,18 @@ void Server::chat(int fd) {
 		return;
 	}
 
+	User &user = users_[fd];
+	user.addMessage(buf);
+	const std::string message = user.getMessage();
+
 	std::cout << "-------------Client Message-------------" << std::endl;
 	std::cout << "client fd: [" << fd << "]" << std::endl;
-	std::cout << "client : " << buf << std::endl;
+	std::cout << "client : " << message << std::endl;
 	std::cout << "----------------------------------------" << std::endl;
 
+	// find CR-LF (end point)
+	if (message.find_first_of("\r\n"))
+		user.parse();
 }
 
 /**

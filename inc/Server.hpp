@@ -24,7 +24,7 @@ class Server
 public:
 	// Constructor Destructor
 	Server();
-	Server(int, std::string);
+	Server(int, const std::string&);
 	~Server();
 
 	// start point
