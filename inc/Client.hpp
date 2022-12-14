@@ -15,6 +15,7 @@ public:
 
 	// setter getter
 	void addMessage(std::string);
+	void clearMessage();
 	const std::string &getMessage() const;
 
 private:

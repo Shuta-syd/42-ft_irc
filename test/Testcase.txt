@@ -3,10 +3,10 @@ TEST CASES
 1. first connect command
 CAP LS
 Nick <nickname>
-Client shuta shuta 127.0.0.1 :Shuta
+USER shuta shuta 127.0.0.1 :Shuta
 
 USER guest0 * :Ronnie Reagan
 
 JOIN #foo,#bar
 
-
+:WiZ!jto@tolsun.oulu.fi NICK Kilroy
