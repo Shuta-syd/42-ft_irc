@@ -44,5 +44,18 @@ void Message::parseCommand(const std::string &message, int &i) {
  * @param i index of message
  */
 void Message::parseParams(const std::string &message, int &i) {
-	
+	std::string param;
+
+	while (message[i] != '\r' && message[i] != '\n')
+	{
+		while (message[i] == ' ')
+			i++;
+		while (message[i] != ':' && message[i] != ' '
+						&& message[i] != '\r' && message[i] != '\n')
+		{
+			param.append(message[i], 1);
+			i++;
+		}
+		
+	}
 }

@@ -13,7 +13,10 @@ IRC Clientに関する包括的な情報を管理するクラス
 ```c++
 	private:
 		int fd
-		std::string nick
+		std::string nickname_; // max len 9
+		std::string username_;
+		std::string hostname_;
+		std::string message_; //max len 512
 		Message Class
 ```
 
