@@ -30,7 +30,6 @@ public:
 	// start point
 	void start();
 	// send recv funcs
-	void sendMessage(int, std::string, int);
 
 private:
 	int port_; // port number to connect to client
@@ -45,4 +44,5 @@ private:
 	void allow();
 	void chat(int);
 	void setupClient(int sockfd);
+	void sendMessage(int, std::string, int);
 };
