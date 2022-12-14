@@ -29,11 +29,6 @@ public:
 
 	// start point
 	void start();
-	void setupSocket();
-	void createPoll(int);
-	void allow();
-	void chat(int);
-
 	// send recv funcs
 	void sendMessage(int, std::string, int);
 
@@ -44,4 +39,10 @@ private:
 	std::string password_;
 	std::map<int, Client> users_; //client users info map(fd, client);
 	std::vector<struct pollfd> pollfds_;
+
+	void setupServerSocket();
+	void createPoll(int);
+	void allow();
+	void chat(int);
+	void setupClient(int sockfd);
 };

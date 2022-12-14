@@ -61,6 +61,8 @@ clean:
 
 fclean: clean
 	$(RM) $(NAME)
+	$(RM) ./objs
+	$(RM) ./deps
 
 re: fclean all
 

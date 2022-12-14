@@ -11,16 +11,13 @@ Server::~Server() {}
  */
 void Server::start() {
 
-	this->setupSocket();
+	this->setupServerSocket();
 	this->createPoll(master_sd_);
 
 	while (1) {
 		std::cout << "-------------Waiting on poll()-------------" << std::endl;
-		if (poll(&(*pollfds_.begin()), pollfds_.size(), TIMEOUT) < 0) {
-			std::cerr << "poll error" << std::endl;
-			break;
-		}
-		for (int i = 0; i < pollfds_.size(); i++) {
+		poll(&(*pollfds_.begin()), pollfds_.size(), TIMEOUT);
+		for (size_t i = 0; i < pollfds_.size(); i++) {
 			// nothing event
 			if (pollfds_[i].revents == 0)
 				continue;
@@ -108,6 +105,7 @@ void Server::allow() {
 	}
 	std::cout << "New incoming connection - " << connect << std::endl;
 	this->createPoll(connect);
+
 }
 
 /**
@@ -115,73 +113,50 @@ void Server::allow() {
  * @param sockfd An indication of which fd for which PollMethod to create
  *
  */
-void Server::createPoll(int sockfd)
-{
-	struct pollfd pollfd;
 
-	pollfd.fd = sockfd;
-	pollfd.events = POLLIN;
-	pollfd.revents = 0;
-	pollfds_.push_back(pollfd);
-
-	/* server maintain client info(nick fd etc..) if fd isn't server fd */
-	if (sockfd != master_sd_) {
+void Server::setupClient(int sockfd) {
 		const std::string nick = "unknow" + std::to_string(sockfd);
 		Client user(sockfd, nick);
 		users_[sockfd] = user;
-	}
+}
+
+void Server::createPoll(int sockfd)
+{
+	struct pollfd pollfd = (struct pollfd) {
+		.fd = sockfd,
+		.events = POLLIN,
+		.revents = 0,
+	};
+	pollfds_.push_back(pollfd);
+
+	/* server maintain client info(nick fd etc..) if fd isn't server fd */
+//	setupUser();
+
 }
 
 /**
  * @brief to set up a server socket
  */
-void Server::setupSocket()
+void Server::setupServerSocket()
 {
-	int enable = 1;
-
 	/* server socket create */
 	master_sd_ = socket(AF_INET, SOCK_STREAM, 0);
-	if (master_sd_ < 0)
-	{
-		std::cerr << "socket error" << std::endl;
-		exit(EXIT_FAILURE);
-	}
 
 	/* set socket option to server socket */
-	if (setsockopt(master_sd_, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(enable)) < 0)
-	{
-		std::cerr << "setsockopt error" << std::endl;
-		close(master_sd_);
-		exit(EXIT_FAILURE);
-	}
-
+	int enable = 1;
+	setsockopt(master_sd_, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(enable));
 	/* Change server socket fd from blocking IO to non-blocking IO */
-	if (fcntl(master_sd_, O_NONBLOCK, &enable))
-	{
-		std::cerr << "fcntl O_NONBLOCK error" << std::endl;
-		close(master_sd_);
-		exit(EXIT_FAILURE);
-	}
+	fcntl(master_sd_, O_NONBLOCK, &enable);
 
 	/* create address for server socket fd */
-	struct sockaddr_in addr;
-	bzero(&addr, sizeof(addr));
+	struct sockaddr_in addr = {0};
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = INADDR_ANY;
 	addr.sin_port = htons(port_);
 
 	/* bind address to server socket fd*/
-	if (bind(master_sd_, (struct sockaddr *)&addr, sizeof(addr)) < 0)
-	{
-		std::cerr << "bind error" << std::endl;
-		close(this->master_sd_);
-		exit(EXIT_FAILURE);
-	}
+	bind(master_sd_, (struct sockaddr *)&addr, sizeof(addr));
 
 	/* try to specify maximum of sockets pending connections for the server socket */
-	if (listen(this->master_sd_, BACKLOG) < 0)
-	{
-		std::cerr << "listen error" << std::endl;
-		exit(EXIT_FAILURE);
-	}
+	listen(this->master_sd_, SOMAXCONN);
 }

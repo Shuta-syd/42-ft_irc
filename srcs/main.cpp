@@ -10,7 +10,11 @@ int main(int argc, char const *argv[])
 		std::string password(argv[2]);
 
 		Server Irc(port, password);
-		Irc.start();
+		try	{
+			Irc.start();
+		} catch (const std::exception &e) {
+			std::cout << "ERROR:" << e.what() << std::endl;
+		}
 	}
 	else
 	{
