@@ -2,43 +2,37 @@
 
 Server::Server() {}
 
-Server::Server(int port, std::string password) : port_(port), password_(password) {}
+Server::Server(int port, const std::string &password) : port_(port), password_(password) {}
 
 Server::~Server() {}
 
 /**
  *@brief to start IRC Server
  */
-void Server::start()
-{
+void Server::start() {
 
 	this->setupSocket();
 	this->createPoll(master_sd_);
 
-	while (1)
-	{
+	while (1) {
 		std::cout << "-------------Waiting on poll()-------------" << std::endl;
-		if (poll(&(*pollfds_.begin()), pollfds_.size(), TIMEOUT) < 0)
-		{
+		if (poll(&(*pollfds_.begin()), pollfds_.size(), TIMEOUT) < 0) {
 			std::cerr << "poll error" << std::endl;
 			break;
 		}
-		for (int i = 0; i < pollfds_.size(); i++)
-		{
+		for (int i = 0; i < pollfds_.size(); i++) {
 			// nothing event
 			if (pollfds_[i].revents == 0)
 				continue;
 
 			// not pollin event (SIGINT -> loop発生)
-			if (pollfds_[i].revents != POLLIN)
-			{
+			if (pollfds_[i].revents != POLLIN) {
 				std::cerr << "error revents " << pollfds_[i].revents << std::endl;
 				return;
 			}
 
 			// event fd is server fd
-			if (pollfds_[i].fd == master_sd_)
-			{
+			if (pollfds_[i].fd == master_sd_) {
 				std::cout << "Listening socket is readable" << std::endl;
 				this->allow();
 			}
@@ -55,8 +49,7 @@ void Server::start()
  * @param msg message
  * @param flag send option
  */
-void Server::sendMessage(int fd, std::string msg, int flag)
-{
+void Server::sendMessage(int fd, std::string msg, int flag) {
 	send(fd, msg.c_str(), msg.size(), flag);
 }
 
@@ -64,48 +57,51 @@ void Server::sendMessage(int fd, std::string msg, int flag)
  * @brief  for communication between server and client
  * @param fd connected client fd
  */
-void Server::chat(int fd)
-{
+void Server::chat(int fd) {
 	char buf[MSG_MAX];
 	int bytes = 0;
 
 	bzero(&buf, sizeof(buf));
 
 	bytes = recv(fd, buf, sizeof(buf), 0);
-	if (bytes < 0) // exception
-	{
+	if (bytes < 0) { // exception
 		if (errno != EWOULDBLOCK)
 			std::cerr << "recv error" << std::endl;
 		return;
 	}
-	else if (bytes == 0) // quit
-	{
+	else if (bytes == 0) { //quit
 		std::cout << "Connection closed" << std::endl;
 		return;
 	}
-	buf[bytes] = '\0';
+
+	User &user = users_[fd];
+	user.addMessage(buf);
+	const std::string message = user.getMessage();
 
 	std::cout << "-------------Client Message-------------" << std::endl;
 	std::cout << "client fd: [" << fd << "]" << std::endl;
-	std::cout << "client : " << buf << std::endl;
+	std::cout << "client : " << message << std::endl;
 	std::cout << "----------------------------------------" << std::endl;
 
-	
+	// find CR-LF (end point)
+	if (message.find_first_of("\r\n"))
+		user.parse();
 }
+
+/**
+ * Functions related to Socket
+ */
 
 /**
  * @brief to accept connections from clients.
  */
-void Server::allow()
-{
+void Server::allow() {
 	int connect = -1;
 
 	connect = accept(this->master_sd_, NULL, NULL);
-	if (connect < 0)
-	{
+	if (connect < 0) {
 		// accept fails with EWOULDBLOCK, then we have accepted all of them.
-		if (errno != EWOULDBLOCK)
-		{
+		if (errno != EWOULDBLOCK) {
 			std::cerr << "accept error" << std::endl;
 			close(this->master_sd_);
 		}
@@ -129,12 +125,10 @@ void Server::createPoll(int sockfd)
 	pollfds_.push_back(pollfd);
 
 	/* server maintain client info(nick fd etc..) if fd isn't server fd */
-	if (sockfd != master_sd_)
-	{
-		nicks_[sockfd] = "shogura";
-		User user(sockfd);
-		users_[nicks_[sockfd]] = user;
-		std::string msg = "TEST";
+	if (sockfd != master_sd_) {
+		const std::string nick = "unknow" + std::to_string(sockfd);
+		User user(sockfd, nick);
+		users_[sockfd] = user;
 	}
 }
 
@@ -185,7 +179,7 @@ void Server::setupSocket()
 	}
 
 	/* try to specify maximum of sockets pending connections for the server socket */
-	if (listen(this->master_sd_, MAX_SOCKET) < 0)
+	if (listen(this->master_sd_, BACKLOG) < 0)
 	{
 		std::cerr << "listen error" << std::endl;
 		exit(EXIT_FAILURE);

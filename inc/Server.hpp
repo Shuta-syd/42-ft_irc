@@ -15,7 +15,7 @@
 #include <User.hpp>
 #include <Reply.hpp>
 
-#define MAX_SOCKET 10
+#define BACKLOG 10
 #define MSG_MAX 1024
 #define TIMEOUT 3 * 60 * 1000
 
@@ -24,7 +24,7 @@ class Server
 public:
 	// Constructor Destructor
 	Server();
-	Server(int, std::string);
+	Server(int, const std::string&);
 	~Server();
 
 	// start point
@@ -42,7 +42,6 @@ private:
 	int nfds_; // number of connected file  descriptor
 	int master_sd_; // server socket file descriptor
 	std::string password_;
-	std::map<int, std::string> nicks_; // client nicknames map(fd, nick)
-	std::map<std::string, User> users_; //client users info map(nick, client);
+	std::map<int, User> users_; //client users info map(fd, client);
 	std::vector<struct pollfd> pollfds_;
 };
