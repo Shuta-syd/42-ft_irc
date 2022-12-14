@@ -5,4 +5,8 @@ CAP LS
 Nick <nickname>
 Client shuta shuta 127.0.0.1 :Shuta
 
-2. 
+USER guest0 * :Ronnie Reagan
+
+JOIN #foo,#bar
+
+

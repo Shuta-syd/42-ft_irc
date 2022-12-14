@@ -16,12 +16,16 @@ void Client::parse() {
 		parsed_msg_.parsePrefix(message_, i);
 	parsed_msg_.parseCommand(message_, i);
 	parsed_msg_.parseParams(message_, i);
+	std::cout << "-------parsed msg-------" << std::endl;
+	std::cout << parsed_msg_.getPrefix() << std::endl;
+	std::cout << parsed_msg_.getCommand() << std::endl;
+	for (size_t i = 0; i < parsed_msg_.getParams().size(); i++)
+		std::cout << parsed_msg_.getParams()[i] << std::endl;
 }
 
 /**
  * Setter Getter
  */
-
 void Client::addMessage(std::string msg) {
 	this->message_ += msg;
 }

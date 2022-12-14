@@ -22,7 +22,7 @@ void Server::start() {
 			if (pollfds_[i].revents == 0)
 				continue;
 
-			// not pollin event (SIGINT -> loop発生)
+			// not pollin event (SIGINT -> loop発生) throw
 			if (pollfds_[i].revents != POLLIN) {
 				std::cerr << "error revents " << pollfds_[i].revents << std::endl;
 				return;
@@ -55,12 +55,9 @@ void Server::sendMessage(int fd, std::string msg, int flag) {
  * @param fd connected client fd
  */
 void Server::chat(int fd) {
-	char buf[MSG_MAX];
-	int bytes = 0;
+	char buf[MSG_MAX] = {0};
 
-	bzero(&buf, sizeof(buf));
-
-	bytes = recv(fd, buf, sizeof(buf), 0);
+	int bytes = recv(fd, buf, sizeof(buf), 0);
 	if (bytes < 0) { // exception
 		if (errno != EWOULDBLOCK)
 			std::cerr << "recv error" << std::endl;
@@ -73,7 +70,7 @@ void Server::chat(int fd) {
 
 	Client &user = users_[fd];
 	user.addMessage(buf);
-	const std::string message = user.getMessage();
+	const std::string &message = user.getMessage();
 
 	std::cout << "-------------Client Message-------------" << std::endl;
 	std::cout << "client fd: [" << fd << "]" << std::endl;
@@ -81,7 +78,7 @@ void Server::chat(int fd) {
 	std::cout << "----------------------------------------" << std::endl;
 
 	// find CR-LF (end point)
-	if (message.find_first_of("\r\n"))
+	if (message.find("\r\n"))
 		user.parse();
 }
 
@@ -93,19 +90,30 @@ void Server::chat(int fd) {
  * @brief to accept connections from clients.
  */
 void Server::allow() {
-	int connect = -1;
 
-	connect = accept(this->master_sd_, NULL, NULL);
-	if (connect < 0) {
+	int client_fd = accept(this->master_sd_, NULL, NULL);
+	if (client_fd < 0) {
 		// accept fails with EWOULDBLOCK, then we have accepted all of them.
 		if (errno != EWOULDBLOCK) {
 			std::cerr << "accept error" << std::endl;
 			close(this->master_sd_);
 		}
 	}
-	std::cout << "New incoming connection - " << connect << std::endl;
-	this->createPoll(connect);
+	else {
+		std::cout << "New incoming connection - " << client_fd << std::endl;
+		this->createPoll(client_fd);
+	}
+}
 
+/**
+ * @brief
+ *
+ * @param sockfd
+ */
+void Server::setupClient(int sockfd) {
+		const std::string nick = "unknow" + std::to_string(sockfd);
+		Client user(sockfd, nick);
+		users_[sockfd] = user;
 }
 
 /**
@@ -113,13 +121,6 @@ void Server::allow() {
  * @param sockfd An indication of which fd for which PollMethod to create
  *
  */
-
-void Server::setupClient(int sockfd) {
-		const std::string nick = "unknow" + std::to_string(sockfd);
-		Client user(sockfd, nick);
-		users_[sockfd] = user;
-}
-
 void Server::createPoll(int sockfd)
 {
 	struct pollfd pollfd = (struct pollfd) {

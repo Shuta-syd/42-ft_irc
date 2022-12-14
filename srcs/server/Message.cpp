@@ -1,4 +1,5 @@
 #include <Message.hpp>
+#include <iostream>
 
 Message::Message() {}
 
@@ -30,8 +31,11 @@ void Message::parsePrefix(const std::string &message, int &i) {
  */
 void Message::parseCommand(const std::string &message, int &i) {
 
-	while (message[i] != '\r' && message[i] != '\n' && message[i] != ' ')
+	while (message[i] != ' '  && message[i] != '\r' && message[i] != '\n')
+	{
 		command_.append(&message[i], 1);
+		i++;
+	}
 
 	while (message[i] == ' ')
 		i++;
@@ -44,18 +48,20 @@ void Message::parseCommand(const std::string &message, int &i) {
  * @param i index of message
  */
 void Message::parseParams(const std::string &message, int &i) {
-	std::string param;
 
 	while (message[i] != '\r' && message[i] != '\n')
 	{
-		while (message[i] == ' ')
+		std::string param;
+
+		while (message[i] == ' ' || message[i] == ':')
 			i++;
 		while (message[i] != ':' && message[i] != ' '
 						&& message[i] != '\r' && message[i] != '\n')
 		{
-			param.append(message[i], 1);
+			param.append(&message[i], 1);
 			i++;
 		}
-		
+		i++;
+		params_.push_back(param);
 	}
 }

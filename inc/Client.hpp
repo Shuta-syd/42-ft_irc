@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Message.hpp>
+#include <iostream>
 #include <string>
 
 class Client
