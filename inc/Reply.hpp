@@ -23,3 +23,4 @@ void sendWelcomeMessage(const Client &client);
  */
 #define NICK_MESSAGE(nick) ":ft_irc :You are known as " + nick + "\r\n"
 #define PONG_MESSAGE(serverName) ":ft_irc PONG " + serverName + "\r\n"
+#define PASS_MESSAGE(nick) ":ft_irc " + nick + " is authenticated....\r\n"

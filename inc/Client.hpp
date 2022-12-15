@@ -27,9 +27,11 @@ public:
 	void setNickname(std::string nick) { nickname_ = nick; }
 	void setUsername(std::string username) { username_ = username; }
 	void setRealname(std::string realname) { realname_ = realname; }
+	void setIsAuth(bool is_auth) { is_auth_ = is_auth; }
 
 private:
 	int fd_;
+	bool is_auth_;
 	std::string nickname_; // max len 9
 	std::string username_;
 	std::string realname_;

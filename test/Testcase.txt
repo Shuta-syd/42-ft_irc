@@ -9,7 +9,7 @@ MODE shuta:Welcome +i
 WHOIS shuta
 PING ft_irc
 
-
+MODE WiZ -w
 USER guest 0 * :Ronnie Reagan
 JOIN #foo,#bar
 :WiZ!jto@tolsun.oulu.fi NICK Kilroy

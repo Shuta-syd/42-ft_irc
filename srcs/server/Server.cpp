@@ -105,6 +105,8 @@ void Server::execute(Client &client) {
 		USER(client, params);
 	else if (cmd == "PING")
 		PONG(client, params);
+	else if (cmd == "PASS")
+		PASS(client, params, password_);
 }
 
 //--------------Functions related to Socket------------------
