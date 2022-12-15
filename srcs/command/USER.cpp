@@ -9,5 +9,5 @@
  * [Note]: <realname> may contain space characters
  */
 void USER(Client &client, const std::vector<std::string> &params) {
-	
+
 }
