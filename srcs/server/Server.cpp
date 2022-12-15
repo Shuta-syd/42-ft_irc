@@ -15,7 +15,7 @@ void Server::start() {
 	this->createPoll(master_sd_);
 
 	while (1) {
-		std::cout << "-------------Waiting on poll()-------------" << std::endl;
+		std::cout << BLU << "-------------Waiting on poll()-------------" << RES << std::endl;
 		poll(&(*pollfds_.begin()), pollfds_.size(), TIMEOUT);
 		for (size_t i = 0; i < pollfds_.size(); i++) {
 			// nothing event

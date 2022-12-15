@@ -18,7 +18,7 @@ void sendMessage(int fd, const std::string &msg, int flag)
 void sendWelcomeMessage(const Client &client)
 {
 	const int &fd = client.getFd();
-	const std::string &nick = client.getNick();
+	const std::string &nick = client.getNickname();
 
 	sendMessage(fd, RPL_WELCOME(nick), 0);
 	sendMessage(fd, RPL_YOURHOST(nick), 0);

@@ -17,14 +17,14 @@ void Client::parse(const std::string &message) {
 	parsed_msg_.parseCommand(message, i);
 	parsed_msg_.parseParams(message, i);
 
-	std::cout << "-------Parsed Message-------" << std::endl;
+	std::cout << GRN << "-------Parsed Message-------" << RES << std::endl;
 	std::cout << "Prefix: " << "[" << parsed_msg_.getPrefix() << "]"<< std::endl;
 	std::cout << "Command: " << "["<< parsed_msg_.getCommand() << "]" << std::endl;
 	std::cout << "Params: " << std::endl;
 	for (size_t i = 0; i < parsed_msg_.getParams().size(); i++)
 		std::cout << "["<< parsed_msg_.getParams()[i] << "]" << std::endl;
 	std::cout << "End" << std::endl;
-	std::cout << "----------------------------" << std::endl;
+	std::cout << GRN << "---------------------------" << RES << std::endl;
 }
 
 /**

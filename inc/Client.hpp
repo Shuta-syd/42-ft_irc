@@ -1,8 +1,9 @@
 #pragma once
 
-#include <Message.hpp>
 #include <iostream>
 #include <string>
+#include <Message.hpp>
+#include <Colors.hpp>
 
 class Client
 {
@@ -20,14 +21,18 @@ public:
 	const std::string &getMessage() const {return message_;}
 	const Message &getParsed_msg() const {return parsed_msg_;}
 	const int &getFd() const { return fd_; }
-		const std::string &getNick() const { return nickname_; }
-		void setNickname(std::string nick) { nickname_ = nick; }
+	const std::string &getNickname() const { return nickname_; }
+	const std::string &getUsername() const { return username_; }
+	const std::string &getRealname() const { return realname_; }
+	void setNickname(std::string nick) { nickname_ = nick; }
+	void setUsername(std::string username) { username_ = username; }
+	void setRealname(std::string realname) { realname_ = realname; }
 
-	private:
-		int fd_;
-		std::string nickname_; // max len 9
-		std::string username_;
-		std::string realname_;
-		std::string message_; // max len 512
-		Message parsed_msg_;
+private:
+	int fd_;
+	std::string nickname_; // max len 9
+	std::string username_;
+	std::string realname_;
+	std::string message_; // max len 512
+	Message parsed_msg_;
 };
