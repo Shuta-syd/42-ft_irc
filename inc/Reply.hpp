@@ -1,10 +1,11 @@
 #pragma once
 #include <Server.hpp>
 
-void sendMessage(int fd, std::string msg, int flag);
+void sendMessage(int fd, const std::string &msg, int flag);
+void sendWelcomeMessage(const Client &client);
 
 /**
- * First Connection Response 001 ~ 004
+ * Connection Welcome Message 001 ~ 004
  */
 #define RPL_WELCOME(nick) ":ft_irc 001 " + nick + ":Welcome to the Internet Relay Chat Network, " + nick + "\r\n"
 #define RPL_YOURHOST(nick) ":ft_irc 002 " + nick + ":Your host is <server name>, running version <version>\r\n"

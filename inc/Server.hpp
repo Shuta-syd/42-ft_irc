@@ -17,7 +17,6 @@
 #include <Command.hpp>
 #include <Utils.hpp>
 
-#define BACKLOG 10
 #define MSG_MAX 1024
 #define TIMEOUT 3 * 60 * 1000
 

@@ -97,6 +97,7 @@ void Server::execute(Client &client) {
 
 	if (cmd == "NICK")
 		NICK(client, params);
+	
 }
 
 //--------------Functions related to Socket------------------
