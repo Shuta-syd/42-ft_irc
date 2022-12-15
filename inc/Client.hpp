@@ -8,13 +8,13 @@ class Client
 {
 public:
 	Client();
-	Client(int, const std::string&);
+	Client(int fd, const std::string& nick);
 	~Client();
 
 	void parse(const std::string &message);
 
 	// setter getter
-	void addMessage(std::string);
+	void addMessage(std::string message);
 	void clearMessage();
 	void clearParsedMessage();
 	const std::string &getMessage() const {return message_;}

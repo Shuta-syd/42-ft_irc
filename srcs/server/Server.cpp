@@ -78,6 +78,7 @@ void Server::chat(int fd) {
 			len++;
 		}
 		cmd_line.append(&message[i - len], len + 2);
+
 		user.parse(cmd_line);
 		this->execute(user);
 		user.clearParsedMessage();
@@ -97,7 +98,6 @@ void Server::execute(Client &client) {
 
 	if (cmd == "NICK")
 		NICK(client, params);
-	
 }
 
 //--------------Functions related to Socket------------------
@@ -118,6 +118,7 @@ void Server::allow() {
 	else {
 		std::cout << "New incoming connection - " << client_fd << std::endl;
 		this->createPoll(client_fd);
+		setupClient(client_fd);
 	}
 }
 
@@ -127,9 +128,9 @@ void Server::allow() {
  * @param sockfd client socket descriptor
  */
 void Server::setupClient(int sockfd) {
-		const std::string nick = "unknow" + std::to_string(sockfd);
-		Client user(sockfd, nick);
-		users_[sockfd] = user;
+	const std::string nick = "unknow" + std::to_string(sockfd);
+	Client user(sockfd, nick);
+	users_[sockfd] = user;
 }
 
 /**
@@ -173,9 +174,3 @@ void Server::setupServerSocket()
 	/* try to specify maximum of sockets pending connections for the server socket */
 	listen(this->master_sd_, SOMAXCONN);
 }
-
-/**
- * CAP LS\r\n 7
- * NICK shuta\r\n
- * USER shuta shuta localhost :Shuta\r\n
- */

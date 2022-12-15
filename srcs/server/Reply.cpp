@@ -24,5 +24,4 @@ void sendWelcomeMessage(const Client &client)
 	sendMessage(fd, RPL_YOURHOST(nick), 0);
 	sendMessage(fd, RPL_CREATED(nick), 0);
 	sendMessage(fd, RPL_MYINFO(nick), 0);
-	std::cout << "Welcome Message Sent" << std::endl;
 }
