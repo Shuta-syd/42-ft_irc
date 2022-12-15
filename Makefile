@@ -19,7 +19,7 @@ srcs += $(addprefix srcs/utils/,\
 )
 
 srcs += $(addprefix srcs/command/,\
-		NICK.cpp \
+		CAP.cpp NICK.cpp \
 )
 
 OBJS := $(srcs:%.cpp=objs/%.o)

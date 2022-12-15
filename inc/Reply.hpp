@@ -4,6 +4,11 @@
 void sendMessage(int fd, const std::string &msg, int flag);
 void sendWelcomeMessage(const Client &client);
 
+/*
+ * CAP LS
+ */
+#define CAP_LS ":ft_irc CAP * LS\r\n"
+
 /**
  * Connection Welcome Message 001 ~ 004
  */

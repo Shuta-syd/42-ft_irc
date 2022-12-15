@@ -4,9 +4,12 @@ TEST CASES
 CAP LS
 Nick <nickname>
 USER shuta shuta 127.0.0.1 :Shuta
+CAP END
+MODE shuta:Welcome +i
+WHOIS shuta
+PING ft_irc
+
 
 USER guest0 * :Ronnie Reagan
-
 JOIN #foo,#bar
-
 :WiZ!jto@tolsun.oulu.fi NICK Kilroy

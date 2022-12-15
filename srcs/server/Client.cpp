@@ -2,7 +2,7 @@
 
 Client::Client() {}
 
-Client::Client(int fd, const std::string  &nick): fd_(fd), nickname_(nick) {}
+Client::Client(int fd, const std::string  &nick): fd_(fd), nickname_(nick), is_connected_(false) {}
 
 Client::~Client() {}
 

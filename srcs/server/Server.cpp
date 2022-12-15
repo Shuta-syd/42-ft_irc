@@ -96,6 +96,8 @@ void Server::execute(Client &client) {
 	const std::string &cmd = parsed_message.getCommand();
 	const std::vector<std::string> &params = parsed_message.getParams();
 
+	if (cmd == "CAP")
+		CAP(client, params);
 	if (cmd == "NICK")
 		NICK(client, params);
 }
@@ -121,7 +123,6 @@ void Server::allow() {
 		setupClient(client_fd);
 	}
 }
-
 
 /**
  * @brief create new user client info
