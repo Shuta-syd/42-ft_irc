@@ -53,10 +53,16 @@ void Message::parseParams(const std::string &message, int &i) {
 	{
 		std::string param;
 
-		while (message[i] == ' ' || message[i] == ':')
-			i++;
-		while (message[i] != ':' && message[i] != ' '
-						&& message[i] != '\r' && message[i] != '\n')
+		if (message[i] == ':')
+		{
+			i += 1;
+			while (message[i] != '\r' && message[i] != '\n')
+			{
+				param.append(&message[i], 1);
+				i++;
+			}
+		}
+		while (message[i] != ' ' && message[i] != '\r' && message[i] != '\n')
 		{
 			param.append(&message[i], 1);
 			i++;

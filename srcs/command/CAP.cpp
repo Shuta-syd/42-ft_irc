@@ -3,7 +3,7 @@
 /**
  * @brief
  *
- *
+ * CAP LS | CAP END
  */
 void CAP(Client &client, const std::vector<std::string> &params) {
 	const int &fd = client.getFd();

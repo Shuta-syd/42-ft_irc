@@ -98,8 +98,10 @@ void Server::execute(Client &client) {
 
 	if (cmd == "CAP")
 		CAP(client, params);
-	if (cmd == "NICK")
+	else if (cmd == "NICK")
 		NICK(client, params);
+	else if (cmd == "USER")
+		USER(client, params);
 }
 
 //--------------Functions related to Socket------------------

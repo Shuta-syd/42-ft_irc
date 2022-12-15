@@ -3,3 +3,4 @@
 
 void NICK(Client &client, const std::vector<std::string> &params);
 void CAP(Client &client, const std::vector<std::string> &params);
+void USER(Client &client, const std::vector<std::string> &params);

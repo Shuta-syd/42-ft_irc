@@ -10,6 +10,6 @@ WHOIS shuta
 PING ft_irc
 
 
-USER guest0 * :Ronnie Reagan
+USER guest 0 * :Ronnie Reagan
 JOIN #foo,#bar
 :WiZ!jto@tolsun.oulu.fi NICK Kilroy

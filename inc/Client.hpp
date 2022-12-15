@@ -20,16 +20,14 @@ public:
 	const std::string &getMessage() const {return message_;}
 	const Message &getParsed_msg() const {return parsed_msg_;}
 	const int &getFd() const { return fd_; }
-	const bool &getIs_connected() const { return is_connected_; }
 		const std::string &getNick() const { return nickname_; }
 		void setNickname(std::string nick) { nickname_ = nick; }
 
 	private:
 		int fd_;
-		bool is_connected_;
 		std::string nickname_; // max len 9
 		std::string username_;
-		std::string hostname_;
+		std::string realname_;
 		std::string message_; // max len 512
 		Message parsed_msg_;
 };
