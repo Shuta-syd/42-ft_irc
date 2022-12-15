@@ -1,4 +1,7 @@
 #pragma once
+#include <Server.hpp>
+
+void sendMessage(int fd, std::string msg, int flag);
 
 /**
  * First Connection Response 001 ~ 004
@@ -8,3 +11,7 @@
 #define RPL_CREATED(nick) ":ft_irc 003 " + nick + ":This server was created <date>\r\n"
 #define RPL_MYINFO(nick) ":ft_irc 004 " + nick + ":<server name> <version> <available user modes> <available channel modes>\r\n"
 
+/**
+ * Command successful Response
+ */
+#define NICK_MESSAGE(nick) ":ft_irc :You are known as " + nick + "\r\n"

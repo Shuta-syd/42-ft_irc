@@ -8,14 +8,19 @@ srcs += $(addprefix srcs/, \
     main.cpp \
 )
 
-OBJS_DIR += srcs/server/
-DEPS_DIR += srcs/server/
+OBJS_DIR += srcs/server/ srcs/command/ srcs/utils/
+DEPS_DIR += srcs/server/ srcs/command/ srcs/utils/
 srcs += $(addprefix srcs/server/, \
-    Server.cpp \
-    Client.cpp\
-	Message.cpp \
-	Command.cpp\
-    )
+		Server.cpp Client.cpp Message.cpp Reply.cpp \
+)
+
+srcs += $(addprefix srcs/utils/,\
+		Utils.cpp \
+)
+
+srcs += $(addprefix srcs/command/,\
+		NICK.cpp \
+)
 
 OBJS := $(srcs:%.cpp=objs/%.o)
 DEPS := $(srcs:%.cpp=deps/%.d)
@@ -51,9 +56,9 @@ $(NAME): $(OBJS)
 	@echo "$< =========> $(GRN) $@ $(RES)"
 
 $(OBJS_DIR):
-	mkdir -p $@
+	@mkdir -p $@
 $(DEPS_DIR):
-	mkdir -p $@
+	@mkdir -p $@
 
 clean:
 	$(RM) $(OBJS)

@@ -11,12 +11,16 @@ public:
 	Client(int, const std::string&);
 	~Client();
 
-	void parse();
+	void parse(const std::string &message);
 
 	// setter getter
 	void addMessage(std::string);
 	void clearMessage();
-	const std::string &getMessage() const;
+	void clearParsedMessage();
+	const std::string &getMessage() const {return message_;}
+	const Message &getParsed_msg() const {return parsed_msg_;}
+	const int &getFd() const { return fd_; }
+	void setNickname(std::string nick) { nickname_ = nick; }
 
 private:
 	int fd_;

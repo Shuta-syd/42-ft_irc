@@ -14,6 +14,8 @@
 
 #include <Client.hpp>
 #include <Reply.hpp>
+#include <Command.hpp>
+#include <Utils.hpp>
 
 #define BACKLOG 10
 #define MSG_MAX 1024
@@ -27,9 +29,7 @@ public:
 	Server(int, const std::string&);
 	~Server();
 
-	// start point
 	void start();
-	// send recv funcs
 
 private:
 	int port_; // port number to connect to client
@@ -40,9 +40,11 @@ private:
 	std::vector<struct pollfd> pollfds_;
 
 	void setupServerSocket();
+	void setupClient(int sockfd);
 	void createPoll(int);
 	void allow();
+
 	void chat(int);
-	void setupClient(int sockfd);
-	void sendMessage(int, std::string, int);
+
+	void execute(Client & client);
 };

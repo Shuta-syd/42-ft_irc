@@ -13,9 +13,9 @@ public:
 	void parseCommand(const std::string &, int &);
 	void parseParams(const std::string &, int &);
 
-	std::string getPrefix() { return prefix_; }
-	std::string getCommand() { return command_; }
-	std::vector<std::string> getParams()  { return params_; }
+	const std::string &getPrefix() const { return prefix_; }
+	const std::string &getCommand() const { return command_; }
+	const std::vector<std::string> &getParams() const { return params_; }
 
 private:
 	std::string prefix_;

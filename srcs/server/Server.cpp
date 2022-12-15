@@ -40,17 +40,6 @@ void Server::start() {
 }
 
 /**
- * @brief to send message to client
- *
- * @param fd client fd
- * @param msg message
- * @param flag send option
- */
-void Server::sendMessage(int fd, std::string msg, int flag) {
-	send(fd, msg.c_str(), msg.size(), flag);
-}
-
-/**
  * @brief  for communication between server and client
  * @param fd connected client fd
  */
@@ -77,14 +66,40 @@ void Server::chat(int fd) {
 	std::cout << "client : " << message << std::endl;
 	std::cout << "----------------------------------------" << std::endl;
 
-	// find CR-LF (end point)
-	if (message.find("\r\n"))
-		user.parse();
+	int i = 0;
+	while (find(&message[i], "\r\n") != -1)
+	{
+		int len = 0;
+		std::string cmd_line;
+
+		while (message.at(i) != '\r' && message.at(i) != '\n')
+		{
+			i++;
+			len++;
+		}
+		cmd_line.append(&message[i - len], len + 2);
+		user.parse(cmd_line);
+		this->execute(user);
+		user.clearParsedMessage();
+		i += 2;
+	}
+	user.clearMessage();
 }
 
 /**
- * Functions related to Socket
+ * @brief command execute func
+ * @param client
  */
+void Server::execute(Client &client) {
+	const Message &parsed_message = client.getParsed_msg();
+	const std::string &cmd = parsed_message.getCommand();
+	const std::vector<std::string> &params = parsed_message.getParams();
+
+	if (cmd == "NICK")
+		NICK(client, params);
+}
+
+//--------------Functions related to Socket------------------
 
 /**
  * @brief to accept connections from clients.
@@ -105,10 +120,10 @@ void Server::allow() {
 	}
 }
 
+
 /**
- * @brief
- *
- * @param sockfd
+ * @brief create new user client info
+ * @param sockfd client socket descriptor
  */
 void Server::setupClient(int sockfd) {
 		const std::string nick = "unknow" + std::to_string(sockfd);
@@ -129,10 +144,6 @@ void Server::createPoll(int sockfd)
 		.revents = 0,
 	};
 	pollfds_.push_back(pollfd);
-
-	/* server maintain client info(nick fd etc..) if fd isn't server fd */
-//	setupUser();
-
 }
 
 /**
@@ -161,3 +172,9 @@ void Server::setupServerSocket()
 	/* try to specify maximum of sockets pending connections for the server socket */
 	listen(this->master_sd_, SOMAXCONN);
 }
+
+/**
+ * CAP LS\r\n 7
+ * NICK shuta\r\n
+ * USER shuta shuta localhost :Shuta\r\n
+ */

@@ -8,14 +8,15 @@ Client::~Client() {}
 
 /**
  * @brief Parsing irc client messages into three types
- */
-void Client::parse() {
+	*/
+void Client::parse(const std::string &message) {
 	int i = 0;
 
-	if (message_[i] == ':')
-		parsed_msg_.parsePrefix(message_, i);
-	parsed_msg_.parseCommand(message_, i);
-	parsed_msg_.parseParams(message_, i);
+	if (message[i] == ':')
+		parsed_msg_.parsePrefix(message, i);
+	parsed_msg_.parseCommand(message, i);
+	parsed_msg_.parseParams(message, i);
+
 	std::cout << "-------Parsed Message-------" << std::endl;
 	std::cout << "Prefix: " << "[" << parsed_msg_.getPrefix() << "]"<< std::endl;
 	std::cout << "Command: " << "["<< parsed_msg_.getCommand() << "]" << std::endl;
@@ -24,24 +25,16 @@ void Client::parse() {
 		std::cout << "["<< parsed_msg_.getParams()[i] << "]" << std::endl;
 	std::cout << "End" << std::endl;
 	std::cout << "----------------------------" << std::endl;
-
-	this->clearMessage();
 }
 
 /**
  * Setter Getter
  */
-void Client::addMessage(std::string msg) {
-	this->message_ += msg;
-}
+void Client::addMessage(std::string msg) { this->message_ += msg; }
 
-void Client::clearMessage() {
-	Message newParseBuf;
+void Client::clearMessage() { this->message_ = ""; }
 
-	this->message_ = "";
-	this->parsed_msg_ = newParseBuf;
-}
-
-const std::string &Client::getMessage() const {
-	return this->message_;
+void Client::clearParsedMessage() {
+	Message new_message;
+	parsed_msg_ = new_message;
 }
