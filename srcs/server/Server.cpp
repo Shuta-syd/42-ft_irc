@@ -96,12 +96,15 @@ void Server::execute(Client &client) {
 	const std::string &cmd = parsed_message.getCommand();
 	const std::vector<std::string> &params = parsed_message.getParams();
 
+	std::cout << YEL << cmd << " COMMAND" << RES << std::endl;
 	if (cmd == "CAP")
 		CAP(client, params);
 	else if (cmd == "NICK")
 		NICK(client, params);
 	else if (cmd == "USER")
 		USER(client, params);
+	else if (cmd == "PING")
+		PONG(client, params);
 }
 
 //--------------Functions related to Socket------------------

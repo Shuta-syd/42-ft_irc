@@ -22,3 +22,4 @@ void sendWelcomeMessage(const Client &client);
  * Command successful Response
  */
 #define NICK_MESSAGE(nick) ":ft_irc :You are known as " + nick + "\r\n"
+#define PONG_MESSAGE(serverName) ":ft_irc PONG " + serverName + "\r\n"
