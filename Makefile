@@ -11,7 +11,7 @@ srcs += $(addprefix srcs/, \
 OBJS_DIR += srcs/server/ srcs/command/ srcs/utils/
 DEPS_DIR += srcs/server/ srcs/command/ srcs/utils/
 srcs += $(addprefix srcs/server/, \
-		Server.cpp Client.cpp Message.cpp Reply.cpp \
+		Server.cpp Client.cpp Message.cpp Reply.cpp Channel.cpp\
 )
 
 srcs += $(addprefix srcs/utils/,\

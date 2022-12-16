@@ -38,6 +38,7 @@ private:
 	std::map<int, Client> users_; //client users info map(fd, client);
 	std::vector<struct pollfd> pollfds_;
 
+
 	void setupServerSocket();
 	void setupClient(int sockfd);
 	void createPoll(int);

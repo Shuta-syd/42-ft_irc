@@ -96,7 +96,7 @@ void Server::execute(Client &client) {
 	const std::string &cmd = parsed_message.getCommand();
 	const std::vector<std::string> &params = parsed_message.getParams();
 
-	std::cout << YEL << cmd << " COMMAND" << RES << std::endl;
+	std::cout << CYN << cmd << " COMMAND" << RES << std::endl;
 
 	if (cmd == "CAP")
 	{
@@ -109,14 +109,31 @@ void Server::execute(Client &client) {
 	if (client.getIsAuth() != true) // no coming PASS COMMAND, if auth failed, terminate client
 		sendAuthfail(client);
 
+	// mapで管理しても良さそう
 	if (cmd == "NICK")
 		NICK(client, params);
 	else if (cmd == "USER")
 		USER(client, params);
-	else if (cmd == "PING")
-		PONG(client, params);
 	else if (cmd == "JOIN")
 		JOIN(client, params);
+	else if (cmd == "PING")
+		PONG(client, params);
+	else if (cmd == "PONG") {}
+	else if (cmd == "OPER") {}
+	else if (cmd == "PRIVMSG") {}
+	else if (cmd == "NOTICE") {}
+	else if (cmd == "QUIT") {}
+	else if (cmd == "KICK") {}
+	else if (cmd == "MOTD") {}
+	else if (cmd == "WHOIS") {}
+	else if (cmd == "NAMES") {}
+	else if (cmd == "LIST") {}
+	else if (cmd == "TOPIC") {}
+	else if (cmd == "MODE") {}
+	else if (cmd == "PART") {}
+	else if (cmd == "INVITE") {}
+	else if (cmd == "KILL") {}
+	else if (cmd == "QUIT") {}
 }
 
 //--------------Functions related to Socket------------------

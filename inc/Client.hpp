@@ -4,7 +4,7 @@
 #include <string>
 #include <Message.hpp>
 #include <Colors.hpp>
-
+#include <Channel.hpp>
 class Client
 {
 public:
@@ -38,4 +38,5 @@ private:
 	std::string realname_;
 	std::string message_; // max len 512
 	Message parsed_msg_;
+	std::vector<Channel> channels_;
 };
