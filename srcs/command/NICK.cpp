@@ -7,7 +7,7 @@
  */
 void NICK(Client &client, const std::vector<std::string> &params){
 	const int &fd = client.getFd();
-	const std::string &oldNick = client.getNickname();
+	const std::string oldNick = client.getNickname();
 	const std::string &newNick = params[0];
 
 	client.setNickname(newNick);
