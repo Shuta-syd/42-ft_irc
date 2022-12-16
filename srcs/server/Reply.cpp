@@ -25,3 +25,14 @@ void sendWelcomeMessage(const Client &client)
 	sendMessage(fd, RPL_CREATED(nick), 0);
 	sendMessage(fd, RPL_MYINFO(nick), 0);
 }
+
+
+/**
+ * @brief send auth fail message to the client
+ *
+ */
+void sendAuthfail(const Client &client) {
+	const int &fd = client.getFd();
+
+	sendMessage(fd, "auth fail\r\n", 0);
+}

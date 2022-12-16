@@ -27,6 +27,7 @@ public:
 	void setNickname(std::string nick) { nickname_ = nick; }
 	void setUsername(std::string username) { username_ = username; }
 	void setRealname(std::string realname) { realname_ = realname; }
+	const bool &getIsAuth() const { return is_auth_; }
 	void setIsAuth(bool is_auth) { is_auth_ = is_auth; }
 
 private:

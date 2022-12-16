@@ -14,11 +14,8 @@ void PASS(Client &client, const std::vector<std::string> &params, const std::str
 	if (password != server_password)
 	{
 		// ERR_NEEDMOREPARAMS ERR_ALREADYREGISTERED
-		sendMessage(fd, GRN, 0);
-		sendMessage(fd, "auth fail\r\n", 0);
-		sendMessage(fd, RES, 0);
+		sendAuthfail(client);
 		return ;
 	}
 	client.setIsAuth(true);
-	sendMessage(fd, PASS_MESSAGE(nick), 0);
 }

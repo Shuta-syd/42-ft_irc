@@ -97,16 +97,26 @@ void Server::execute(Client &client) {
 	const std::vector<std::string> &params = parsed_message.getParams();
 
 	std::cout << YEL << cmd << " COMMAND" << RES << std::endl;
+
 	if (cmd == "CAP")
+	{
 		CAP(client, params);
-	else if (cmd == "NICK")
+		return ;
+	}
+	else if (cmd == "PASS")
+		PASS(client, params, password_);
+
+	if (client.getIsAuth() != true) // no coming PASS COMMAND, if auth failed, terminate client
+		sendAuthfail(client);
+
+	if (cmd == "NICK")
 		NICK(client, params);
 	else if (cmd == "USER")
 		USER(client, params);
 	else if (cmd == "PING")
 		PONG(client, params);
-	else if (cmd == "PASS")
-		PASS(client, params, password_);
+	else if (cmd == "JOIN")
+		JOIN(client, params);
 }
 
 //--------------Functions related to Socket------------------

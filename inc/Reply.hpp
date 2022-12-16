@@ -4,6 +4,7 @@
 
 void sendMessage(int fd, const std::string &msg, int flag);
 void sendWelcomeMessage(const Client &client);
+void sendAuthfail(const Client &client);
 
 /*
  * CAP LS
@@ -21,6 +22,5 @@ void sendWelcomeMessage(const Client &client);
 /**
  * Command successful Response
  */
-#define NICK_MESSAGE(nick) ":ft_irc :You are known as " + nick + "\r\n"
-#define PONG_MESSAGE(serverName) ":ft_irc PONG " + serverName + "\r\n"
-#define PASS_MESSAGE(nick) ":ft_irc " + nick + " is authenticated....\r\n"
+#define NICK_MESSAGE(oldNick, newNic) ":" + oldNick + " NICK :"+ newNick + "\r\n"
+#define PONG_MESSAGE(serverName) ":ft_irc PONG :" + serverName + "\r\n"
