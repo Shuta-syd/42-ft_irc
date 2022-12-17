@@ -37,7 +37,7 @@ private:
 	std::string password_;
 	std::map<int, Client> users_; //client users info map(fd, client);
 	std::vector<struct pollfd> pollfds_;
-
+	std::map<std::string, Channel> channels_; // every channel that exists
 
 	void setupServerSocket();
 	void setupClient(int sockfd);

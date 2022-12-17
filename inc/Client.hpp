@@ -31,6 +31,7 @@ public:
 	void setRealname(std::string realname) { realname_ = realname; }
 	const bool &getIsAuth() const { return is_auth_; }
 	void setIsAuth(bool is_auth) { is_auth_ = is_auth; }
+	void setChannel(Channel &channel) { channels_.push_back(channel); }
 
 private:
 	int fd_;

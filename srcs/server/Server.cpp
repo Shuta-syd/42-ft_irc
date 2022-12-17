@@ -115,7 +115,7 @@ void Server::execute(Client &client) {
 	else if (cmd == "USER")
 		USER(client, params);
 	else if (cmd == "JOIN")
-		JOIN(client, params);
+		JOIN(channels_, client, params);
 	else if (cmd == "PING")
 		PONG(client, params);
 	else if (cmd == "PONG") {}
