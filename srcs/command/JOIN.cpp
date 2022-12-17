@@ -15,6 +15,7 @@ void JOIN(Client &client, const std::vector<std::string> &params)
 {
 	const int &fd = client.getFd();
 	const std::string &nick = client.getNickname();
+	const std::string &channels = params.at(0);
 
-	// sendMessage(fd, JOIN_MESSAGE(nick, channelName), 0);
+	
 }

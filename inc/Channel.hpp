@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Client.hpp>
+class Client;
 
 class Channel
 {
@@ -12,11 +13,11 @@ public:
 	const std::string &getName() const { return name_; }
 	void setName(std::string name) { name_ = name; }
 	void setTopic(std::string topic) { topic_ = topic; }
-	void setOperator(Client operator) { operator_ = operator; }
+	void setOperator(Client *oper) { oper_ = oper; }
 
 private:
 	std::string name_;
-	Client operator_;
+	Client *oper_;
 	std::string topic_;
 	std::vector<Client> members_;
 };
