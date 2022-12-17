@@ -38,6 +38,11 @@ void JOIN(
 
 /**
  * @brief Processes password verification and joining a channel
+ *
+ * @param allChannel
+ * @param client
+ * @param channelName
+ * @param key
  */
 void enterChannel(
 	std::map<std::string, Channel>allChannel,
@@ -48,14 +53,19 @@ void enterChannel(
 	const int &fd = client.getFd();
 	const std::string &nick = client.getNickname();
 	Channel &channel= allChannel[channelName];
+	const std::string &channelKey = channel.getKey_();
 
-	if (channel.getName() != channelName) { // create new channel
+	// create new channel
+	if (channelName != channel.getName() && (key == channelKey || channelKey == "")) {
 		channel.setName(channelName);
 		channel.setMember(client);
 		client.setChannel(channel);
 		sendMessage(fd, JOIN_MESSAGE(nick, channelName), 0);
 	}
-	else{ // already exist
+	else if (key == channelKey) { // already exist
+	
+	}
+	else {
 
 	}
 }
