@@ -1,7 +1,7 @@
 #include <Command.hpp>
 const std::vector<std::string> splitChannel(const std::string &param);
 const std::vector<std::string> splitKeys(const std::string &param, int size);
-void enterChannel(std::map<std::string, Channel> allChannel, Client &client, const std::string &channelName, const std::string &key);
+void enterChannel(std::map<std::string, Channel> &allChannel, Client &client, const std::string &channelName, const std::string &key);
 
 /**
  * @brief request to start listening to the specific channel
@@ -15,7 +15,7 @@ void enterChannel(std::map<std::string, Channel> allChannel, Client &client, con
  * :testnet.ergo.chat 366 shuta #test :End of NAMES list\r\n
  */
 void JOIN(
-		std::map<std::string, Channel> allChannel,
+		std::map<std::string, Channel> &allChannel,
 		Client &client,
 		const std::vector<std::string> &params)
 {
@@ -32,7 +32,7 @@ void JOIN(
 	const std::vector<std::string> channels = splitChannel(params.at(0));
 	keys = splitKeys(keyParam, channels.size());
 
-	for (size_t i = 0; i < channels.size(); i++)
+	for (size_t i = 0; i < channels.size(); i++) // 0対応必要
 		enterChannel(allChannel ,client, channels[i], keys[i]);
 }
 
@@ -45,7 +45,7 @@ void JOIN(
  * @param key
  */
 void enterChannel(
-	std::map<std::string, Channel>allChannel,
+	std::map<std::string, Channel> &allChannel,
 	Client &client,
 	const std::string &channelName,
 	const std::string &key
@@ -55,6 +55,7 @@ void enterChannel(
 	Channel &channel= allChannel[channelName];
 	const std::string &channelKey = channel.getKey_();
 
+	std::cout << MGN << channel.getName() << RES << std::endl;
 	// create new channel
 	if (channelName != channel.getName() && (key == channelKey || channelKey == "")) {
 		channel.setName(channelName);
@@ -63,10 +64,14 @@ void enterChannel(
 		sendMessage(fd, JOIN_MESSAGE(nick, channelName), 0);
 	}
 	else if (key == channelKey) { // already exist
-	
+		channel.setMember(client);
+		client.setChannel(channel);
+		std::cout << MGN << "channel already exist" << RES << std::endl;
+		sendMessage(fd, JOIN_MESSAGE(nick, channelName), 0);
 	}
 	else {
-
+		// ERROR
+		std::cout << MGN << "ERROR ZONE" << RES << std::endl;
 	}
 }
 
