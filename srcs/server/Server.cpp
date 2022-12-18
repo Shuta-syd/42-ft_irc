@@ -107,9 +107,9 @@ void Server::execute(Client &client)
 
 	// mapで管理しても良さそう
 	if (cmd == "NICK")
-		NICK(client, params);
+		NICK(client);
 	else if (cmd == "USER")
-		USER(client, params);
+		USER(client);
 	else if (cmd == "JOIN")
 		JOIN(channels_, client, params);
 	else if (cmd == "PING")
