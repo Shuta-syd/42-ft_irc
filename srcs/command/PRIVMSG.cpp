@@ -8,7 +8,7 @@ bool is_correct_fmt(std::vector<std::string> const &params)
 
 bool is_usr_existed(std::string const &params)
 {
-	return ture;
+	return true;
 }
 
 /**
@@ -30,8 +30,8 @@ void PRIVMSG(Client &client)
 	else {
 		if (is_usr_existed(params.at(0)) == false)
 			;
-		Client &target =
-		sendMessage()
+		//Client &target = ge
+		//sendMessage()
 	}
 
 
