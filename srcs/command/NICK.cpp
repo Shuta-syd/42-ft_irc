@@ -1,10 +1,12 @@
-#include <Command.hpp>
+#include "Command.hpp"
 
 /**
  * @brief set nickname client
  *
  * NICK <nickname>
  */
+
+
 void NICK(Client &client) {
 	const int &fd = client.getFd();
 	std::string const oldNick = client.getNickname();
