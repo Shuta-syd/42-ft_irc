@@ -8,9 +8,13 @@
  *
  * [Note]: <realname> may contain space characters
  */
-void USER(Client &client, const std::vector<std::string> &params) {
-	client.setUsername(params.at(0));
-	client.setRealname(params.at(3));
+
+//#issue8
+//refarenceはRFC1459の11pageにある
+void USER(Client &client) {
+	client.setUsername(client.getParams()[0]);
+	//hostnameは設定しない？？
+	client.setRealname(client.getParams()[3]);
 
 	std::cout << YEL << "Username: "<< client.getUsername() << RES << std::endl;
 	std::cout << YEL << "Realname: "<< client.getRealname() << RES << std::endl;

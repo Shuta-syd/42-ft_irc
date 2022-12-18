@@ -109,7 +109,7 @@ void Server::execute(Client &client)
 	if (cmd == "NICK")
 		NICK(client);
 	else if (cmd == "USER")
-		USER(client, params);
+		USER(client);
 	else if (cmd == "JOIN")
 		JOIN(channels_, client, params);
 	else if (cmd == "PING")

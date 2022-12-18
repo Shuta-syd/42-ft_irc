@@ -6,6 +6,7 @@
  * NICK <nickname>
  */
 
+//#issue7
 
 void NICK(Client &client) {
 	const int &fd = client.getFd();
