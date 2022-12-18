@@ -1,28 +1,49 @@
 #pragma once
 
-#include <Message.hpp>
 #include <iostream>
 #include <string>
+#include <vector>
+#include <Colors.hpp>
+#include <Channel.hpp>
 
+class Channel;
 class Client
 {
 public:
 	Client();
-	Client(int, const std::string&);
+	Client(int fd, const std::string& nick);
 	~Client();
 
-	void parse();
+	//parse
+	void parse(const std::string &message);
+	void parsePrefix(const std::string &, int &);
+	void parseCommand(const std::string &, int &);
+	void parseParams(const std::string &, int &);
 
 	// setter getter
-	void addMessage(std::string);
-	const std::string &getMessage() const;
-	const Message &getParsed_msg() const;
+	void clearParsedMessage();
+	const int &getFd() const { return fd_; }
+	const std::string &getNickname() const { return nickname_; }
+	const std::string &getUsername() const { return username_; }
+	const std::string &getRealname() const { return realname_; }
+	void setNickname(std::string nick) { nickname_ = nick; }
+	void setUsername(std::string username) { username_ = username; }
+	void setRealname(std::string realname) { realname_ = realname; }
+	const bool &getIsAuth() const { return is_auth_; }
+	void setIsAuth(bool is_auth) { is_auth_ = is_auth; }
+	void setChannel(Channel &channel) { channels_.push_back(channel); }
+	const std::string &getPrefix() const { return prefix_; }
+	const std::string &getCommand() const { return command_; }
+	const std::vector<std::string> &getParams() const { return params_; }
 
 private:
 	int fd_;
+	bool is_auth_;
 	std::string nickname_; // max len 9
 	std::string username_;
-	std::string hostname_;
-	std::string message_; //max len 512
-	Message parsed_msg_;
+	std::string realname_;
+	std::string prefix_;
+	std::string command_;
+	std::vector<std::string> params_;
+	std::vector<Channel> channels_; // channels This belong to
 };

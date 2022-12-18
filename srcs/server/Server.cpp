@@ -15,7 +15,7 @@ void Server::start() {
 	this->createPoll(master_sd_);
 
 	while (1) {
-		std::cout << "-------------Waiting on poll()-------------" << std::endl;
+		std::cout << BLU << "-------------Waiting on poll()-------------" << RES << std::endl;
 		poll(&(*pollfds_.begin()), pollfds_.size(), TIMEOUT);
 		for (size_t i = 0; i < pollfds_.size(); i++) {
 			// nothing event
@@ -40,24 +40,13 @@ void Server::start() {
 }
 
 /**
- * @brief to send message to client
- *
- * @param fd client fd
- * @param msg message
- * @param flag send option
- */
-void sendMessage(int fd, std::string msg, int flag) {
-	send(fd, msg.c_str(), msg.size(), flag);
-}
-
-/**
  * @brief  for communication between server and client
  * @param fd connected client fd
  */
 void Server::chat(int fd) {
-	char buf[MSG_MAX] = {0};
+	char message[MSG_MAX] = {0};
 
-	int bytes = recv(fd, buf, sizeof(buf), 0);
+	int bytes = recv(fd, message, sizeof(message), 0);
 	if (bytes < 0) { // exception
 		if (errno != EWOULDBLOCK)
 			std::cerr << "recv error" << std::endl;
@@ -69,34 +58,33 @@ void Server::chat(int fd) {
 	}
 
 	Client &user = users_[fd];
-	user.addMessage(buf);
-	const std::string &message = user.getMessage();
 
 	std::cout << "-------------Client Message-------------" << std::endl;
 	std::cout << "client fd: [" << fd << "]" << std::endl;
 	std::cout << "client : " << message << std::endl;
 	std::cout << "----------------------------------------" << std::endl;
 
-	// find CR-LF (end point)
-	if (message.find("\r\n"))
+	int i = 0;
+	while (find(&message[i], "\r\n") != -1)
 	{
-		user.parse();
-		this->execute(user);
-	}
+		int len = 0;
+		std::string cmd_line;
 
+		while (message[i] != '\r' && message[i] != '\n')
+		{
+			i++;
+			len++;
+		}
+		cmd_line.append(&message[i - len], len + 2);
 
 }
 
 /**
- * Functions related to Socket
- */
-
-/**
- * @brief to accept connections from clients.
- */
-void Server::allow() {
-
-	int client_fd = accept(this->master_sd_, NULL, NULL);
+ * @brief command execute func
+		CAP(client, params);
+		NICK(client, params);
+	else if (cmd == "QUIT") {}
+	else if (cmd == "QUIT") {}
 	if (client_fd < 0) {
 		// accept fails with EWOULDBLOCK, then we have accepted all of them.
 		if (errno != EWOULDBLOCK) {
@@ -107,18 +95,18 @@ void Server::allow() {
 	else {
 		std::cout << "New incoming connection - " << client_fd << std::endl;
 		this->createPoll(client_fd);
+		setupClient(client_fd);
 	}
 }
 
 /**
- * @brief
- *
- * @param sockfd
+ * @brief create new user client info
+ * @param sockfd client socket descriptor
  */
 void Server::setupClient(int sockfd) {
-		const std::string nick = "unknow" + std::to_string(sockfd);
-		Client user(sockfd, nick);
-		users_[sockfd] = user;
+	const std::string nick = "unknow" + std::to_string(sockfd);
+	Client user(sockfd, nick);
+	users_[sockfd] = user;
 }
 
 /**
@@ -134,10 +122,6 @@ void Server::createPoll(int sockfd)
 		.revents = 0,
 	};
 	pollfds_.push_back(pollfd);
-
-	/* server maintain client info(nick fd etc..) if fd isn't server fd */
-//	setupUser();
-
 }
 
 /**

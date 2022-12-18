@@ -1,9 +1,15 @@
-#include <Server.hpp>
+#include <Command.hpp>
 
-void NICK(Client client, std::string nick)
-{
+/**
+ * @brief set nickname client
+ *
+ * NICK <nickname>
+ */
+void NICK(Client &client, const std::vector<std::string> &params){
+	const int &fd = client.getFd();
+	const std::string oldNick = client.getNickname();
+	const std::string &newNick = params[0];
 
-//	client.nickname_ = nick;
-//	 send
-	;
-}
+	client.setNickname(newNick);
+	sendMessage(fd, NICK_MESSAGE(oldNick, newNick), 0);
+};

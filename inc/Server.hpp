@@ -15,8 +15,11 @@
 #include <Client.hpp>
 #include <Reply.hpp>
 #include <Command.hpp>
+<<<<<<< HEAD
+#include <Utils.hpp>
+=======
+>>>>>>> origin/main
 
-#define BACKLOG 10
 #define MSG_MAX 1024
 #define TIMEOUT 3 * 60 * 1000
 
@@ -28,9 +31,7 @@ public:
 	Server(int, const std::string&);
 	~Server();
 
-	// start point
 	void start();
-	// send recv funcs
 
 private:
 	int port_; // port number to connect to client
@@ -39,14 +40,16 @@ private:
 	std::string password_;
 	std::map<int, Client> users_; //client users info map(fd, client);
 	std::vector<struct pollfd> pollfds_;
+	std::map<std::string, Channel> channels_; // every channel that exists
 
 	void setupServerSocket();
+	void setupClient(int sockfd);
 	void createPoll(int);
 	void allow();
-	void chat(int);
-	void setupClient(int sockfd);
-	void execute(const Client &client);
 
+	void chat(int);
+
+	void execute(Client & client);
 };
 
 void sendMessage(int, std::string, int);
