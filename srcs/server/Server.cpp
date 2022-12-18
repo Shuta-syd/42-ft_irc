@@ -116,7 +116,9 @@ void Server::execute(Client &client)
 		PONG(client, params);
 	else if (cmd == "PONG") {}
 	else if (cmd == "OPER"){}
-	else if (cmd == "PRIVMSG"){}
+	else if (cmd == "PRIVMSG"){
+		PRIVMSG(client);
+	}
 	else if (cmd == "NOTICE") {}
 	else if (cmd == "QUIT") {}
 	else if (cmd == "KICK") {}
