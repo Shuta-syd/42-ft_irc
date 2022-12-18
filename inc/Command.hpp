@@ -7,3 +7,5 @@ void USER(Client &client, const std::vector<std::string> &params);
 void PASS(Client &client, const std::vector<std::string> &params, const std::string &server_password);
 void PONG(Client &client, const std::vector<std::string> &params);
 void JOIN( std::map<std::string, Channel> &allChannel, Client &client, const std::vector<std::string> &params);
+
+void PRIVMSG(Client &client);
