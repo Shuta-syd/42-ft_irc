@@ -22,19 +22,25 @@ public:
 
 	// setter getter
 	void clearParsedMessage();
+
 	const int &getFd() const { return fd_; }
 	const std::string &getNickname() const { return nickname_; }
 	const std::string &getUsername() const { return username_; }
 	const std::string &getRealname() const { return realname_; }
+	const std::string &getPrefix() const { return prefix_; }
+	const std::string &getCommand() const { return command_; }
+	const std::map<std::string, Channel> const &getChannels() { return channels_; }
+
+	const std::vector<std::string> &getParams() const
+	{
+		return params_;
+	}
 	void setNickname(std::string nick) { nickname_ = nick; }
 	void setUsername(std::string username) { username_ = username; }
 	void setRealname(std::string realname) { realname_ = realname; }
 	const bool &getIsAuth() const { return is_auth_; }
 	void setIsAuth(bool is_auth) { is_auth_ = is_auth; }
-	void setChannel(Channel &channel) { channels_.push_back(channel); }
-	const std::string &getPrefix() const { return prefix_; }
-	const std::string &getCommand() const { return command_; }
-	const std::vector<std::string> &getParams() const { return params_; }
+	void setChannel(std::string name, Channel &channel) { channels_[name] = channel; }
 
 private:
 	int fd_;
@@ -45,5 +51,5 @@ private:
 	std::string prefix_;
 	std::string command_;
 	std::vector<std::string> params_;
-	std::vector<Channel> channels_; // channels This belong to
+	std::map<std::string, Channel> channels_; // channels This belong to
 };

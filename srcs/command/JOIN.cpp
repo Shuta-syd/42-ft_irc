@@ -56,55 +56,34 @@ void enterChannel(
 	const std::string &channelKey = channel.getKey_();
 	const std::vector<Client> &members = channel.getMember();
 
+	if (channelName == "0") {
+
+	}
 	// create new channel
-	if (channelName != channel.getName() && (key == channelKey || channelKey == "")) {
+	else if (channelName != channel.getName() && (key == channelKey || channelKey == "")) {
 		channel.setName(channelName);
 		channel.setMember(client);
-		client.setChannel(channel);
+		client.setChannel(channelName, channel);
 		sendMessage(fd, JOIN_MESSAGE(nick, channelName), 0);
+		//sendMessage(fd, MODE_MESSAGE(channelName, "+nt"), 0);
+		// sendMessage(fd, RPL_NAMREPLY(nick, channelName), 0);
+		// sendMessage(fd, RPL_ENDOFNAMES(nick, channelName), 0);
 	}
 	else if (key == channelKey || channelKey == "") { // already exist
 		channel.setMember(client);
-		client.setChannel(channel);
+		client.setChannel(channelName, channel);
 		std::cout << MGN << "channel already exist. JOIN [" << channelName << "]" << RES << std::endl;
-		for (size_t i = 0; i < members.size(); i++)
-		{
+		for (size_t i = 0; i < members.size(); i++) {
 			const int &fd = members.at(i).getFd();
 			sendMessage(fd, JOIN_MESSAGE(nick, channelName), 0);
+			sendMessage(fd, RPL_TOPIC(channelName, "TOPIC TEST"), 0);
+			// sendMessage(fd, RPL_NAMREPLY(nick, channelName), 0);
+			// sendMessage(fd, RPL_ENDOFNAMES(nick, channelName), 0);
 		}
 	}
-	else {
-		// ERROR
+	else { // ERROR
 		std::cout << MGN << "ERROR ZONE" << RES << std::endl;
 	}
-}
-
-/**
- * @brief Function to split channel names by ','
- */
-const std::vector<std::string> splitChannel(const std::string &param) {
-	std::vector<std::string> channels;
-
-	int i = 0;
-	while (param[i] && param[i] != '\r' && param[i] != '\n') {
-		std::string channel;
-		if (param[i] == '&' || param[i] == '#' || param[i] == '+' || param[i] == '!') {
-			for (
-				size_t j = i + 1;
-				param[j] != ',' && param[j] && param[j] != '\r' && param[j] != '\n';
-				j++, i++
-			 )
-				channel.append(&param[j], 1);
-			channels.push_back(channel);
-		}
-		else if (param[i] == '0')
-		{
-			channel.append(&param[i], 1);
-			channels.push_back(channel);
-		}
-		i++;
-	}
-	return channels;
 }
 
 
