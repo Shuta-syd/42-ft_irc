@@ -6,6 +6,7 @@ Client::Client(int fd, const std::string  &nick): fd_(fd), nickname_(nick), is_a
 
 Client::~Client() {}
 
+
 /**
  * @brief Parsing irc client messages into three types
 	*/
@@ -102,4 +103,10 @@ void Client::clearParsedMessage() {
 	prefix_ = "";
 	command_ = "";
 	std::vector<std::string> params_; // erase必要
+}
+
+
+const Message &Client::getParsed_msg() const
+{
+	return parsed_msg_;
 }

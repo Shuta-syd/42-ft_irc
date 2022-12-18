@@ -15,7 +15,10 @@
 #include <Client.hpp>
 #include <Reply.hpp>
 #include <Command.hpp>
+<<<<<<< HEAD
 #include <Utils.hpp>
+=======
+>>>>>>> origin/main
 
 #define MSG_MAX 1024
 #define TIMEOUT 3 * 60 * 1000
@@ -48,3 +51,5 @@ private:
 
 	void execute(Client & client);
 };
+
+void sendMessage(int, std::string, int);
