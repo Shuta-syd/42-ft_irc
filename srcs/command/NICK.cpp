@@ -12,8 +12,9 @@ void NICK(Client &client, Server &server) {
 	const int &fd = client.getFd();
 	std::string const oldNick = client.getNickname();
 	std::string const &newNick = client.getParams()[0];
+
+	/* settings map<string, int> */
 	server.setMp_nick_to_fd(newNick, fd);
-	std::cout << "[[[" << server.getFd_from_nick(newNick) << std::endl;
 	client.setNickname(newNick);
 	sendMessage(fd, NICK_MESSAGE(oldNick, newNick), 0);
 };
