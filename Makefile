@@ -24,13 +24,13 @@ srcs += $(addprefix srcs/command/,\
 		PRIVMSG.cpp\
 )
 
-OBJS := $(srcs:%.cpp=objs/%.o)
-DEPS := $(srcs:%.cpp=deps/%.d)
+OBJS := $(srcs:%.cpp=OBJS/%.o)
+DEPS := $(srcs:%.cpp=DEPS/%.d)
 
-OBJS_DIR := $(addprefix objs/, $(OBJS_DIR))
+OBJS_DIR := $(addprefix OBJS/, $(OBJS_DIR))
 OBJS_DIR := $(addsuffix .keep, $(OBJS_DIR))
 
-DEPS_DIR := $(addprefix deps/, $(DEPS_DIR))
+DEPS_DIR := $(addprefix DEPS/, $(DEPS_DIR))
 DEPS_DIR := $(addsuffix .keep, $(DEPS_DIR))
 
 INC= inc
@@ -43,7 +43,7 @@ CXXFLAGS := #-Wall -Werror -Wextra -std=c++98
 .PHONY: all clean fclean re
 all: $(NAME)
 
--include $(deps)
+-include $(DEPS)
 
 $(NAME): $(OBJS)
 	@$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
@@ -53,8 +53,8 @@ $(NAME): $(OBJS)
 	@echo "     $(MGN)--->$(RES) $(GRN)$(NAME)$(RES)"
 	@echo "$(CYN)==============$(RES)"
 
-./objs/%.o: %.cpp $(OBJS_DIR) $(DEPS_DIR)
-	@$(CXX) $(CXXFLAGS) -I$(INC) $(headerflags) -MF ./deps/$(*).d -c $< -o $@
+./OBJS/%.o: %.cpp $(OBJS_DIR) $(DEPS_DIR)
+	@$(CXX) $(CXXFLAGS) -I$(INC) $(headerflags) -MF ./DEPS/$(*).d -c $< -o $@
 	@echo "$< =========> $(GRN) $@ $(RES)"
 
 $(OBJS_DIR):
@@ -64,12 +64,12 @@ $(DEPS_DIR):
 
 clean:
 	$(RM) $(OBJS)
-	$(RM) $(deps)
+	$(RM) $(DEPS)
 
 fclean: clean
 	$(RM) $(NAME)
-	$(RM) ./objs
-	$(RM) ./deps
+	$(RM) ./OBJS
+	$(RM) ./DEPS
 
 re: fclean all
 
