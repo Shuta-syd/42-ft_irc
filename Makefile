@@ -77,7 +77,7 @@ re: fclean all
 debug: CXXFLAGS += $(debugflags)
 debug: re
 
-run:
+run: all
 	./ircserv 8080 password
 
 RED = \033[31m

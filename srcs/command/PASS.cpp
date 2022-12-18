@@ -3,19 +3,22 @@
 /**
  * @brief set a connection password
  *
- * PASS <password>
+ * parameters <password>
+ * <in short> [PASS CMD] check whether server should pass the client(user).
  */
-void PASS(Client &client, const std::vector<std::string> &params, const std::string &server_password)
+void PASS(Client &client, std::string const &server_password)
 {
-	const int &fd = client.getFd();
-	const std::string &nick = client.getNickname();
-	const std::string &password = params.at(0);
-
-	if (password != server_password)
-	{
-		// ERR_NEEDMOREPARAMS ERR_ALREADYREGISTERED
-		sendAuthfail(client);
+	int const &fd = client.getFd();
+	std::string const &nick = client.getNickname();
+	std::string const &password = client.getParams()[0];
+	if (client.getParams().size() != 1) {
+//		sendMessage(fd, );
 		return ;
 	}
-	client.setIsAuth(true);
+	if (password != server_password)
+	{
+		sendAuthfail(client);
+	} else {
+		client.setIsAuth(true);
+	}
 }

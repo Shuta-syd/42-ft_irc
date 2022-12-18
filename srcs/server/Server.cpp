@@ -94,20 +94,19 @@ void Server::execute(Client &client)
 
 	std::cout << CYN << cmd << " COMMAND" << RES << std::endl;
 
-	if (cmd == "CAP")
-	{
+	if (cmd == "CAP") {
 		CAP(client, params);
 		return;
+	} else if (cmd == "PASS") {
+		PASS(client, password_);
 	}
-	else if (cmd == "PASS")
-		PASS(client, params, password_);
 
-	if (client.getIsAuth() != true) // no coming PASS COMMAND, if auth failed, terminate client
+	if (client.getIsAuth() == false) // no coming PASS COMMAND, if auth failed, terminate client
 		sendAuthfail(client);
 
 	// mapで管理しても良さそう
 	if (cmd == "NICK")
-		NICK(client);
+		NICK(client, *this);
 	else if (cmd == "USER")
 		USER(client);
 	else if (cmd == "JOIN")

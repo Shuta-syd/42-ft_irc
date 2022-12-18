@@ -25,10 +25,17 @@ class Server
 public:
 	// Constructor Destructor
 	Server();
-	Server(int, const std::string&);
+	Server(int port, const std::string &password);
 	~Server();
 
 	void start();
+	void setMp_nick_to_fd(std::string const &nick, int const fd) {
+		mp_nick_to_fd[nick] = fd;
+	}
+	//may
+	int getFd_from_nick(std::string const &nick) {
+		return mp_nick_to_fd[nick];
+	}
 
 private:
 	int port_; // port number to connect to client
@@ -37,7 +44,9 @@ private:
 	std::string password_;
 	std::map<int, Client> users_; //client users info map(fd, client);
 	std::vector<struct pollfd> pollfds_;
+
 	std::map<std::string, Channel> channels_; // every channel that exists
+	std::map<std::string, int> mp_nick_to_fd; // every channel that exists
 
 	void setupServerSocket();
 	void setupClient(int sockfd);
