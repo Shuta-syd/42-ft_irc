@@ -44,9 +44,9 @@ void Server::start() {
  * @param fd connected client fd
  */
 void Server::chat(int fd) {
-	char buf[MSG_MAX] = {0};
+	char message[MSG_MAX] = {0};
 
-	int bytes = recv(fd, buf, sizeof(buf), 0);
+	int bytes = recv(fd, message, sizeof(message), 0);
 	if (bytes < 0) { // exception
 		if (errno != EWOULDBLOCK)
 			std::cerr << "recv error" << std::endl;
@@ -58,8 +58,6 @@ void Server::chat(int fd) {
 	}
 
 	Client &user = users_[fd];
-	user.addMessage(buf);
-	const std::string &message = user.getMessage();
 
 	std::cout << "-------------Client Message-------------" << std::endl;
 	std::cout << "client fd: [" << fd << "]" << std::endl;
@@ -72,7 +70,7 @@ void Server::chat(int fd) {
 		int len = 0;
 		std::string cmd_line;
 
-		while (message.at(i) != '\r' && message.at(i) != '\n')
+		while (message[i] != '\r' && message[i] != '\n')
 		{
 			i++;
 			len++;
@@ -84,7 +82,6 @@ void Server::chat(int fd) {
 		user.clearParsedMessage();
 		i += 2;
 	}
-	user.clearMessage();
 }
 
 /**
@@ -92,9 +89,8 @@ void Server::chat(int fd) {
  * @param client
  */
 void Server::execute(Client &client) {
-	const Message &parsed_message = client.getParsed_msg();
-	const std::string &cmd = parsed_message.getCommand();
-	const std::vector<std::string> &params = parsed_message.getParams();
+	const std::string &cmd = client.getCommand();
+	const std::vector<std::string> &params = client.getParams();
 
 	std::cout << CYN << cmd << " COMMAND" << RES << std::endl;
 

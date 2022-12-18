@@ -13,28 +13,93 @@ void Client::parse(const std::string &message) {
 	int i = 0;
 
 	if (message[i] == ':')
-		parsed_msg_.parsePrefix(message, i);
-	parsed_msg_.parseCommand(message, i);
-	parsed_msg_.parseParams(message, i);
+		this->parsePrefix(message, i);
+	this->parseCommand(message, i);
+	this->parseParams(message, i);
 
 	std::cout << GRN << "-------Parsed Message-------" << RES << std::endl;
-	std::cout << "Prefix: " << "[" << parsed_msg_.getPrefix() << "]"<< std::endl;
-	std::cout << "Command: " << "["<< parsed_msg_.getCommand() << "]" << std::endl;
+	std::cout << "Prefix: " << "[" << this->getPrefix() << "]"<< std::endl;
+	std::cout << "Command: " << "["<< this->getCommand() << "]" << std::endl;
 	std::cout << "Params: " << std::endl;
-	for (size_t i = 0; i < parsed_msg_.getParams().size(); i++)
-		std::cout << "["<< parsed_msg_.getParams()[i] << "]" << std::endl;
+	for (size_t i = 0; i < this->getParams().size(); i++)
+		std::cout << "["<< this->getParams()[i] << "]" << std::endl;
 	std::cout << "End" << std::endl;
 	std::cout << GRN << "---------------------------" << RES << std::endl;
 }
 
 /**
- * Setter Getter
+ * @brief Parse prefix from client message
+ *
+ * @param message client message
+ * @param i index of message
  */
-void Client::addMessage(std::string msg) { this->message_ += msg; }
+void Client::parsePrefix(const std::string &message, int &i)
+{
+	i = 1;
 
-void Client::clearMessage() { this->message_ = ""; }
+	while (message[i] != ' ') // prefix
+	{
+		prefix_.append(&message[i], 1);
+		i++;
+	}
+	while (message[i] == ' ')
+		i++;
+}
+
+/**
+ * @brief Parse command from client message
+ *
+ * @param message client message
+ * @param i index of message
+ */
+void Client::parseCommand(const std::string &message, int &i)
+{
+
+	while (message[i] != ' ' && message[i] != '\r' && message[i] != '\n')
+	{
+		command_.append(&message[i], 1);
+		i++;
+	}
+
+	while (message[i] == ' ')
+		i++;
+}
+
+/**
+ * @brief Parse params from client message
+ *
+ * @param message client message
+ * @param i index of message
+ */
+void Client::parseParams(const std::string &message, int &i)
+{
+
+	while (message[i] != '\r' && message[i] != '\n')
+	{
+		std::string param;
+
+		if (message[i] == ':')
+		{
+			i += 1;
+			while (message[i] != '\r' && message[i] != '\n')
+			{
+				param.append(&message[i], 1);
+				i++;
+			}
+		}
+		while (message[i] != ' ' && message[i] != '\r' && message[i] != '\n')
+		{
+			param.append(&message[i], 1);
+			i++;
+		}
+		i++;
+		params_.push_back(param);
+	}
+}
+
 
 void Client::clearParsedMessage() {
-	Message new_message;
-	parsed_msg_ = new_message;
+	prefix_ = "";
+	command_ = "";
+	std::vector<std::string> params_; // erase必要
 }
