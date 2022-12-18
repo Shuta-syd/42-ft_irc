@@ -14,7 +14,7 @@ void Server::start() {
 	this->setupServerSocket();
 	this->createPoll(master_sd_);
 
-	while (1) {
+	while (true) {
 		std::cout << BLU << "-------------Waiting on poll()-------------" << RES << std::endl;
 		poll(&(*pollfds_.begin()), pollfds_.size(), TIMEOUT);
 		for (size_t i = 0; i < pollfds_.size(); i++) {
