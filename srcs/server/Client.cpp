@@ -100,13 +100,7 @@ void Client::parseParams(const std::string &message, int &i)
 
 
 void Client::clearParsedMessage() {
-	prefix_ = "";
-	command_ = "";
-	std::vector<std::string> params_; // erase必要
-}
-
-
-const Message &Client::getParsed_msg() const
-{
-	return parsed_msg_;
+	prefix_.clear();
+	command_.clear();
+	params_.clear();
 }

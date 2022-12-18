@@ -76,17 +76,70 @@ void Server::chat(int fd) {
 			len++;
 		}
 		cmd_line.append(&message[i - len], len + 2);
-
+		user.parse(cmd_line);
+		this->execute(user);
+		user.clearParsedMessage();
+		i += 2;
+	}
 }
 
 /**
  * @brief command execute func
+ * @param client
+ */
+void Server::execute(Client &client)
+{
+	const std::string &cmd = client.getCommand();
+	const std::vector<std::string> &params = client.getParams();
+
+	std::cout << CYN << cmd << " COMMAND" << RES << std::endl;
+
+	if (cmd == "CAP")
+	{
 		CAP(client, params);
+		return;
+	}
+	else if (cmd == "PASS")
+		PASS(client, params, password_);
+
+	if (client.getIsAuth() != true) // no coming PASS COMMAND, if auth failed, terminate client
+		sendAuthfail(client);
+
+	// mapで管理しても良さそう
+	if (cmd == "NICK")
 		NICK(client, params);
+	else if (cmd == "USER")
+		USER(client, params);
+	else if (cmd == "JOIN")
+		JOIN(channels_, client, params);
+	else if (cmd == "PING")
+		PONG(client, params);
+	else if (cmd == "PONG") {}
+	else if (cmd == "OPER"){}
+	else if (cmd == "PRIVMSG"){}
+	else if (cmd == "NOTICE") {}
 	else if (cmd == "QUIT") {}
+	else if (cmd == "KICK") {}
+	else if (cmd == "MOTD") {}
+	else if (cmd == "WHOIS"){}
+	else if (cmd == "NAMES") {}
+	else if (cmd == "TOPIC") {}
+	else if (cmd == "MODE") {}
+	else if (cmd == "PART") {}
+	else if (cmd == "INVITE") {}
+	else if (cmd == "KILL") {}
 	else if (cmd == "QUIT") {}
-	if (client_fd < 0) {
-		// accept fails with EWOULDBLOCK, then we have accepted all of them.
+}
+
+//--------------Functions related to Socket------------------
+
+/**
+ * @brief to accept connections from clients.
+ */
+void Server::allow()
+{
+	int client_fd = accept(this->master_sd_, NULL, NULL);
+	if (client_fd < 0) { // accept fails with EWOULDBLOCK, then we have accepted all of them.
 		if (errno != EWOULDBLOCK) {
 			std::cerr << "accept error" << std::endl;
 			close(this->master_sd_);
@@ -149,20 +202,4 @@ void Server::setupServerSocket()
 
 	/* try to specify maximum of sockets pending connections for the server socket */
 	listen(this->master_sd_, SOMAXCONN);
-}
-
-
-/**
- * @brief execute
- */
-
-void Server::execute(const Client &client) {
-
-	const std::string &cmd = client.getParsed_msg().getCommand();
-
-	if (cmd == "NICK")
-	{
-		NICK(client, cmd);
-	}
-
 }
