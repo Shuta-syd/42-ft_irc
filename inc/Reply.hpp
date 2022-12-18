@@ -22,7 +22,7 @@ void sendAuthfail(const Client &client);
 /**
  * Command successful Response
  */
-#define NICK_MESSAGE(oldNick, newNic) ":" + oldNick + " NICK :"+ newNick + "\r\n"
+#define NICK_MESSAGE(oldNick, newNick) ":" + oldNick + " NICK :"+ newNick + "\r\n"
 #define PONG_MESSAGE(serverName) ":ft_irc PONG :" + serverName + "\r\n"
 #define JOIN_MESSAGE(nick, channelName) ":" + nick + " JOIN #" + channelName + "\r\n"
 #define RPL_TOPIC(channelName, topic) ":ft_irc 332 " + nick + " #" + channelName + " :" + topic + "\r\n"
