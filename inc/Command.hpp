@@ -9,5 +9,5 @@ void PASS(Client &client, const std::vector<std::string> &params, const std::str
 void PONG(Client &client, const std::vector<std::string> &params);
 void JOIN( std::map<std::string, Channel> &allChannel, Client &client, const std::vector<std::string> &params);
 
-void PRIVMSG(Client &client, Server &server);
+void PRIVMSG(Client &client, Server &server, std::map<std::string, Channel> const &channels);
 void QUIT(Client &client, Server &server);
