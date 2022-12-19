@@ -10,3 +10,4 @@ void PONG(Client &client, const std::vector<std::string> &params);
 void JOIN( std::map<std::string, Channel> &allChannel, Client &client, const std::vector<std::string> &params);
 
 void PRIVMSG(Client &client, Server &server);
+void QUIT(Client &client, Server &server);

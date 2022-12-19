@@ -120,7 +120,9 @@ void Server::execute(Client &client)
 		PRIVMSG(client, *this);
 	}
 	else if (cmd == "NOTICE") {}
-	else if (cmd == "QUIT") {}
+	else if (cmd == "QUIT") {
+		QUIT(client, *this);
+	}
 	else if (cmd == "KICK") {}
 	else if (cmd == "MOTD") {}
 	else if (cmd == "WHOIS"){}
