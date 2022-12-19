@@ -1,7 +1,6 @@
 #include <Command.hpp>
 
 bool isChannel(const Client &client, const std::string &channelName);
-const std::vector<std::string> splitChannel(const std::string &param);
 const std::vector<std::string> splitKeys(const std::string &param, int size);
 void enterChannel(std::map<std::string, Channel> &allChannel, Client &client, const std::string &channelName, const std::string &key);
 
@@ -48,7 +47,9 @@ bool isChannel(const Client &client, const std::string &channelName) {
 	const int &fd = client.getFd();
 	const std::string &nick = client.getNickname();
 
-	if (channelName.size() > 50)
+	if (channelName[0] == '#' || channelName[0] == '&' || channelName[0] == '!' || channelName[0] == '+')
+		return false;
+	else if (channelName.size() > 50)
 	{
 		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channelName), 0);
 		return false;
@@ -84,8 +85,8 @@ void enterChannel(
 		client.setChannel(channelName, channel);
 		sendMessage(fd, JOIN_MESSAGE(nick, channelName), 0);
 		// sendMessage(fd, MODE_MESSAGE(channelName, "+nt"), 0);
-		//  sendMessage(fd, RPL_NAMREPLY(nick, channelName, nick), 0);
-		//  sendMessage(fd, RPL_ENDOFNAMES(nick, channelName), 0);
+		 sendMessage(fd, RPL_NAMREPLY(nick, channelName, nick), 0);
+		 sendMessage(fd, RPL_ENDOFNAMES(nick, channelName), 0);
 	}
 	else if (key == channelKey || channelKey == "")
 	{ // already exist
@@ -97,8 +98,8 @@ void enterChannel(
 			const int &fd = members.at(i).getFd();
 			sendMessage(fd, JOIN_MESSAGE(nick, channelName), 0);
 			sendMessage(fd, RPL_TOPIC(channelName, "TOPIC TEST"), 0);
-			// sendMessage(fd, RPL_NAMREPLY(nick, channelName, operName), 0);
-			// sendMessage(fd, RPL_ENDOFNAMES(nick, channelName), 0);
+			sendMessage(fd, RPL_NAMREPLY(nick, channelName, "oper"), 0);
+			sendMessage(fd, RPL_ENDOFNAMES(nick, channelName), 0);
 		}
 	}
 	else {// key is wrong
@@ -135,34 +136,4 @@ const std::vector<std::string> splitKeys(const std::string &param, int size)
 	}
 
 	return keys;
-}
-
-/**
- * @brief Function to split channel names by ','
- */
-const std::vector<std::string> splitChannel(const std::string &param)
-{
-	std::vector<std::string> channels;
-
-	int i = 0;
-	while (param[i] && param[i] != '\r' && param[i] != '\n')
-	{
-			std::string channel;
-			if (param[i] == '&' || param[i] == '#' || param[i] == '+' || param[i] == '!')
-			{
-			for (
-					size_t j = i + 1;
-					param[j] != ',' && param[j] && param[j] != '\r' && param[j] != '\n';
-					j++, i++)
-				channel.append(&param[j], 1);
-			channels.push_back(channel);
-			}
-			else if (param[i] == '0')
-			{
-			channel.append(&param[i], 1);
-			channels.push_back(channel);
-			}
-			i++;
-	}
-	return channels;
 }

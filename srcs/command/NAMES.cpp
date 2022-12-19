@@ -1,5 +1,4 @@
 #include <Command.hpp>
-const std::vector<std::string> splitChannelForNames(const std::string &param);
 
 /**
  * @brief a user can list all nicknames that visible to him.
@@ -17,7 +16,7 @@ void NAMES(
 	if (params.size() == 0) {} // ?
 	else if (params.size() == 1)
 	{
-		const std::vector<std::string> channelNames = splitChannelForNames(params.at(0));
+		const std::vector<std::string> channelNames = splitChannel(params.at(0));
 		for (size_t i = 0; i < channelNames.size(); i++)
 		{
 			const std::string &channelName = channelNames[i];
@@ -37,27 +36,4 @@ void NAMES(
 				sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channelName), 0);
 		}
 	}
-}
-
-
-/**
- * @brief Function to split channel names by ','
- */
-const std::vector<std::string> splitChannelForNames(const std::string &param)
-{
-	std::vector<std::string> channels;
-
-	int i = 0;
-	while (param[i] && param[i] != '\r' && param[i] != '\n')
-	{
-		std::string channel;
-		for (
-				size_t j = i;
-				param[j] != ',' && param[j] && param[j] != '\r' && param[j] != '\n';
-				j++, i++)
-			channel.append(&param[j], 1);
-		channels.push_back(channel);
-		i++;
-	}
-	return channels;
 }
