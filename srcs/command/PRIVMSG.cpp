@@ -27,9 +27,12 @@ void PRIVMSG(Client &client, Server &server)
 		int fd;
 		/* get Target fd but if there is no client that is the same as the Target name, it returns 0  */
 		if ((fd = server.getFd_from_nick(params[0]))==0)
+		{
+			std::cout << "Does not much any client" << std::endl;
 			return ;
+		}
+
 		sendMessage(fd, " PRIVMSG " + params[0] + " :" + params[1] + "\n", 0);
 	}
-
 
 }

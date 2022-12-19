@@ -16,6 +16,6 @@ void USER(Client &client) {
 	//hostnameは設定しない？？
 	client.setRealname(client.getParams()[3]);
 
-	std::cout << YEL << "Username: "<< client.getUsername() << RES << std::endl;
-	std::cout << YEL << "Realname: "<< client.getRealname() << RES << std::endl;
+//	std::cout << YEL << "Username: "<< client.getUsername() << RES << std::endl;
+//	std::cout << YEL << "Realname: "<< client.getRealname() << RES << std::endl;
 }
