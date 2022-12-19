@@ -36,7 +36,7 @@ void JOIN(
 	for (size_t i = 0; i < channels.size(); i++)
 	{
 		if (isChannel(client, channels[i]))
-			enterChannel(allChannel, client, channels[i], keys[i]);
+			enterChannel(allChannel, client, &channels[i][1], keys[i]);
 	}
 }
 
@@ -48,7 +48,7 @@ bool isChannel(const Client &client, const std::string &channelName) {
 	const std::string &nick = client.getNickname();
 
 	if (channelName[0] == '#' || channelName[0] == '&' || channelName[0] == '!' || channelName[0] == '+')
-		return false;
+		return true;
 	else if (channelName.size() > 50)
 	{
 		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channelName), 0);
