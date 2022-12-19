@@ -34,7 +34,11 @@ public:
 	int getFd_from_nick(std::string const &nick) {
 		return mp_nick_to_fd[nick];
 	}
+	std::map<std::string , int > &getMp_nick_to_fd() {
+		return mp_nick_to_fd;
+	}
 
+	std::vector<struct pollfd> &get_polldfs(){return pollfds_;}
 	void start();
 	const std::map<int, Client>&getUsers() const { return this->users_; };
 
