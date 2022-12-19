@@ -17,6 +17,7 @@ public:
 	void setTopic(std::string topic) { topic_ = topic; }
 	void setOperator(Client *oper) { oper_ = oper; }
 
+	Channel &operator=(Channel const &other);
 private:
 	std::string name_;
 	std::string key_;
