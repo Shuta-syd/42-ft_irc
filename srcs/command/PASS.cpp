@@ -13,6 +13,12 @@
 #define RPL_NONE(message) ":ft_irc 300 * :" + message + "\n"
 #define ERR_PASSWDMISMATCH(nick) ":ft_irc 464 " + nick + " :Password incorrect\n"
 
+
+//bool is_already_used_password(std::string const &password, Server) {
+// passwordが既に使用済みのものかどうかを判定する関数をつくる
+//↓下の関数もその処理が抜けてる
+//}
+
 void PASS(Client &client, std::string const &server_password)
 {
 	int const &fd = client.getFd();
@@ -26,9 +32,10 @@ void PASS(Client &client, std::string const &server_password)
 	/******* Error handling ********/
 	if (client.getParams().size() != 1) {
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "PASS"), 0);
-	} else if (client.getIsAuth() == true) {
-		sendMessage(fd, ERR_ALREADYREGISTRED(nick), 0);
-	} else if (password != server_password) {
+	} //else if (client.getIsAuth() == true) {
+		//sendMessage(fd, ERR_ALREADYREGISTRED(nick), 0);
+	//}
+	else if (password != server_password) {
 		sendMessage(fd, ERR_PASSWDMISMATCH(nick), 0);
 	/*********************************/
 	} else {

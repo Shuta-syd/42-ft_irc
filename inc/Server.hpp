@@ -16,6 +16,7 @@
 #include <Reply.hpp>
 #include <Command.hpp>
 #include <Utils.hpp>
+#include <Client.hpp>
 
 #define MSG_MAX 1024
 #define TIMEOUT 3 * 60 * 1000
