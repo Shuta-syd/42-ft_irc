@@ -1,29 +1,30 @@
 #pragma once
 
-#include <Client.hpp>
+#include <vector>
+#include <string>
 class Client;
 
 class Channel
 {
 public:
 	Channel();
+	// Channel(const Channel&);
 	~Channel();
-	const std::vector<Client> &getMember() const { return members_; }
-	const std::string &getTopic() const { return topic_; }
-	const std::string &getName() const { return name_; }
-	const std::string &getKey_() const { return key_; }
-	Client *getOper()const {return oper_;}
+	const std::vector<Client> &getMember() const ;
+	const std::string &getTopic() const ;
+	const std::string &getName() const ;
+	const std::string &getKey() const ;
+	const std::string &getOper() const;
+	void setMember(Client &member);
+	void setName(std::string name);
+	void setKey(std::string key);
+	void setTopic(std::string topic);
+	void setOper(std::string name);
 
-	void setMember(Client &member) { members_.push_back(member); }
-	void setName(std::string name) { name_ = name; }
-	void setTopic(std::string topic) { topic_ = topic; }
-	void setOperator(Client *oper) { oper_ = oper; }
-
-	Channel &operator=(Channel const &other);
 private:
 	std::string name_;
 	std::string key_;
-	Client *oper_;
+	std::string operName_;
 	std::string topic_;
 	std::vector<Client> members_;
 };

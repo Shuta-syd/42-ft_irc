@@ -114,6 +114,8 @@ void Server::execute(Client &client)
 		JOIN(channels_, client, params);
 	else if (cmd == "PING")
 		PONG(client, params);
+	else if (cmd == "NAMES")
+		NAMES(client, params, channels_);
 	else if (cmd == "PONG") {}
 	else if (cmd == "OPER"){}
 	else if (cmd == "PRIVMSG"){
@@ -126,7 +128,6 @@ void Server::execute(Client &client)
 	else if (cmd == "KICK") {}
 	else if (cmd == "MOTD") {}
 	else if (cmd == "WHOIS"){}
-	else if (cmd == "NAMES") {}
 	else if (cmd == "TOPIC") {}
 	else if (cmd == "MODE") {}
 	else if (cmd == "PART") {}

@@ -24,6 +24,7 @@ void sendERROR(int fd, const std::string &msg, int flag);
  */
 #define NICK_MESSAGE(oldNick, newNick) ":" + oldNick + " NICK :"+ newNick + "\r\n"
 #define PONG_MESSAGE(serverName) ":ft_irc PONG :" + serverName + "\r\n"
+<<<<<<< HEAD
 #define JOIN_MESSAGE(nick, channelName) ":" + nick + " JOIN " + channelName + "\r\n"
 #define RPL_NONE(message) ":ircserv 300 * :" + message + "\n"
 
@@ -31,3 +32,18 @@ void sendERROR(int fd, const std::string &msg, int flag);
 # define ERR_NOSUCHNICK(nick)						":ircserv 401 " + nick + " :No such nick/channel\n"
 # define ERR_NORECIPIENT(nick, command)				":ircserv 411 " + nick + " :No recipient given " + command + "\n"
 # define ERR_NOTEXTTOSEND(nick)						":ircserv 412 " + nick + " :No text to send\n"
+=======
+#define JOIN_MESSAGE(nick, channelName) ":" + nick + " JOIN #" + channelName + "\r\n"
+#define RPL_TOPIC(channelName, topic) ":ft_irc 332 " + nick + " #" + channelName + " :" + topic + "\r\n"
+#define RPL_NAMREPLY(nick, channelName, operName) ":ft_irc 353 " + nick + " = #" + channelName + " :@" + operName + "\r\n"
+#define RPL_ENDOFNAMES(nick, channelName) ":ft_irc 366 " + nick + " #" + channelName + " :End of /NAMES list\r\n"
+
+
+/**
+ * ERROR Response
+ */
+#define ERR_NOSUCHCHANNEL(nick, channelName) ":ft_irc 403 " + nick + " #" + channelName + " :No such channel\r\n"
+#define ERR_TOOMANYCHANNELS(nick, channelName) ":ft_irc 405 " + nick + " #" + channelName + " :Too many channel\r\n"
+#define ERR_BADCHANNELKEY(nick, channelName) ":ft_irc 457 " + nick + " #" + channelName + " :Cannot join channel (+k) - bad key\r\n"
+#define ERR_NEEDMOREPARAMS(nick, cmdName) ":ft_irc 461 " + nick + " " + cmdName + " :Not enough parameters\r\n"
+>>>>>>> origin/main
