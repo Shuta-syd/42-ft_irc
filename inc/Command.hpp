@@ -1,5 +1,6 @@
 #pragma once
 #include <Server.hpp>
+#include <Channel.hpp>
 
 void CAP(Client &client, const std::vector<std::string> &params);
 void NICK(Client &client);

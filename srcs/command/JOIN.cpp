@@ -63,7 +63,7 @@ void enterChannel(
 	else if (channelName != channel.getName() && (key == channelKey || channelKey == "")) {
 		channel.setName(channelName);
 		channel.setMember(client);
-		// client.setChannel(channelName, channel);
+		client.setChannel(channelName, channel);
 		sendMessage(fd, JOIN_MESSAGE(nick, channelName), 0);
 		//sendMessage(fd, MODE_MESSAGE(channelName, "+nt"), 0);
 		// sendMessage(fd, RPL_NAMREPLY(nick, channelName), 0);
@@ -71,8 +71,7 @@ void enterChannel(
 	}
 	else if (key == channelKey || channelKey == "") { // already exist
 		channel.setMember(client);
-		// client.setChannel(channelName, channel);
-		// client.setChannel(channelName, channel);
+		client.setChannel(channelName, channel);
 		std::cout << MGN << "channel already exist. JOIN [" << channelName << "]" << RES << std::endl;
 		for (size_t i = 0; i < members.size(); i++) {
 			const int &fd = members.at(i).getFd();
