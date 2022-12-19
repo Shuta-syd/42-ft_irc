@@ -14,7 +14,7 @@ void Server::start() {
 	this->setupServerSocket();
 	this->createPoll(master_sd_);
 
-	while (1) {
+	while (true) {
 		std::cout << BLU << "-------------Waiting on poll()-------------" << RES << std::endl;
 		poll(&(*pollfds_.begin()), pollfds_.size(), TIMEOUT);
 		for (size_t i = 0; i < pollfds_.size(); i++) {
@@ -94,15 +94,14 @@ void Server::execute(Client &client)
 
 	std::cout << CYN << cmd << " COMMAND" << RES << std::endl;
 
-	if (cmd == "CAP")
-	{
+	if (cmd == "CAP") {
 		CAP(client, params);
 		return;
+	} else if (cmd == "PASS") {
+		PASS(client, password_);
 	}
-	else if (cmd == "PASS")
-		PASS(client, params, password_);
 
-	if (client.getIsAuth() != true) // no coming PASS COMMAND, if auth failed, terminate client
+	if (client.getIsAuth() == false) // no coming PASS COMMAND, if auth failed, terminate client
 		sendAuthfail(client);
 
 	// mapで管理しても良さそう

@@ -69,4 +69,23 @@ const std::vector<std::string> splitChannel(const std::string &param)
 		i++;
 	}
 	return channels;
+
+std::vector<std::string> split(std::string str, std::string del) {
+	uint64_t first = 0;
+	uint64_t last = str.find_first_of(del);
+	std::vector<std::string> res;
+	if (last == std::string::npos) {
+		res.push_back(str);
+		return res;
+	}
+	while (first < str.size()) {
+		std::string trim_str(str, first, last - first);
+		res.push_back(trim_str);
+		first = last + 1;
+		last = str.find_first_of(del, first);
+		if (last == std::string::npos) {
+			last = str.size();
+		}
+	}
+	return res;
 }

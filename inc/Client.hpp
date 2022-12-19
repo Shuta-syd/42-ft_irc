@@ -39,6 +39,11 @@ public:
 	void setIsAuth(bool is_auth) { is_auth_ = is_auth; }
 	void setChannel(const std::string &name, Channel &channel);
 
+	//CAPでcapをすべきか否かをはじめのNICK/USERの段階でチェックしないといけないので、
+	//should_be_capを追加した。
+	//↑これらが情報として不足している時にはfalseにするという仕様にした
+	bool should_be_cap;
+
 private:
 	int fd_;
 	bool is_auth_;
