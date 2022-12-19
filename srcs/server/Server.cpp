@@ -107,7 +107,7 @@ void Server::execute(Client &client)
 
 	// mapで管理しても良さそう
 	if (cmd == "NICK")
-		NICK(client);
+		NICK(client, *this);
 	else if (cmd == "USER")
 		USER(client);
 	else if (cmd == "JOIN")
@@ -117,7 +117,7 @@ void Server::execute(Client &client)
 	else if (cmd == "PONG") {}
 	else if (cmd == "OPER"){}
 	else if (cmd == "PRIVMSG"){
-		PRIVMSG(client);
+		PRIVMSG(client, Server::getUsers());
 	}
 	else if (cmd == "NOTICE") {}
 	else if (cmd == "QUIT") {}
