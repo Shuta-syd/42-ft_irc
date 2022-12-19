@@ -9,6 +9,7 @@ bool is_correct_fmt(std::vector<std::string> const &params, Client &client) {
 		sendMessage(client.getFd(), ERR_NOTEXTTOSEND(client.getNickname()), 0);
 		retuen false;
 	}
+	return true;
 
 }
 
