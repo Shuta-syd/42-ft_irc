@@ -21,7 +21,7 @@ void sendMessage(int fd, const std::string &msg, int flag)
 void sendERROR(int fd, const std::string &msg, int flag)
 {
 	send(fd, msg.c_str(), msg.size(), flag);
-	throw std::runtime_error(params[0].c_str());
+	throw std::runtime_error(msg.c_str());
 	std::cout << YEL << msg << RES << std::endl;
 }
 /**

@@ -1,14 +1,15 @@
 #include <Server.hpp>
-bool is_correct_fmt(std::vector<std::string> const &params, Client &client)
-{
+bool is_correct_fmt(std::vector<std::string> const &params, Client &client) {
 	if (params.size() == 0) {
 		sendMessage(client.getFd(), ERR_NORECIPIENT(client.getNickname(), client.getCommand()), 0);
-		throw std::runtime_error(params[0].c_str());
+		return false;
+	}
+	else if (params.size() < 2)
+	{
+		sendMessage(client.getFd(), ERR_NOTEXTTOSEND(client.getNickname()), 0);
+		retuen false;
 	}
 
-
-
-	return true;
 }
 
 
@@ -21,9 +22,8 @@ bool is_correct_fmt(std::vector<std::string> const &params, Client &client)
 void PRIVMSG(Client &client, Server &server)
 {
 	std::vector<std::string> const &params = client.getParams();
-	if (is_correct_fmt(params, client) == false) {
-		return;
-	}
+	if  (is_correct_fmt(params, client) == false )
+		return ;
 	/* check if client sends msg to channnel or not  */
 	if (params.at(0)[0] == '#') {
 		;
@@ -34,7 +34,7 @@ void PRIVMSG(Client &client, Server &server)
 		if ((fd = server.getFd_from_nick(params[0]))==0)
 		{
 			sendMessage(client.getFd(), ERR_NOSUCHNICK(client.getNickname()), 0);
-			throw std::runtime_error(params[0].c_str());
+			return ;
 		}
 		sendMessage(fd, " PRIVMSG " + params[0] + " :" + params[1] + "\n", 0);
 	}

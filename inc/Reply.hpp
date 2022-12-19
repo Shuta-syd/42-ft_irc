@@ -30,3 +30,4 @@ void sendERROR(int fd, const std::string &msg, int flag);
 
 # define ERR_NOSUCHNICK(nick)						":ircserv 401 " + nick + " :No such nick/channel\n"
 # define ERR_NORECIPIENT(nick, command)				":ircserv 411 " + nick + " :No recipient given " + command + "\n"
+# define ERR_NOTEXTTOSEND(nick)						":ircserv 412 " + nick + " :No text to send\n"
