@@ -31,8 +31,7 @@ void PRIVMSG(Client &client, Server &server, std::map<std::string, Channel> &cha
 		if (channel_to_send.getName().empty()) {
 			sendMessage(client.getFd(), ERR_NOTONCHANNEL(client.getNickname(), params[0]), 0);
 		}
-
-
+		
 	}
 	else {
 		int fd;
