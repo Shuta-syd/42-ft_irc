@@ -26,17 +26,17 @@ void NICK(Client &client, Server &server) {
 	client.should_be_cap = false;
 
 	const int &fd = client.getFd();
+	std::string const &newNick = client.getParams()[0];
 	/********** Error handling **************/
 	if (client.getParams().size() < 1) {
 		sendMessage(fd, ERR_NONICKNAMEGIVEN, 0);
-	} else if (is_proper_words(client.getParams()[0]) == false
-	|| is_proper_size(client.getParams()[0]) == false) {
+	} else if (is_proper_words(newNick) == false
+	|| is_proper_size(newNick) == false) {
 		sendMessage(fd, ERR_ERRONEUSNICKNAME(client.getParams()[0]), 0);
 	/****************************************/
 	} else {
 		/********** Success Case ***************/
 		std::string const oldNick = client.getNickname();
-		std::string const &newNick = client.getParams()[0];
 		/****** settings map<string, int> *******/
 		server.setMp_nick_to_fd(newNick, fd);
 		client.setNickname(newNick);
