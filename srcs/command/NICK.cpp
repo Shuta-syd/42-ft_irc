@@ -10,7 +10,6 @@
 #define ERR_NONICKNAMEGIVEN ":ft_irc 431 :No nickname given\n"
 #define ERR_ERRONEUSNICKNAME(nick) ":ft_irc 432 " + nick + " :Error one use nickname\n"
 #define ERR_NICKNAMEINUSE(nick) ":ft_irc 433 " + nick + " :Nickname is already in use\n"
-#define ERR_ADYREGISTRED(nick) ":ft_irc 462 " + nick + " :You may not reregister\n"
 //bool should_be_cap = true; ← clientごとに終わらせる
 //もし情報が不足していたら、これをfalseにする
 
