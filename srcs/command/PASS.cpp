@@ -19,7 +19,6 @@ void PASS(Client &client, std::string const &server_password)
 	std::string const &nick = client.getNickname();
 	std::string const &password = client.getParams()[0];
 
-
 	/******* Error handling ********/
 	if (client.getParams().size() != 1) {
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick), 0);
