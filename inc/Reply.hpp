@@ -26,3 +26,7 @@ void sendAuthfail(const Client &client);
 #define PONG_MESSAGE(serverName) ":ft_irc PONG :" + serverName + "\r\n"
 #define JOIN_MESSAGE(nick, channelName) ":" + nick + " JOIN " + channelName + "\r\n"
 
+
+
+# define ERR_NOSUCHNICK(nick)						":ircserv 401 " + nick + " :No such nick/channel\n"
+# define ERR_NORECIPIENT(nick, command)				":ircserv 411 " + nick + " :No recipient given " + command + "\n"
