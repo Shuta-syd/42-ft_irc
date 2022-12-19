@@ -28,10 +28,11 @@ void PRIVMSG(Client &client, Server &server, std::map<std::string, Channel> &cha
 	/* check if client sends msg to channnel or not  */
 	if (params.at(0)[0] == '#') {
 		const Channel &channel_to_send = channels[params[0]];
-		if (channel_to_send.getName().size() == 0)
-		{
-			sendMessage(client.getFd(), , 0);
+		if (channel_to_send.getName().empty()) {
+			sendMessage(client.getFd(), ERR_NOTONCHANNEL(client.getNickname(), params[0]), 0);
 		}
+
+
 	}
 	else {
 		int fd;
