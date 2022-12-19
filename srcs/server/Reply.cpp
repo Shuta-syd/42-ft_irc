@@ -6,6 +6,7 @@
  * @param msg message
  * @param flag send option
  */
+
 void sendMessage(int fd, const std::string &msg, int flag)
 {
 	send(fd, msg.c_str(), msg.size(), flag);
@@ -47,5 +48,5 @@ void sendWelcomeMessage(const Client &client)
 void sendAuthfail(const Client &client) {
 	const int &fd = client.getFd();
 
-	sendMessage(fd, "auth fail\r\n", 0);
+	sendMessage(fd, "AUTH FAILURE!\r\n", 0);
 }

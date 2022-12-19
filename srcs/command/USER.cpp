@@ -10,12 +10,17 @@
  */
 
 //#issue8
+#define ERR_ALREADYREGISTRED(nick) ":ft_irc 462 " + nick + " :You may not reregister\n"
+
 //refarenceはRFC1459の11pageにある
 void USER(Client &client) {
-	client.setUsername(client.getParams()[0]);
-	//hostnameは設定しない？？
-	client.setRealname(client.getParams()[3]);
+	int fd = client.getFd();
+	std::string nick = client.getNickname();
 
-//	std::cout << YEL << "Username: "<< client.getUsername() << RES << std::endl;
-//	std::cout << YEL << "Realname: "<< client.getRealname() << RES << std::endl;
+	if (client.getParams().size() != 4) {
+		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "USER "), 0);
+	} else {
+		client.setUsername(client.getParams()[0]);
+		client.setRealname(client.getParams()[3]);
+	}
 }
