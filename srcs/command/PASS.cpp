@@ -6,10 +6,10 @@
  * parameters <password>
  * <in short> [PASS CMD] check whether server should pass the client(user).
  */
-
+//#issue 10
 
 #define ERR_NEEDMOREPARAMS(nick) ":ft_irc 461 " + nick + " pass :Not enough parameters\n"
-#define ERR_ALREADYREGISTRED(nick)	":ft_irc 462 " + nick + " :You may not reregister\n"
+#define ERR_ALREADYREGISTRED(nick)	":ft_irc 462 " + nick + " :You may not register the password same as other person!\n"
 #define RPL_NONE(message) ":ft_irc 300 * :" + message + "\n"
 #define ERR_PASSWDMISMATCH(nick) ":ft_irc 464 " + nick + " :Password incorrect\n"
 
@@ -22,8 +22,10 @@ void PASS(Client &client, std::string const &server_password)
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick), 0);
 		return ;
 	}
-	if (password != server_password)
-	{
+	if (client.getIsAuth() == true) {
+		sendMessage(fd, ERR_ALREADYREGISTRED(nick), 0);
+	}
+	if (password != server_password) {
 		sendAuthfail(client);
 	} else {
 		client.setIsAuth(true);
