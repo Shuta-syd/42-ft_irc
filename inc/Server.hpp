@@ -40,7 +40,7 @@ public:
 
 	std::vector<struct pollfd> &get_polldfs(){return pollfds_;}
 	void start();
-	const std::map<int, Client>&getUsers() const { return this->users_; };
+	std::map<int, Client>&getUsers()  { return this->users_; };
 
 private:
 	int port_; // port number to connect to client

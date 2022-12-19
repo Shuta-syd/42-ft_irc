@@ -4,14 +4,19 @@
 
 void clear_client_info(Client &client, Server &server)
 {
-	std::vector<struct pollfd> &tmp = server.get_polldfs();
-	for (std::vector<struct pollfd>::iterator it = tmp.begin(); it != tmp.end(); it++) {
+	std::vector<struct pollfd> &tmp_pollfds = server.get_polldfs();
+	for (std::vector<struct pollfd>::iterator it = tmp_pollfds.begin(); it != tmp_pollfds.end(); it++) {
 		if (client.getFd() == it->fd)
 		{
-			tmp.erase(it);
+			tmp_pollfds.erase(it);
 			break;
 		}
 	}
+	std::map<int, Client> &tmp_user = server.getUsers();
+
+	std::map<std::string , int > &tmp_nick_to_fd = server.getMp_nick_to_fd();
+	tmp_user.erase(client.getFd());
+	tmp_nick_to_fd.erase(client.getNickname());
 
 }
 void QUIT(Client &client, Server &server)
