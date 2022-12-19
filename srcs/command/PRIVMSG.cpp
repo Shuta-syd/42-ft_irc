@@ -6,14 +6,6 @@ bool is_correct_fmt(std::vector<std::string> const &params)
 }
 
 
-int get_Targetfd(std::string const &target, std::map<int, Client> const users)
-{
-	int ret = 0;
-
-	std::map<int, Client>::const_iterator = users.begin();
-
-	return ret;
-}
 
 /**
  * @brief execute privmsg command
@@ -34,10 +26,9 @@ void PRIVMSG(Client &client, Server &server)
 	else {
 		int fd;
 		/* get Target fd but if there is no client that is the same as the Target name, it returns 0  */
-		if ((fd = )==0)
+		if ((fd = server.getFd_from_nick(params[0]))==0)
 			return ;
-
-		sendMessage(fd, " PRIVMSG " + params[0] + " :" + params[1] + "\n", 0)
+		sendMessage(fd, " PRIVMSG " + params[0] + " :" + params[1] + "\n", 0);
 	}
 
 
