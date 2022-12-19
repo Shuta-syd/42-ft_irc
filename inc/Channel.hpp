@@ -10,8 +10,6 @@ public:
 	Channel();
 	// Channel(const Channel&);
 	~Channel();
-	// Channel &operator=(const Channel &other);
-
 	const std::vector<Client> &getMember() const ;
 	const std::string &getTopic() const ;
 	const std::string &getName() const ;

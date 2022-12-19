@@ -5,6 +5,7 @@ Channel::Channel() {}
 
 Channel::~Channel(){}
 
+
 const std::vector<Client> &Channel::getMember() const { return members_; }
 const std::string &Channel::getTopic() const { return topic_; }
 const std::string &Channel::getName() const { return name_; }
@@ -15,3 +16,4 @@ void Channel::setName(std::string name) { name_ = name; }
 void Channel::setKey(std::string key) { key_ = key; }
 void Channel::setTopic(std::string topic) { topic_ = topic; }
 void Channel::setOper(std::string name) { operName_ = name; }
+

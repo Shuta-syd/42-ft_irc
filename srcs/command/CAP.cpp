@@ -11,5 +11,17 @@ void CAP(Client &client, const std::vector<std::string> &params) {
 	if (params.at(0) == "LS")
 		sendMessage(fd, CAP_LS, 0);
 	else if (params.at(0) == "END")
+	{
+
+
+//		if (client is not correct)
+//		{
+//			QUIT(client, hoge)
+//			return;
+//		}
+//
+
 		sendWelcomeMessage(client);
+	}
+
 }
