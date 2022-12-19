@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 #include <Colors.hpp>
-// #include <Channel.hpp>
 
 class Channel;
 class Client
