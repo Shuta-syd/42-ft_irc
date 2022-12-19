@@ -69,6 +69,7 @@ const std::vector<std::string> splitChannel(const std::string &param)
 		i++;
 	}
 	return channels;
+}
 
 std::vector<std::string> split(std::string str, std::string del) {
 	uint64_t first = 0;

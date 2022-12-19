@@ -28,13 +28,7 @@ public:
 	Server();
 	Server(int port, const std::string &password);
 	~Server();
-	void setMp_nick_to_fd(std::string const &nick, int const fd) {
-		mp_nick_to_fd[nick] = fd;
-	}
-	//may
-	int getFd_from_nick(std::string const &nick) {
-		return mp_nick_to_fd[nick];
-	}
+
 	std::map<std::string , int > &getMp_nick_to_fd() {
 		return mp_nick_to_fd;
 	}
