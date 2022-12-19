@@ -8,7 +8,7 @@
  */
 //#issue 10
 
-#define ERR_NEEDMOREPARAMS(nick) ":ft_irc 461 " + nick + " pass :Not enough parameters\n"
+#define ERR_NEEDMOREPARAMS(nick, command) ":ft_irc 461 " + nick + " " + command + " :Not enough parameters\n"
 #define ERR_ALREADYREGISTRED(nick)	":ft_irc 462 " + nick + " :You may not register the password same as other person!\n"
 #define RPL_NONE(message) ":ft_irc 300 * :" + message + "\n"
 #define ERR_PASSWDMISMATCH(nick) ":ft_irc 464 " + nick + " :Password incorrect\n"
@@ -25,7 +25,7 @@ void PASS(Client &client, std::string const &server_password)
 	client.should_be_cap = false;
 	/******* Error handling ********/
 	if (client.getParams().size() != 1) {
-		sendMessage(fd, ERR_NEEDMOREPARAMS(nick), 0);
+		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "PASS"), 0);
 	} else if (client.getIsAuth() == true) {
 		sendMessage(fd, ERR_ALREADYREGISTRED(nick), 0);
 	} else if (password != server_password) {
