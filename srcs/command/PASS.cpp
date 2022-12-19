@@ -19,6 +19,10 @@ void PASS(Client &client, std::string const &server_password)
 	std::string const &nick = client.getNickname();
 	std::string const &password = client.getParams()[0];
 
+
+	//defaultでshould_be_capをfalseにしておいて、
+	//Errorでない時に、trueにする仕様にした
+	client.should_be_cap = false;
 	/******* Error handling ********/
 	if (client.getParams().size() != 1) {
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick), 0);
@@ -28,6 +32,7 @@ void PASS(Client &client, std::string const &server_password)
 		sendMessage(fd, ERR_PASSWDMISMATCH(nick), 0);
 	/*********************************/
 	} else {
+		client.should_be_cap = true;
 		client.setIsAuth(true);
 		std::cout << "[PASS Success!]" << " ";
 		sendMessage(fd, RPL_NONE((std::string)"Authenticated ..."), 0);

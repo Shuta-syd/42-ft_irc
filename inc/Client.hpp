@@ -36,6 +36,11 @@ public:
 	const std::string &getCommand() const { return command_; }
 	const std::vector<std::string> &getParams() const { return params_; }
 
+	//CAPでcapをすべきか否かをはじめのNICK/USERの段階でチェックしないといけないので、
+	//should_be_capを追加した。
+	//↑これらが情報として不足している時にはfalseにするという仕様にした
+	bool should_be_cap;
+
 private:
 	int fd_;
 	bool is_auth_;
