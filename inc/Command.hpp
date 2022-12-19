@@ -9,4 +9,4 @@ void PASS(Client &client, const std::vector<std::string> &params, const std::str
 void PONG(Client &client, const std::vector<std::string> &params);
 void JOIN( std::map<std::string, Channel> &allChannel, Client &client, const std::vector<std::string> &params);
 
-void PRIVMSG(Client &client, std::map<int, Client> const &users);
+void PRIVMSG(Client &client, Server &server);
