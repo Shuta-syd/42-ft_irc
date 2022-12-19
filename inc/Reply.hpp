@@ -5,7 +5,7 @@
 void sendMessage(int fd, const std::string &msg, int flag);
 void sendWelcomeMessage(const Client &client);
 void sendAuthfail(const Client &client);
-
+void sendERROR(int fd, const std::string &msg, int flag);
 /*
  * CAP LS
  */
