@@ -7,7 +7,7 @@ bool is_correct_fmt(std::vector<std::string> const &params, Client &client) {
 	else if (params.size() < 2)
 	{
 		sendMessage(client.getFd(), ERR_NOTEXTTOSEND(client.getNickname()), 0);
-		retuen false;
+		return  false;
 	}
 	return true;
 
