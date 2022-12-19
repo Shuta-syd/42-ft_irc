@@ -6,7 +6,7 @@
  *
  * @param str
  * @param target
- * @return int
+ * @return int index
  */
 int find(const std::string &str, const std::string &target) {
 	size_t i = 0;
@@ -29,4 +29,19 @@ int find(const std::string &str, const std::string &target) {
 			i++;
 	}
 	return -1;
+}
+
+bool findChannel(std::map<std::string, Channel>channels, const std::string &target) {
+	for (
+			std::map<std::string, Channel>::const_iterator it = channels.begin();
+			it != channels.end();
+			it++
+			)
+	{
+		const std::string &channelName = (*it).first;
+		std::cout << channelName << std::endl;
+		if (channelName == target)
+			return true;
+	}
+	return false;
 }

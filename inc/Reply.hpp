@@ -27,7 +27,7 @@ void sendAuthfail(const Client &client);
 #define JOIN_MESSAGE(nick, channelName) ":" + nick + " JOIN #" + channelName + "\r\n"
 #define RPL_TOPIC(channelName, topic) ":ft_irc 332 " + nick + " #" + channelName + " :" + topic + "\r\n"
 #define RPL_NAMREPLY(nick, channelName, operName) ":ft_irc 353 " + nick + " = #" + channelName + " :@" + operName + "\r\n"
-#define RPL_ENDOFNAMES(nick, channelName) ":ft_irc 366 " + nick + " " + channelName + " :End of /NAMES list\r\n"
+#define RPL_ENDOFNAMES(nick, channelName) ":ft_irc 366 " + nick + " #" + channelName + " :End of /NAMES list\r\n"
 
 
 /**
