@@ -18,16 +18,19 @@ void PASS(Client &client, std::string const &server_password)
 	int const &fd = client.getFd();
 	std::string const &nick = client.getNickname();
 	std::string const &password = client.getParams()[0];
+
+
+	/******* Error handling ********/
 	if (client.getParams().size() != 1) {
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick), 0);
-		return ;
-	}
-	if (client.getIsAuth() == true) {
+	} else if (client.getIsAuth() == true) {
 		sendMessage(fd, ERR_ALREADYREGISTRED(nick), 0);
-	}
-	if (password != server_password) {
-		sendAuthfail(client);
+	} else if (password != server_password) {
+		sendMessage(fd, ERR_PASSWDMISMATCH(nick), 0);
+	/*********************************/
 	} else {
 		client.setIsAuth(true);
+		std::cout << "[PASS Success!]" << " ";
+		sendMessage(fd, RPL_NONE((std::string)"Authenticated ..."), 0);
 	}
 }
