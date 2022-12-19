@@ -20,14 +20,14 @@ bool is_correct_fmt(std::vector<std::string> const &params, Client &client) {
  *
  * PRIVMSG <target> <message to send>
  */
-void PRIVMSG(Client &client, Server &server, const std::map<std::string, Channel> &channels)
+void PRIVMSG(Client &client, Server &server, std::map<std::string, Channel> &channels)
 {
 	std::vector<std::string> const &params = client.getParams();
 	if  (is_correct_fmt(params, client) == false )
 		return ;
 	/* check if client sends msg to channnel or not  */
 	if (params.at(0)[0] == '#') {
-		const Channel &channel_to_send = channels[params[0]];
+		//const Channel &channel_to_send = channels[params[0]];
 
 		;
 	}

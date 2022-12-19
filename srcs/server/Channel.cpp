@@ -5,12 +5,12 @@ Channel::Channel(){}
 Channel::~Channel(){}
 
 
-Channel &operator=(Channel const &other)
+Channel &Channel::operator=(Channel const &other)
 {
 	this->name_ = other.getName();
 	this->key_ = other.getKey_();
-	this->oper_ = other.
-	Client *oper_;
-	std::string topic_;
-	std::vector<Client> members_;
+	this->oper_ = other.getOper();
+	this->topic_ = other.getTopic();
+	this->members_ = other.getMember();
+	return (*this);
 }

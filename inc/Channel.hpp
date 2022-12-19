@@ -12,6 +12,8 @@ public:
 	const std::string &getTopic() const { return topic_; }
 	const std::string &getName() const { return name_; }
 	const std::string &getKey_() const { return key_; }
+	Client *getOper()const {return oper_;}
+
 	void setMember(Client &member) { members_.push_back(member); }
 	void setName(std::string name) { name_ = name; }
 	void setTopic(std::string topic) { topic_ = topic; }
