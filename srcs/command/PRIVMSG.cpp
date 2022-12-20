@@ -46,7 +46,7 @@ void PRIVMSG(Client &client, Server &server, std::map<std::string, Channel> &cha
 			for (std::vector<Client>::const_iterator it = members.begin(); it != members.end(); it++) {
 				if (it->getNickname() != client.getNickname()) {
 
-					std::cout << "[" << it->getNickname() << "]"<<  create_privmsg(*it) + " PRIVMSG " + params[0] + " :" + params[1] + "\r\n" << std::endl;
+					std::cout << "[" << it->getNickname() << "]"<< "[" << it->getFd() << "]"<<  create_privmsg(*it) + " PRIVMSG " + params[0] + " :" + params[1] + "\r\n" << std::endl;
 					sendMessage(it->getFd(), create_privmsg(*it) + " PRIVMSG " + params[0] + " :" + params[1] + "\r\n", 0);
 				}
 			}
