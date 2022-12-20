@@ -23,6 +23,10 @@ void QUIT(Client &client, Server &server)
 {
 	/* once  funcs of channel have been created there shoud be more funcs */
 
+	if (client.getChannels().empty() != true) {
+		const std::map<std::string, Channel> & channels = client.getChannels();
+		for (std::map<std::string, Channel>::const_iterator it = channels.begin(); it != channels.end(); )
+	}
 	sendMessage(client.getFd(), RPL_NONE((std::string)"You Quit"), 0);
 
 	close(client.getFd());
