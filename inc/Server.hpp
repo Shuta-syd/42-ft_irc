@@ -30,7 +30,7 @@ public:
 	~Server();
 
 	std::map<std::string , int > &getMp_nick_to_fd() {
-		return mp_nick_to_fd;
+		return mp_nick_to_fd_;
 	}
 
 	std::vector<struct pollfd> &get_polldfs(){return pollfds_;}
@@ -39,10 +39,10 @@ public:
 
   std::map<int, Client>&getUsers()  { return this->users_; };
 	void setMp_nick_to_fd(std::string const &nick, int const fd) {
-		mp_nick_to_fd[nick] = fd;
+		mp_nick_to_fd_[nick] = fd;
 	}
 	int getFd_from_nick(std::string const &nick) {
-		std::map<std::string, int> dummy = mp_nick_to_fd;
+		std::map<std::string, int> dummy = mp_nick_to_fd_;
 		return dummy[nick];
 	}
 
@@ -55,7 +55,7 @@ private:
 	std::vector<struct pollfd> pollfds_;
 
 	std::map<std::string, Channel> channels_; // every channel that exists
-	std::map<std::string, int> mp_nick_to_fd;
+	std::map<std::string, int> mp_nick_to_fd_;
 
 	void setupServerSocket();
 	void setupClient(int sockfd);

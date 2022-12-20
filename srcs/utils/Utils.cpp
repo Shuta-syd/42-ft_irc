@@ -43,7 +43,6 @@ bool findChannel(std::map<std::string, Channel>channels, const std::string &targ
 			)
 	{
 		const std::string &channelName = (*it).first;
-		std::cout << channelName << std::endl;
 		if (channelName == target)
 			return true;
 	}
