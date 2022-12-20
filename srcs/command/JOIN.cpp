@@ -16,10 +16,10 @@ void enterChannel(std::map<std::string, Channel> &allChannel, Client &client, co
  * :testnet.ergo.chat 366 shuta #test :End of NAMES list\r\n
  */
 void JOIN(
-		std::map<std::string, Channel> &allChannel,
 		Client &client,
-		const std::vector<std::string> &params)
-{
+		const std::vector<std::string> &params,
+		std::map<std::string, Channel> &allChannel
+	) {
 	const int &fd = client.getFd();
 	const std::string &nick = client.getNickname();
 	std::vector<std::string> keys;

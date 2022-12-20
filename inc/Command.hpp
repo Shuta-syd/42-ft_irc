@@ -12,4 +12,4 @@ void JOIN(Client &client, const std::vector<std::string> &params, std::map<std::
 void PRIVMSG(Client &client, Server &server, std::map<std::string, Channel> &channels);
 void QUIT(Client &client, Server &server);
 void NAMES(Client &client, const std::vector<std::string> &params, std::map<std::string, Channel> &allChannels);
-void TOPIC(Client &client, const std::vector<std::string> &params, const std::map<std::string, Channel> &allChannels)
+void TOPIC(Client &client, const std::vector<std::string> &params, const std::map<std::string, Channel> &allChannels);

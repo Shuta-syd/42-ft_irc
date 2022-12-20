@@ -15,9 +15,12 @@ void TOPIC(
 	std::map<std::string, Channel> &channels = client.getChannels();
 
 	if (params.size() < 1)
+	{
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "TOPIC"), 0);
+		return ;
+	}
 
-	const std::string &channelName = &params.at(0).at(1);
+	const std::string &channelName = &params.at(0)[1];
 	const bool joinedChannel = findChannel(channels, channelName);
 	const bool existChannel = findChannel(allChannels, channelName);
 
@@ -27,7 +30,7 @@ void TOPIC(
 		const std::string &topic = channel.getTopic();
 		sendMessage(fd, RPL_TOPIC(nick, channelName, topic), 0);
 	}
-	else if (joinedChannel && existChannel == false)
+	else if (joinedChannel == false && existChannel)
 		sendMessage(fd, ERR_NOTJOIN(nick, channelName), 0);
 	else if (existChannel == false)
 		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channelName), 0);
