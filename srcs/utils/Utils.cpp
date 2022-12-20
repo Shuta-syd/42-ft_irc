@@ -33,6 +33,7 @@ int find(const std::string &str, const std::string &target) {
 
 /**
  * @brief
+ * @param target (does not include #)
  */
 bool findChannel(std::map<std::string, Channel>channels, const std::string &target) {
 	for (

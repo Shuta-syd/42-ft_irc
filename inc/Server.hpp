@@ -42,7 +42,8 @@ public:
 		mp_nick_to_fd[nick] = fd;
 	}
 	int getFd_from_nick(std::string const &nick) {
-		return mp_nick_to_fd[nick];
+		std::map<std::string, int> dummy = mp_nick_to_fd;
+		return dummy[nick];
 	}
 
 private:
