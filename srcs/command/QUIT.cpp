@@ -14,9 +14,9 @@ void clear_client_info(Client &client, Server &server)
 	}
 	std::map<int, Client> &tmp_user = server.getUsers();
 
-	std::map<std::string , int > &tmp_nick_to_fd = server.getMp_nick_to_fd();
+	std::map<std::string , int > &tmp_nick_to_fd_ = server.getMp_nick_to_fd();
 	tmp_user.erase(client.getFd());
-	tmp_nick_to_fd.erase(client.getNickname());
+	tmp_nick_to_fd_.erase(client.getNickname());
 
 }
 void QUIT(Client &client, Server &server)

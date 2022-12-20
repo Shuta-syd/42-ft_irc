@@ -13,4 +13,4 @@ void PRIVMSG(Client &client, Server &server, std::map<std::string, Channel> &cha
 void QUIT(Client &client, Server &server);
 void NAMES(Client &client, const std::vector<std::string> &params, std::map<std::string, Channel> &allChannels);
 
-void KICK(Client &client);
+void KICK(Client &client, std::map<std::string, Channel> channels);
