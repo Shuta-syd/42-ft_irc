@@ -13,7 +13,10 @@ bool is_correct_fmt(std::vector<std::string> const &params, Client &client) {
 
 }
 
-
+std::string create_privmsg(Client const &client)
+{
+	return std::string(":" + client.getNickname() + "!" + client.getUsername() + "@" + client.getRealname());
+}
 
 /**
  * @brief execute privmsg command
@@ -27,9 +30,28 @@ void PRIVMSG(Client &client, Server &server, std::map<std::string, Channel> &cha
 		return ;
 	/* check if client sends msg to channnel or not  */
 	if (params.at(0)[0] == '#') {
-		//const Channel &channel_to_send = channels[params[0]];
 
-		;
+
+		/* in the case of "No such a channel" */
+		if (findChannel(channels, &params[0][1]) == false ) {
+
+			sendMessage(client.getFd(), ERR_NOTONCHANNEL(client.getNickname(), params[0]), 0);
+			std::cout << "No such a channel" << std::endl;
+			return ;
+		}
+		else {
+
+			const Channel &channel_to_send = channels[&params[0][1]];
+			const std::vector<Client> &members = channel_to_send.getMember();
+			for (std::vector<Client>::const_iterator it = members.begin(); it != members.end(); it++) {
+				if (it->getNickname() != client.getNickname()) {
+
+					std::cout << "[" << it->getNickname() << "]"<< "[" << it->getFd() << "]"<<  create_privmsg(*it) + " PRIVMSG " + params[0] + " :" + params[1] + "\r\n" << std::endl;
+					sendMessage(it->getFd(), create_privmsg(*it) + " PRIVMSG " + params[0] + " :" + params[1] + "\r\n", 0);
+				}
+			}
+			return ;
+		}
 	}
 	else {
 		int fd;
@@ -39,7 +61,7 @@ void PRIVMSG(Client &client, Server &server, std::map<std::string, Channel> &cha
 			sendMessage(client.getFd(), ERR_NOSUCHNICK(client.getNickname()), 0);
 			return ;
 		}
-		sendMessage(fd, " PRIVMSG " + params[0] + " :" + params[1] + "\n", 0);
+		sendMessage(fd, create_privmsg(client) + " PRIVMSG " + params[0] + " :" + params[1] + "\r\n", 0);
 	}
 
 }

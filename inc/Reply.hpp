@@ -24,6 +24,7 @@ void sendERROR(int fd, const std::string &msg, int flag);
  */
 #define NICK_MESSAGE(oldNick, newNick) ":" + oldNick + " NICK :"+ newNick + "\r\n"
 #define PONG_MESSAGE(serverName) ":ft_irc PONG :" + serverName + "\r\n"
+
 #define JOIN_MESSAGE(nick, channelName) ":" + nick + " JOIN #" + channelName + "\r\n"
 #define SETTOPIC_MESSAGE(nick, channelName, topic) ":" + nick + " TOPIC #" + channelName + " :" + topic + "\r\n"
 #define RPL_NOTOPIC(nick, channelName) ":ft_irc 331 " + nick + " TOPIC " + channelName + " :No topic set for #" + channelName + "\r\n"

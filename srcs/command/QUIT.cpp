@@ -23,6 +23,19 @@ void QUIT(Client &client, Server &server)
 {
 	/* once  funcs of channel have been created there shoud be more funcs */
 
+	if (client.getChannels().empty() != true) {
+		const std::map<std::string, Channel> & channels = client.getChannels();
+		for (std::map<std::string, Channel>::const_iterator it = channels.begin(); it != channels.end(); it++)
+		{
+			const std::vector<Client> &members = it->second.getMember();
+			for (std::vector<Client>::const_iterator mem_it = members.begin(); mem_it != members.end(); mem_it++) {
+				if (mem_it->getNickname() != client.getNickname()) {
+
+					sendMessage(mem_it->getFd(), create_privmsg(*mem_it) + " PRIVMSG " + "#" + it->second.getName() + " :" + client.getParams()[1] + "\r\n", 0);
+				}
+			}
+		}
+	}
 	sendMessage(client.getFd(), RPL_NONE((std::string)"You Quit"), 0);
 
 	close(client.getFd());
