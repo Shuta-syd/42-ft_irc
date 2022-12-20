@@ -106,7 +106,7 @@ void Client::clearParsedMessage() {
 	params_.clear();
 }
 
-const std::map<std::string, Channel> &Client::getChannels() { return channels_; }
+std::map<std::string, Channel> &Client::getChannels() { return channels_; }
 
 void Client::setChannel(const std::string &name, Channel &channel) {
 	channels_[name] = channel;
