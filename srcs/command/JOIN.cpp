@@ -1,5 +1,6 @@
 #include <Command.hpp>
 
+const std::string getOperNames(std::vector<std::string> opers);
 bool isChannel(const Client &client, const std::string &channelName);
 const std::vector<std::string> splitKeys(const std::string &param, int size);
 void enterChannel(std::map<std::string, Channel> &allChannel, Client &client, const std::string &channelName, const std::string &key);
@@ -18,8 +19,8 @@ void enterChannel(std::map<std::string, Channel> &allChannel, Client &client, co
 void JOIN(
 		Client &client,
 		const std::vector<std::string> &params,
-		std::map<std::string, Channel> &allChannel
-	) {
+		std::map<std::string, Channel> &allChannel)
+{
 	const int &fd = client.getFd();
 	const std::string &nick = client.getNickname();
 	std::vector<std::string> keys;
@@ -38,103 +39,116 @@ void JOIN(
 		if (isChannel(client, channels[i]))
 			enterChannel(allChannel, client, &channels[i][1], keys[i]);
 	}
-}
-
-/**
- * @brief channel name is true or false
- */
-bool isChannel(const Client &client, const std::string &channelName) {
-	const int &fd = client.getFd();
-	const std::string &nick = client.getNickname();
-
-	if (channelName[0] == '#' || channelName[0] == '&' || channelName[0] == '!' || channelName[0] == '+')
-		return true;
-	else if (channelName.size() > 50)
-	{
-		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channelName), 0);
-		return false;
 	}
-	return true;
-}
 
-/**
- * @brief Processes password verification and joining a channel
- *
- * @param allChannel All channels in server
- * @param client client to join a channel
- * @param channelName channel name
- * @param key channel key to join the channel
- */
-void enterChannel(
-		std::map<std::string, Channel> & allChannel,
-		Client & client,
-		const std::string &channelName,
-		const std::string &key)
-{
-	const int &fd = client.getFd();
-	const std::string &nick = client.getNickname();
-	Channel &channel = allChannel[channelName];
-	const std::string &channelKey = channel.getKey();
-	const std::vector<Client> &members = channel.getMember();
-
-	// create new channel
-	if (channelName != channel.getName() && (key == channelKey || channelKey == ""))
+	/**
+	 * @brief channel name is true or false
+	 */
+	bool isChannel(const Client &client, const std::string &channelName)
 	{
-		channel.setName(channelName);
-		channel.setMember(client);
-		channel.addOper(nick);
-		client.setChannel(channelName, channel);
-		sendMessage(fd, JOIN_MESSAGE(nick, channelName), 0);
-		// sendMessage(fd, MODE_MESSAGE(channelName, "+nt"), 0);
-		 sendMessage(fd, RPL_NAMREPLY(nick, channelName, nick), 0);
-		 sendMessage(fd, RPL_ENDOFNAMES(nick, channelName), 0);
-	}
-	else if (key == channelKey || channelKey == "")
-	{ // already exist
-		channel.setMember(client);
-		client.setChannel(channelName, channel);
-		std::cout << MGN << "channel already exist. JOIN [" << channelName << "]" << RES << std::endl;
-		for (size_t i = 0; i < members.size(); i++)
+		const int &fd = client.getFd();
+		const std::string &nick = client.getNickname();
+
+		if (channelName[0] == '#' || channelName[0] == '&' || channelName[0] == '!' || channelName[0] == '+')
+			return true;
+		else if (channelName.size() > 50)
 		{
-			const int &fd = members.at(i).getFd();
+			sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channelName), 0);
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @brief Processes password verification and joining a channel
+	 *
+	 * @param allChannel All channels in server
+	 * @param client client to join a channel
+	 * @param channelName channel name
+	 * @param key channel key to join the channel
+	 */
+	void enterChannel(
+			std::map<std::string, Channel> & allChannel,
+			Client & client,
+			const std::string &channelName,
+			const std::string &key)
+	{
+		const int &fd = client.getFd();
+		const std::string &nick = client.getNickname();
+		Channel &channel = allChannel[channelName];
+		const std::string &channelKey = channel.getKey();
+		const std::vector<Client> &members = channel.getMember();
+
+		// create new channel
+		if (channelName != channel.getName() && (key == channelKey || channelKey == ""))
+		{
+			channel.setName(channelName);
+			channel.setMember(client);
+			channel.addOper(nick);
+			client.setChannel(channelName, channel);
 			sendMessage(fd, JOIN_MESSAGE(nick, channelName), 0);
-			sendMessage(fd, RPL_TOPIC(nick, channelName, "TOPIC TEST"), 0);
-			sendMessage(fd, RPL_NAMREPLY(nick, channelName, "oper"), 0);
+			sendMessage(fd, RPL_NAMREPLY(nick, channelName, "@" + nick), 0);
 			sendMessage(fd, RPL_ENDOFNAMES(nick, channelName), 0);
 		}
+		else if (key == channelKey || channelKey == "")
+		{ // already exist
+			channel.setMember(client);
+			client.setChannel(channelName, channel);
+			const std::string operNames = getOperNames(channel.getOper());
+			std::cout << MGN << "channel already exist. JOIN [" << channelName << "]" << RES << std::endl;
+			for (size_t i = 0; i < members.size(); i++)
+				sendMessage(members.at(i).getFd(), JOIN_MESSAGE(nick, channelName), 0);
+			std::cout << RED << channel.getTopic() << RES << std::endl;
+			if (channel.getTopic() != "")
+				sendMessage(fd, RPL_TOPIC(nick, channelName, channel.getTopic()), 0);
+			sendMessage(fd, RPL_NAMREPLY(nick, channelName, operNames), 0);
+			sendMessage(fd, RPL_ENDOFNAMES(nick, channelName), 0);
+		}
+		else
+		{ // key is wrong
+			sendMessage(fd, ERR_BADCHANNELKEY(nick, channelName), 0);
+		}
 	}
-	else {// key is wrong
-		sendMessage(fd, ERR_BADCHANNELKEY(nick, channelName), 0);
-	}
-}
 
-/**
- * @brief Function to split key names by ','
- */
-const std::vector<std::string> splitKeys(const std::string &param, int size)
-{
-	std::vector<std::string> keys;
-	int i = 0;
-
-	while (param[i] && param[i] != '\r' && param[i] != '\n')
+	/**
+	 * @brief Function to split key names by ','
+	 */
+	const std::vector<std::string> splitKeys(const std::string &param, int size)
 	{
-		std::string key;
-		for (
-				size_t j = i;
-				param[j] != ',' && param[j] && param[j] != '\r' && param[j] != '\n';
-				j++, i++
-				)
-			key.append(&param[j], 1);
-		i++;
-		size -= 1;
-		keys.push_back(key);
- }
+		std::vector<std::string> keys;
+		int i = 0;
 
-	while (size > 0)
-	{
+		while (param[i] && param[i] != '\r' && param[i] != '\n')
+		{
+			std::string key;
+			for (
+					size_t j = i;
+					param[j] != ',' && param[j] && param[j] != '\r' && param[j] != '\n';
+					j++, i++)
+				key.append(&param[j], 1);
+			i++;
+			size -= 1;
+			keys.push_back(key);
+		}
+
+		while (size > 0)
+		{
 			keys.push_back("");
 			size -= 1;
 	}
 
 	return keys;
+}
+
+/**
+ * @brief Get the Oper Names string
+ *
+ */
+const std::string getOperNames(std::vector<std::string> opers) {
+	std::string names;
+
+	for (size_t i = 0; i < opers.size(); i++)
+			names += "@" + opers[i] + " ";
+	std::cout << names << std::endl;
+	return names;
 }
