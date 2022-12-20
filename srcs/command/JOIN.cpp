@@ -97,7 +97,7 @@ void enterChannel(
 		{
 			const int &fd = members.at(i).getFd();
 			sendMessage(fd, JOIN_MESSAGE(nick, channelName), 0);
-			sendMessage(fd, RPL_TOPIC(channelName, "TOPIC TEST"), 0);
+			sendMessage(fd, RPL_TOPIC(nick, channelName, "TOPIC TEST"), 0);
 			sendMessage(fd, RPL_NAMREPLY(nick, channelName, "oper"), 0);
 			sendMessage(fd, RPL_ENDOFNAMES(nick, channelName), 0);
 		}

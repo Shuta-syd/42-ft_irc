@@ -24,15 +24,17 @@ void sendERROR(int fd, const std::string &msg, int flag);
  */
 #define NICK_MESSAGE(oldNick, newNick) ":" + oldNick + " NICK :"+ newNick + "\r\n"
 #define PONG_MESSAGE(serverName) ":ft_irc PONG :" + serverName + "\r\n"
-#define JOIN_MESSAGE(nick, channelName) ":" + nick + " JOIN " + channelName + "\r\n"
+#define JOIN_MESSAGE(nick, channelName) ":" + nick + " JOIN #" + channelName + "\r\n"
+#define SETTOPIC_MESSAGE(nick, channelName, topic) ":" + nick + " TOPIC #" + channelName + " :" + topic + "\r\n"
+#define RPL_NOTOPIC(nick, channelName) ":ft_irc 331 " + nick + " TOPIC " + channelName + " :No topic set for #" + channelName + "\r\n"
+#define ERR_NOTJOIN(nick, channelName) ":ft_irc " + nick + " TOPIC :#" + channelName + " You're not on that channel\r\n"
+
 #define RPL_NONE(message) ":ircserv 300 * :" + message + "\n"
-
-
 # define ERR_NOSUCHNICK(nick)						":ircserv 401 " + nick + " :No such nick/channel\n"
 # define ERR_NORECIPIENT(nick, command)				":ircserv 411 " + nick + " :No recipient given " + command + "\n"
 # define ERR_NOTEXTTOSEND(nick)						":ircserv 412 " + nick + " :No text to send\n"
 
-#define RPL_TOPIC(channelName, topic) ":ft_irc 332 " + nick + " #" + channelName + " :" + topic + "\r\n"
+#define RPL_TOPIC(nick, channelName, topic) ":ft_irc 332 " + nick + " #" + channelName + " :" + topic + "\r\n"
 #define RPL_NAMREPLY(nick, channelName, operName) ":ft_irc 353 " + nick + " = #" + channelName + " :@" + operName + "\r\n"
 #define RPL_ENDOFNAMES(nick, channelName) ":ft_irc 366 " + nick + " #" + channelName + " :End of /NAMES list\r\n"
 

@@ -16,4 +16,3 @@ void Channel::setName(std::string name) { name_ = name; }
 void Channel::setKey(std::string key) { key_ = key; }
 void Channel::setTopic(std::string topic) { topic_ = topic; }
 void Channel::setOper(std::string name) { operName_ = name; }
-
