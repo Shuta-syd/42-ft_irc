@@ -31,7 +31,7 @@ void QUIT(Client &client, Server &server)
 			for (std::vector<Client>::const_iterator mem_it = members.begin(); mem_it != members.end(); mem_it++) {
 				if (mem_it->getNickname() != client.getNickname()) {
 
-					sendMessage(mem_it->getFd(), create_privmsg(*mem_it) + " PRIVMSG " + params[0] + " :" + params[1] + "\r\n", 0);
+					sendMessage(mem_it->getFd(), create_privmsg(*mem_it) + " PRIVMSG " + "#" + it->second.getName() + " :" + client.getParams()[1] + "\r\n", 0);
 				}
 			}
 		}
