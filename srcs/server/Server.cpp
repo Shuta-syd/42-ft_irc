@@ -124,7 +124,9 @@ void Server::execute(Client &client)
 	else if (cmd == "QUIT") {
 		QUIT(client, *this);
 	}
-	else if (cmd == "KICK") {}
+	else if (cmd == "KICK") {
+		KICK(client, channels_);
+	}
 	else if (cmd == "MOTD") {}
 	else if (cmd == "WHOIS"){}
 	else if (cmd == "TOPIC") {}

@@ -36,7 +36,6 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define RPL_NAMREPLY(nick, channelName, operName) ":ft_irc 353 " + nick + " = #" + channelName + " :@" + operName + "\r\n"
 #define RPL_ENDOFNAMES(nick, channelName) ":ft_irc 366 " + nick + " #" + channelName + " :End of /NAMES list\r\n"
 
-
 /**
  * ERROR Response
  */
@@ -44,3 +43,5 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define ERR_TOOMANYCHANNELS(nick, channelName) ":ft_irc 405 " + nick + " #" + channelName + " :Too many channel\r\n"
 #define ERR_BADCHANNELKEY(nick, channelName) ":ft_irc 457 " + nick + " #" + channelName + " :Cannot join channel (+k) - bad key\r\n"
 #define ERR_NEEDMOREPARAMS(nick, cmdName) ":ft_irc 461 " + nick + " " + cmdName + " :Not enough parameters\r\n"
+#define ERR_NOPRIVILEGES(nick) ":ircserv 481 " + nick + " :Permission Denied- You're not an IRC operator\n"
+#define ERR_NOTONCHANNEL(nick, channel) ":ircserv 442 " + nick + " " + channel + " :You're not on that channel\n"
