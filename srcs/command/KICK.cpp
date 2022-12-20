@@ -24,12 +24,15 @@ void KICK(Client &client, std::map<std::string, Channel> channels) {
 	std::string const &nick = client.getNickname();
 	Channel channel = channels[client.getParams()[0]];
 	std::string const &frightened_person = client.getParams()[1];
+	sendMessage(fd, "KICK!!!!!!\r\n", 0);
 
 	if (client.getParams()[0].size() < 2) {
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "KICK"), 0);
-	} else if (channel.getOper() != nick) {
-		sendMessage(fd, ERR_NOPRIVILEGES(nick), 0);
-	} else if (is_nick_in_channel(frightened_person, channel) == false) {
+	}
+//	else if (channel.getOper() != nick) {
+//		sendMessage(fd, ERR_NOPRIVILEGES(nick), 0);
+//	} //operatorは複数人いる可能性があるのでvectorになる
+	else if (is_nick_in_channel(frightened_person, channel) == false) {
 		sendMessage(fd, ERR_NOSUCHNICK(frightened_person), 0);
 	} else if (is_nick_in_channel(nick, channel) == false) {
 		sendMessage(fd, ERR_NOTONCHANNEL(nick, channel.getName()), 0);
@@ -43,7 +46,7 @@ void KICK(Client &client, std::map<std::string, Channel> channels) {
 				+ channel.getName()
 				+ " "
 				+ frightened_person
-				+ "\r\n";
+				+ "\n";
 		sendMessage(fd, reply_mes, 0);
 		//PART();
 	}
