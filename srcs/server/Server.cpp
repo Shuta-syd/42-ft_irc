@@ -127,7 +127,9 @@ void Server::execute(Client &client)
 		KICK(client, channels_);
 	else if (cmd == "MOTD") {}
 	else if (cmd == "PART") {}
-	else if (cmd == "INVITE") {}
+	else if (cmd == "INVITE") {
+		INVITE(client, channels_);
+	}
 	else if (cmd == "KILL") {}
 	else if (cmd == "QUIT") {}
 }
