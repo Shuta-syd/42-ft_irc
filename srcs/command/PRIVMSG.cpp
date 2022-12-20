@@ -13,7 +13,10 @@ bool is_correct_fmt(std::vector<std::string> const &params, Client &client) {
 
 }
 
-
+std::string create_privmsg(Client const &client)
+{
+	return std::string(":" + client.getNickname() + "!" + client.getUsername() + "@" + client.getRealname());
+}
 
 /**
  * @brief execute privmsg command
@@ -43,9 +46,8 @@ void PRIVMSG(Client &client, Server &server, std::map<std::string, Channel> &cha
 			for (std::vector<Client>::const_iterator it = members.begin(); it != members.end(); it++) {
 				if (it->getNickname() != client.getNickname()) {
 
-					sendMessage(it->getFd(), , 0);
+					sendMessage(it->getFd(), create_privmsg(*it) + " PRIVMSG " + params[0] + " :" + params[1] + "\r\n", 0);
 				}
-
 			}
 			return ;
 		}
@@ -58,7 +60,7 @@ void PRIVMSG(Client &client, Server &server, std::map<std::string, Channel> &cha
 			sendMessage(client.getFd(), ERR_NOSUCHNICK(client.getNickname()), 0);
 			return ;
 		}
-		sendMessage(fd, " PRIVMSG " + params[0] + " :" + params[1] + "\n", 0);
+		sendMessage(fd, create_privmsg(client) + " PRIVMSG " + params[0] + " :" + params[1] + "\r\n", 0);
 	}
 
 }
