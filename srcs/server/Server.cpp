@@ -123,7 +123,7 @@ void Server::execute(Client &client)
 		PRIVMSG(client, *this, channels_);
 	else if (cmd == "QUIT")
 		QUIT(client, *this);
-	else if (cmd == "KICK") {
+	else if (cmd == "KICK")
 		KICK(client, channels_);
 	else if (cmd == "MOTD") {}
 	else if (cmd == "PART") {}
