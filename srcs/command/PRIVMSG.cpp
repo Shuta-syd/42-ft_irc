@@ -27,11 +27,28 @@ void PRIVMSG(Client &client, Server &server, std::map<std::string, Channel> &cha
 		return ;
 	/* check if client sends msg to channnel or not  */
 	if (params.at(0)[0] == '#') {
+
 		const Channel &channel_to_send = channels[params[0]];
+
+		/* in the case of "No such a channel" */
 		if (channel_to_send.getName().empty()) {
+
 			sendMessage(client.getFd(), ERR_NOTONCHANNEL(client.getNickname(), params[0]), 0);
+			std::cout << "No such a channel" << std::endl;
+			return ;
 		}
-		
+		else {
+
+			const std::vector<Client> &members = channel_to_send.getMember();
+			for (std::vector<Client>::const_iterator it = members.begin(); it != members.end(); it++) {
+				if (it->getNickname() != client.getNickname()) {
+
+					sendMessage(it->getFd(), , 0);
+				}
+
+			}
+			return ;
+		}
 	}
 	else {
 		int fd;
