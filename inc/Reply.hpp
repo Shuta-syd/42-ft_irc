@@ -27,10 +27,9 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define JOIN_MESSAGE(nick, channelName) ":" + nick + " JOIN #" + channelName + "\r\n"
 #define SETTOPIC_MESSAGE(nick, channelName, topic) ":" + nick + " TOPIC #" + channelName + " :" + topic + "\r\n"
 #define RPL_NOTOPIC(nick, channelName) ":ft_irc 331 " + nick + " TOPIC " + channelName + " :No topic set for #" + channelName + "\r\n"
-#define ERR_NOTJOIN(nick, channelName) ":ft_irc #" + channelName + " You're not on that channel\r\n"
+#define MODE_MESSAGE(operNick, targetNick, channelName, isAllow, mode) ":" + operNick + " MODE #" + channelName + " " + isAllow + mode + " " + targetNick + "\r\n"
 
 #define RPL_NONE(message) ":ircserv 300 * :" + message + "\n"
-# define ERR_NOSUCHNICK(nick)						":ircserv 401 " + nick + " :No such nick/channel\n"
 # define ERR_NORECIPIENT(nick, command)				":ircserv 411 " + nick + " :No recipient given " + command + "\n"
 # define ERR_NOTEXTTOSEND(nick)						":ircserv 412 " + nick + " :No text to send\n"
 
@@ -46,3 +45,7 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define ERR_TOOMANYCHANNELS(nick, channelName) ":ft_irc 405 " + nick + " #" + channelName + " :Too many channel\r\n"
 #define ERR_BADCHANNELKEY(nick, channelName) ":ft_irc 457 " + nick + " #" + channelName + " :Cannot join channel (+k) - bad key\r\n"
 #define ERR_NEEDMOREPARAMS(nick, cmdName) ":ft_irc 461 " + nick + " " + cmdName + " :Not enough parameters\r\n"
+#define ERR_NOCHANMODES(nick, mode) ":ft_irc 472 " + nick + " " + mode + " :is an unknown mode character to me\r\n"
+#define ERR_CHANOPRIVSNEEDED(nick, channelName) ":ft_irc 482 " + nick + " #" + channelName + " :You're not a channel operator\r\n"
+#define ERR_NOSUCHNICK(nick) ":ft_irc 401 " + nick + " :No such nick\r\n"
+#define ERR_NOTJOIN(nick, channelName) ":ft_irc #" + channelName + " You're not on that channel\r\n"

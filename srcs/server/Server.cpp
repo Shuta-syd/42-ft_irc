@@ -117,14 +117,14 @@ void Server::execute(Client &client)
 		PONG(client, params);
 	else if (cmd == "NAMES")
 		NAMES(client, params, channels_);
-	else if (cmd == "OPER"){}
+	else if (cmd == "MODE")
+		MODE(client, params, channels_);
 	else if (cmd == "PRIVMSG")
 		PRIVMSG(client, *this, channels_);
 	else if (cmd == "QUIT")
 		QUIT(client, *this);
 	else if (cmd == "KICK") {}
 	else if (cmd == "MOTD") {}
-	else if (cmd == "MODE") {}
 	else if (cmd == "PART") {}
 	else if (cmd == "INVITE") {}
 	else if (cmd == "KILL") {}

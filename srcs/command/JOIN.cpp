@@ -82,6 +82,7 @@ void enterChannel(
 	{
 		channel.setName(channelName);
 		channel.setMember(client);
+		channel.addOper(nick);
 		client.setChannel(channelName, channel);
 		sendMessage(fd, JOIN_MESSAGE(nick, channelName), 0);
 		// sendMessage(fd, MODE_MESSAGE(channelName, "+nt"), 0);
