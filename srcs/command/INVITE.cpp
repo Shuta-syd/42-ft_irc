@@ -1,4 +1,4 @@
 #include <Server.hpp>
 
 
-void INVITE(Client &client, )
+void INVITE()
