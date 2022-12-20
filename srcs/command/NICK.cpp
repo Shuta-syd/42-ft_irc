@@ -33,8 +33,7 @@ void NICK(Client &client, Server &server) {
 	/********** Error handling **************/
 	if (client.getParams().size() < 1) {
 		sendMessage(fd, ERR_NONICKNAMEGIVEN, 0);
-	} else if (is_proper_words(newNick) == false
-	|| is_proper_size(newNick) == false) {
+	} else if (is_proper_size(newNick) == false) {
 		sendMessage(fd, ERR_ERRONEUSNICKNAME(client.getParams()[0]), 0);
 	} else if (is_already_registered(newNick, server) == true) {
 		sendMessage(fd, ERR_NICKNAMEINUSE(newNick), 0);
