@@ -14,17 +14,17 @@ public:
 	const std::string &getTopic() const ;
 	const std::string &getName() const ;
 	const std::string &getKey() const ;
-	const std::string &getOper() const;
+	const std::vector<std::string> &getOper() const;
 	void setMember(Client &member);
 	void setName(std::string name);
 	void setKey(std::string key);
 	void setTopic(std::string topic);
-	void setOper(std::string name);
+	void addOper(std::string name);
 
 private:
 	std::string name_;
 	std::string key_;
-	std::string operName_;
+	std::vector<std::string> opers_;
 	std::string topic_;
 	std::vector<Client> members_;
 };

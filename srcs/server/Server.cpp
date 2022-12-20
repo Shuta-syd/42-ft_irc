@@ -110,27 +110,22 @@ void Server::execute(Client &client)
 	else if (cmd == "USER")
 		USER(client);
 	else if (cmd == "JOIN")
-		JOIN(channels_, client, params);
+		JOIN(client, params, channels_);
+	else if (cmd == "TOPIC")
+		TOPIC(client, params, channels_);
 	else if (cmd == "PING")
 		PONG(client, params);
 	else if (cmd == "NAMES")
 		NAMES(client, params, channels_);
-	else if (cmd == "PONG") {}
-	else if (cmd == "OPER"){}
-	else if (cmd == "PRIVMSG"){
+	else if (cmd == "MODE")
+		MODE(client, params, channels_);
+	else if (cmd == "PRIVMSG")
 		PRIVMSG(client, *this, channels_);
-	}
-	else if (cmd == "NOTICE") {}
-	else if (cmd == "QUIT") {
+	else if (cmd == "QUIT")
 		QUIT(client, *this);
-	}
 	else if (cmd == "KICK") {
 		KICK(client, channels_);
-	}
 	else if (cmd == "MOTD") {}
-	else if (cmd == "WHOIS"){}
-	else if (cmd == "TOPIC") {}
-	else if (cmd == "MODE") {}
 	else if (cmd == "PART") {}
 	else if (cmd == "INVITE") {}
 	else if (cmd == "KILL") {}
