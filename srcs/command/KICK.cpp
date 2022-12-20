@@ -8,8 +8,15 @@
  *
  */
 
-bool is_operator(std::string const &nick, Channel &channel) {
-	return true;
+bool is_nick_in_channel(std::string const &nick, Channel &channel) {
+	std::vector<Client> const &members = channel.getMember();
+
+	for (std::vector<Client>::const_iterator it = members.begin(); it != members.end(); it++) {
+		if (nick == it->getNickname()) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void KICK(Client &client, std::map<std::string, Channel> channels) {
@@ -19,6 +26,11 @@ void KICK(Client &client, std::map<std::string, Channel> channels) {
 
 	if (client.getParams()[0].size() < 2) {
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "KICK"), 0);
+	} else if (channel.getOper() != nick) {
+		sendMessage(fd, ERR_NOPRIVILEGES(nick), 0);
+	} else if (is_nick_in_channel(nick, channel) == false) {
+		sendMessage(fd, ERR_NOTONCHANNEL(nick, channel.getName()), 0);
+	} else {
+		;
 	}
-//	else if (is_operator(nick, )
 }
