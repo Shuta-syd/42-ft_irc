@@ -18,10 +18,14 @@ void Channel::setTopic(std::string topic) { topic_ = topic; }
 void Channel::addOper(std::string name) { opers_.push_back(name); }
 
 void Channel::eraseMember(Client const &client) {
+	std::cout << "\nthis is in erase member function" << std::endl;
 	std::vector<Client>::iterator itr_begin = members_.begin();
-	std::vector<Client>::iterator itr_end = members_.begin();
 
-	for (; itr_begin != itr_end; itr_begin++) {
+	for (; itr_begin != members_.end(); itr_begin++) {
+		std::cout
+		<< "NICK: "
+		<< itr_begin->getNickname()
+		<< std::endl;
 		if (client.getNickname() == itr_begin->getNickname()) {
 			members_.erase(itr_begin);
 		}
