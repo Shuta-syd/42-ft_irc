@@ -13,16 +13,21 @@ void debug_member_in_channel(Channel const &channel) {
 	for (auto member : channel.getMember()) {
 		std::cerr << member.getNickname() << std::endl;
 	}
-	std::cerr << "==============\n";
+	std::cout << "_____________________________________\n";
 }
 
 void debug_channel_in_user(Client &client) {
 	std::cerr << "<<<channel joined by the user>>>\n";
 	std::cerr << "THE USER : " << client.getNickname() << "\n";
-	for (auto ch : client.getChannels()) {
-		std::cerr << ch.first << std::endl;
+	if (client.getChannels().empty()) {
+		std::cerr << "now this use is not belong to any channel!\n";
+		return ;
+	} else {
+		for (auto ch : client.getChannels()) {
+			std::cerr << ch.first << std::endl;
+		}
 	}
-	std::cerr << "==============\n";
+	std::cout << "_____________________________________\n";
 }
 
 bool is_nick_in_channel(std::string const &nick, Channel &channel) {
