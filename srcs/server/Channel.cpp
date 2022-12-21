@@ -17,7 +17,7 @@ void Channel::setKey(std::string key) { key_ = key; }
 void Channel::setTopic(std::string topic) { topic_ = topic; }
 void Channel::addOper(std::string name) { opers_.push_back(name); }
 
-bool Channel::is_inChannel(std::string const &nick_nme) {
+bool Channel::is_inChannel(std::string const &nick_nme) const {
 
 	std::vector<Client> const &members = getMember();
 	for (std::vector<Client>::const_iterator  it = members.begin(); it !=members.end(); it++) {
