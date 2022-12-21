@@ -24,6 +24,7 @@ void TOPIC(
 	const bool joinedChannel = findChannel(channels, channelName);
 	const bool existChannel = findChannel(allChannels, channelName);
 
+
 	if (params.size() == 1 && joinedChannel && existChannel) {
 		// show specific channel topic
 		const Channel &channel = channels[channelName];
@@ -38,7 +39,7 @@ void TOPIC(
 		const std::string &newTopic = params.at(1);
 		Channel &channel = allChannels[channelName];
 		channel.setTopic(newTopic);
-		sendMessage(fd, SETTOPIC_MESSAGE(nick, channelName, newTopic), 0);
+		sendMessage(fd, SETTOPIC_MESSAGE(nick, client.getUsername(), "host", channelName, newTopic), 0);
 		channelDebug(allChannels, channels, channelName);
 	}
 }

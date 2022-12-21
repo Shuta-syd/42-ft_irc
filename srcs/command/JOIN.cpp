@@ -88,7 +88,7 @@ void enterChannel(
 		channel.setMember(client);
 		channel.addOper(nick);
 		client.setChannel(channelName, channel);
-		sendMessage(fd, JOIN_MESSAGE(nick, channelName), 0);
+		sendMessage(fd, JOIN_MESSAGE(nick, client.getUsername(),  "host", channelName), 0);
 		sendMessage(fd, RPL_NAMREPLY(nick, channelName, "@" + nick), 0);
 		sendMessage(fd, RPL_ENDOFNAMES(nick, channelName), 0);
 	}
@@ -99,7 +99,7 @@ void enterChannel(
 		const std::string names = getMemberNames(channel.getMember(), channel.getOper());
 
 		for (size_t i = 0; i < members.size(); i++)
-				sendMessage(members.at(i).getFd(), JOIN_MESSAGE(nick, channelName), 0);
+			sendMessage(members.at(i).getFd(), JOIN_MESSAGE(nick, client.getUsername(), "host", channelName), 0);
 
 		if (channel.getTopic() != "")
 				sendMessage(fd, RPL_TOPIC(nick, channelName, channel.getTopic()), 0);
