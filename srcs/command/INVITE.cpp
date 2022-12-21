@@ -24,5 +24,8 @@ void INVITE(Client &client, const std::map<std::string, Channel> &channels, Serv
 	else if (server.getFd_from_nick(params[0]) == 0)
 		sendMessage(client.getFd(), ERR_NOSUCHNICK(nick_name), 0);
 	/* no error happen */
-	sendMessage(server.getFd_from_nick(params[0]), )
+	sendMessage(server.getFd_from_nick(params[0]), RPL_INVITING(client.getNickname(), params[1]), 0);
+	std::map<int, Client > &tmp_mp_nick_to_fd_ = server.getUsers();
+	std::vector<std::string > &new_params = change_fmt_to_join(params);
+	JOIN(tmp_mp_nick_to_fd_[server.getFd_from_nick(params[0])], new_params, server.)
 }

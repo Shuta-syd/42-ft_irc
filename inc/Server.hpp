@@ -45,6 +45,9 @@ public:
 		std::map<std::string, int> dummy = mp_nick_to_fd_;
 		return dummy[nick];
 	}
+	std::map<std::string , Channel> &getChannels()  {
+		return channels_;
+	}
 
 private:
 	int port_; // port number to connect to client
