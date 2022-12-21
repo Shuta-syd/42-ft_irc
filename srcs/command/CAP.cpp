@@ -5,22 +5,15 @@
  *
  * CAP LS | CAP END
  */
-void CAP(Client &client, const std::vector<std::string> &params) {
+void CAP(Client &client, const Server &server) {
 	const int &fd = client.getFd();
 
 	if (params.at(0) == "LS")
 		sendMessage(fd, CAP_LS, 0);
 	else if (params.at(0) == "END")
 	{
-
-
-//		if (client is not correct)
-//		{
-//			QUIT(client, hoge)
-//			return;
-//		}
-//
-
+		if (client.getIsAuth() == false)
+			QUIT(client, )
 		sendWelcomeMessage(client);
 	}
 

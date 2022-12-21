@@ -95,7 +95,7 @@ void Server::execute(Client &client)
 	std::cout << CYN << cmd << " COMMAND" << RES << std::endl;
 
 	if (cmd == "CAP") {
-		CAP(client, params);
+		CAP(client, *this);
 		return;
 	} else if (cmd == "PASS") {
 		PASS(client, password_);
