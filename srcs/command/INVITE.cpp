@@ -24,5 +24,5 @@ void INVITE(Client &client, const std::map<std::string, Channel> &channels, Serv
 	else if (server.getFd_from_nick(params[0]) == 0)
 		sendMessage(client.getFd(), ERR_NOSUCHNICK(nick_name), 0);
 	/* no error happen */
-	
+	sendMessage(server.getFd_from_nick(params[0]), )
 }
