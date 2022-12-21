@@ -42,6 +42,7 @@ void INVITE(Client &client, const std::map<std::string, Channel> &channels, Serv
 	/* skip params[0] */
 	std::vector<std::string>::const_iterator it = params.begin();
 	std::vector<std::string> tmp_params = params;
+
 	tmp_params.erase(it);
 	JOIN(tmp_mp_nick_to_fd_[server.getFd_from_nick(params[0])], tmp_params,  server.getChannels());
 
