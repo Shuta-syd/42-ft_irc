@@ -116,4 +116,6 @@ void exec_o(
 	channel.addOper(target);
 	for (size_t i = 0; i < members.size(); i++)
 		sendMessage(members[i].getFd(), MODE_MESSAGE(nick, target, channel.getName(), isAllow, 'o'), 0);
+
+		
 }
