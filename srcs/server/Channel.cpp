@@ -17,6 +17,13 @@ void Channel::setKey(std::string key) { key_ = key; }
 void Channel::setTopic(std::string topic) { topic_ = topic; }
 void Channel::addOper(std::string name) { opers_.push_back(name); }
 
-void Channel::eraseMember(const std::string &name) {
-	//erase関数を考える;
+void Channel::eraseMember(Client const &client) {
+	std::vector<Client>::iterator itr_begin = members_.begin();
+	std::vector<Client>::iterator itr_end = members_.begin();
+
+	for (; itr_begin != itr_end; itr_begin++) {
+		if (client.getNickname() == itr_begin->getNickname()) {
+			members_.erase(itr_begin);
+		}
+	}
 }

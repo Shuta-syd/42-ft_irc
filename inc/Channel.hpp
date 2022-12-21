@@ -20,7 +20,7 @@ public:
 	void setKey(std::string key);
 	void setTopic(std::string topic);
 	void addOper(std::string name);
-	void eraseMember(std::string const &name);
+	void eraseMember(Client const &name);
 
 private:
 	std::string name_;
