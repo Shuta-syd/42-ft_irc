@@ -32,7 +32,11 @@ void TOPIC(
 			operNames[i] == nick ? isOper = true : isOper;
 	}
 
-	if (isOper == false)
+	if (joinedChannel == false && existChannel)
+		sendMessage(fd, ERR_NOTJOIN(nick, channelName), 0);
+	else if (existChannel == false)
+		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channelName), 0);
+	else if (isOper == false)
 		sendMessage(fd, ERR_CHANOPRIVSNEEDED(nick, channelName), 0);
 	else if (params.size() == 1 && joinedChannel && existChannel) {
 		// show specific channel topic
@@ -40,10 +44,6 @@ void TOPIC(
 		const std::string topic = channel.getTopic();
 		sendMessage(fd, RPL_TOPIC(nick, channelName, topic), 0);
 	}
-	else if (joinedChannel == false && existChannel)
-		sendMessage(fd, ERR_NOTJOIN(nick, channelName), 0);
-	else if (existChannel == false)
-		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channelName), 0);
 	else { // change topic to specific topic
 		const std::string &newTopic = params.at(1);
 		Channel &channel = allChannels[channelName];
