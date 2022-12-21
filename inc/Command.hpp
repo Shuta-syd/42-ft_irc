@@ -16,4 +16,5 @@ void NAMES(Client &client, const std::vector<std::string> &params, std::map<std:
 void KICK(Client &client, std::map<std::string, Channel> channels);
 void TOPIC(Client &client, const std::vector<std::string> &params, const std::map<std::string, Channel> &allChannels);
 void MODE(Client &client, const std::vector<std::string> &params,std::map<std::string, Channel> &allChannels);
-void PART(Client &client, std::map<std::string, Channel> const &channels);
+
+void PART(Client &client, std::map<std::string, Channel> &channels);
