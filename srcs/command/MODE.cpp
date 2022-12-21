@@ -38,9 +38,8 @@ void MODE(
 		const std::string &mode = &params.at(1)[1];
 		for (size_t i = 0; i < mode.size(); i++)
 		{
-			if (isCorrectMode(mode[i])) {
+			if (isCorrectMode(mode[i]))
 				executeMode(isAllow, mode[i], params, channel, client);
-			}
 			else
 				sendMessage(fd, ERR_NOCHANMODES(nick, mode[i]), 0);
 		}
@@ -98,8 +97,7 @@ void exec_o(
 
 	for (size_t i = 0; i < opers.size(); i++)
 		opers[i] == nick ? isOper = true : isOper;
-	if (isOper == false)
-	{
+	if (isOper == false) {
 		sendMessage(operFd, ERR_CHANOPRIVSNEEDED(nick, channel.getName()), 0);
 		return;
 	}
@@ -113,8 +111,11 @@ void exec_o(
 		return;
 	}
 
-	channel.addOper(target);
-	for (size_t i = 0; i < members.size(); i++)
-		sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), "host", target, channel.getName(), isAllow, 'o'), 0);
+	if (isAllow == '+')
+		channel.addOper(target);
+	else if (isAllow == '-')
+		channel.delOper(target); // SEGV
 
+		for (size_t i = 0; i < members.size(); i++)
+			sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), "host", target, channel.getName(), isAllow, 'o'), 0);
 }

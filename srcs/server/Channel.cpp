@@ -16,3 +16,14 @@ void Channel::setName(std::string name) { name_ = name; }
 void Channel::setKey(std::string key) { key_ = key; }
 void Channel::setTopic(std::string topic) { topic_ = topic; }
 void Channel::addOper(std::string name) { opers_.push_back(name); }
+void Channel::delOper(std::string name) {
+	for (
+			std::vector<std::string>::iterator it = opers_.begin();
+			it != opers_.end();
+			++it)
+			{
+				if ((*it) == name)
+					opers_.erase(it);
+					return;
+			}
+}
