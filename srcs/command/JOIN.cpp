@@ -101,11 +101,11 @@ void enterChannel(
 		for (size_t i = 0; i < members.size(); i++)
 				sendMessage(members.at(i).getFd(), JOIN_MESSAGE(nick, channelName), 0);
 
-		std::cout << RED << channel.getTopic() << RES << std::endl;
 		if (channel.getTopic() != "")
-			sendMessage(fd, RPL_TOPIC(nick, channelName, channel.getTopic()), 0);
+				sendMessage(fd, RPL_TOPIC(nick, channelName, channel.getTopic()), 0);
 		sendMessage(fd, RPL_NAMREPLY(nick, channelName, names), 0);
 		sendMessage(fd, RPL_ENDOFNAMES(nick, channelName), 0);
+		channelDebug(allChannel, client.getChannels(), channelName);
 	}
 	else
 		sendMessage(fd, ERR_BADCHANNELKEY(nick, channelName), 0);

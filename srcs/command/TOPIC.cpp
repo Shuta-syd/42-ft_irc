@@ -39,5 +39,6 @@ void TOPIC(
 		Channel &channel = channels[channelName];
 		channel.setTopic(newTopic);
 		sendMessage(fd, SETTOPIC_MESSAGE(nick, channelName, newTopic), 0);
+		channelDebug(allChannels, channels, channelName);
 	}
 }

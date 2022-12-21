@@ -10,10 +10,10 @@ public:
 	Channel();
 	// Channel(const Channel&);
 	~Channel();
-	const std::vector<Client> &getMember() const ;
-	const std::string &getTopic() const ;
-	const std::string &getName() const ;
-	const std::string &getKey() const ;
+	const std::vector<Client> getMember() const ;
+	const std::string getTopic() const ;
+	const std::string getName() const ;
+	const std::string getKey() const ;
 	const std::vector<std::string> &getOper() const;
 	void setMember(Client &member);
 	void setName(std::string name);
