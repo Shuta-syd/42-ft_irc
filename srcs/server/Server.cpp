@@ -88,13 +88,21 @@ void Server::chat(int fd) {
  * @param client
  */
 
-//void Server::
+void Server::debug_all_channels_situation() {
+	std::cerr << "_____CHANNEL SITUATION_______" << std::endl;
+	for (auto ch : this->channels_) {
+		std::cerr << "CHANNEL NAME : " << ch.first << std::endl;
+		for (auto member : ch.second.getMember()) {
+			std::cerr << member.getNickname() << std::endl;
+		}
+	}
+	std::cerr << "_____________________________" << std::endl;
+}
+
 
 void Server::execute(Client &client)
 {
-	debug_channel_in_user(client);
-
-//	debug_member_in_channel();
+	this->debug_all_channels_situation();
 
 	const std::string &cmd = client.getCommand();
 	const std::vector<std::string> &params = client.getParams();
