@@ -7,12 +7,12 @@ bool validate_msg(Client &client, const std::vector< std::string> &params, const
 		sendMessage(client.getFd(), ERR_NEEDMOREPARAMS(nick_name, "INVITE"), 0);
 		return false;
 	}
-	else if (findChannel(channels, params[1]) == false) {
+	else if (findChannel(server.getChannels(), params[1]) == false) {
 		sendMessage(client.getFd(), ERR_NOSUCHCHANNEL(nick_name, params[1]), 0);
-		return false
+		return false;
 	}
-	Channel &channel_to_send = channels[&params[1][0]];
-	if (channel_to_send.is_inChannel(client.getNickname()) == false)) {
+	Channel &channel_to_send = server.getChannels()[&params[1][0]];
+	if (channel_to_send.is_inChannel(client.getNickname()) == false) {
 		sendMessage(client.getFd(), ERR_NOTONCHANNEL(nick_name, params[1]), 0);
 		return false;
 	}
@@ -41,7 +41,7 @@ void INVITE(Client &client, const std::map<std::string, Channel> &channels, Serv
 	/* no error happen */
 	sendMessage(server.getFd_from_nick(params[0]), RPL_INVITING(client.getNickname(), params[1]), 0);
 	std::map<int, Client > &tmp_mp_nick_to_fd_ = server.getUsers();
-	std::vector<std::string > &new_params = change_fmt_to_join(params);
-	JOIN(tmp_mp_nick_to_fd_[server.getFd_from_nick(params[0])], new_params, server.getChannels());
+	//std::vector<std::string > &new_params = change_fmt_to_join(params);
+	//JOIN(tmp_mp_nick_to_fd_[server.getFd_from_nick(params[0])], new_params, server.getChannels());
 	sendMessage(server.getFd_from_nick(params[0]), create_privmsg(tmp_mp_nick_to_fd_[server.getFd_from_nick(params[0])]), 0);
 }

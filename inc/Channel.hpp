@@ -21,7 +21,7 @@ public:
 	void setTopic(std::string topic);
 	void addOper(std::string name);
 	bool is_inChannel(std::string const &nick_name);
-
+	bool is_operator(std::string const &nick_name);
 private:
 	std::string name_;
 	std::string key_;

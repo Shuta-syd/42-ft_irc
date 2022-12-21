@@ -2,7 +2,7 @@
 #include <Server.hpp>
 
 class Server;
-void CAP(Client &client,  Server &server)
+void CAP(Client &client,  Server &server);
 void NICK(Client &client, Server &server);
 void USER(Client &client);
 void PASS(Client &client, std::string const &server_password);
