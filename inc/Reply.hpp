@@ -35,7 +35,7 @@ void sendERROR(int fd, const std::string &msg, int flag);
 # define ERR_NOTEXTTOSEND(nick)						":ircserv 412 " + nick + " :No text to send\n"
 
 #define RPL_TOPIC(nick, channelName, topic) ":ft_irc 332 " + nick + " #" + channelName + " :" + topic + "\r\n"
-#define RPL_NAMREPLY(nick, channelName, operNames) ":ft_irc 353 " + nick + " = #" + channelName + " " + operNames + "\r\n"
+#define RPL_NAMREPLY(nick, channelName, memberNames) ":ft_irc 353 " + nick + " = #" + channelName + " :" + memberNames + "\r\n"
 #define RPL_ENDOFNAMES(nick, channelName) ":ft_irc 366 " + nick + " #" + channelName + " :End of /NAMES list\r\n"
 
 /**
