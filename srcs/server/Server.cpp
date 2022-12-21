@@ -87,8 +87,15 @@ void Server::chat(int fd) {
  * @brief command execute func
  * @param client
  */
+
+//void Server::
+
 void Server::execute(Client &client)
 {
+	debug_channel_in_user(client);
+
+//	debug_member_in_channel();
+
 	const std::string &cmd = client.getCommand();
 	const std::vector<std::string> &params = client.getParams();
 

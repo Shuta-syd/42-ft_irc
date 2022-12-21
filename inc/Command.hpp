@@ -18,3 +18,5 @@ void TOPIC(Client &client, const std::vector<std::string> &params, const std::ma
 void MODE(Client &client, const std::vector<std::string> &params,std::map<std::string, Channel> &allChannels);
 
 void PART(Client &client, std::map<std::string, Channel> &channels);
+void debug_member_in_channel(Channel const &channel);
+void debug_channel_in_user(Client &client);

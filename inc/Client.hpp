@@ -57,4 +57,5 @@ private:
 	std::string command_;
 	std::vector<std::string> params_;
 	std::map<std::string, Channel> channels_; // channels This belong to
+	void debug_parser();
 };

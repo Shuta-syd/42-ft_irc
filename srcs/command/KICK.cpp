@@ -9,11 +9,20 @@
  */
 
 void debug_member_in_channel(Channel const &channel) {
-	std::cout << "<<<members>>>\n";
+	std::cerr << "<<<members in channel>>>\n";
 	for (auto member : channel.getMember()) {
-		std::cout << member.getNickname() << std::endl;
+		std::cerr << member.getNickname() << std::endl;
 	}
-	std::cout << "==============\n";
+	std::cerr << "==============\n";
+}
+
+void debug_channel_in_user(Client &client) {
+	std::cerr << "<<<channel joined by the user>>>\n";
+	std::cerr << "THE USER : " << client.getNickname() << "\n";
+	for (auto ch : client.getChannels()) {
+		std::cerr << ch.first << std::endl;
+	}
+	std::cerr << "==============\n";
 }
 
 bool is_nick_in_channel(std::string const &nick, Channel &channel) {
@@ -65,5 +74,6 @@ void KICK(Client &client, std::map<std::string, Channel> channels, Server &serve
 		std::cout << "!!!!!!!!!!!!!!!" << frightened_person << std::endl;
 		/* debug member */
 		debug_member_in_channel(channel);
+		debug_channel_in_user(client);
 	}
 }
