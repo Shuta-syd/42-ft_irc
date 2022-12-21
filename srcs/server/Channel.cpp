@@ -31,8 +31,8 @@ bool Channel::is_inChannel(std::string const &nick_nme)  {
 bool Channel::is_operator(const std::string &nick_name) {
 
 	std::vector<std::string> const  &members = this->getOper();
-	for (std::vector<Client>::const_iterator  it = members.begin(); it != members.end(); it++) {
-		if (it->getNickname() == nick_nme) {
+	for (std::vector<std::string>::const_iterator  it = members.begin(); it != members.end(); it++) {
+		if (*it== nick_name) {
 			return true;
 		}
 	}

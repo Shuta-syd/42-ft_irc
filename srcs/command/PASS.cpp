@@ -8,7 +8,7 @@
  */
 //#issue 10
 
-#define ERR_ALREADYREGISTRED(nick)	":ft_irc 462 " + nick + " :You may not register the password same as other person!\n"
+//#define ERR_ALREADYREGISTRED(nick)	":ft_irc 462 " + nick + " :You may not register the password same as other person!\n"
 #define ERR_PASSWDMISMATCH(nick) ":ft_irc 464 " + nick + " :Password incorrect\n"
 
 

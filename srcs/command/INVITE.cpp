@@ -16,7 +16,7 @@ bool validate_msg(Client &client, const std::vector< std::string> &params, const
 		sendMessage(client.getFd(), ERR_NOTONCHANNEL(nick_name, params[1]), 0);
 		return false;
 	}
-	else if (channel_to_send.getOper() != client.getNickname()){
+	else if (channel_to_send.is_operator(client.getNickname()) == false){
 		sendMessage(client.getFd(), ERR_CHANOPRIVSNEEDED(nick_name, params[1]), 0);
 		return false;
 	}
