@@ -33,7 +33,7 @@ void TOPIC(
 	}
 
 	if (isOper == false)
-		sendMessage(fd, ERR_NOPRIVILEGES(nick), 0);
+		sendMessage(fd, ERR_CHANOPRIVSNEEDED(nick, channelName), 0);
 	else if (params.size() == 1 && joinedChannel && existChannel) {
 		// show specific channel topic
 		const Channel &channel = channels[channelName];
