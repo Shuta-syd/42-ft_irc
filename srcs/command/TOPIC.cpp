@@ -10,6 +10,7 @@ void TOPIC(
 	const std::vector<std::string> &params,
 	std::map<std::string, Channel> &allChannels
 	) {
+	bool isOper = false;
 	const int &fd = client.getFd();
 	const std::string &nick = client.getNickname();
 	std::map<std::string, Channel> channels = client.getChannels();
@@ -25,14 +26,15 @@ void TOPIC(
 	const bool existChannel = findChannel(allChannels, channelName);
 
 	if (existChannel) {
-		bool isOper = false;
 		const Channel &channel = allChannels[channelName];
 		const std::vector<std::string> operNames = channel.getOper();
 		for (size_t i = 0; i < operNames.size(); i++)
 			operNames[i] == nick ? isOper = true : isOper;
 	}
 
-	if (params.size() == 1 && joinedChannel && existChannel) {
+	if (isOper == false)
+		sendMessage(fd, ERR_NOPRIVILEGES(nick), 0);
+	else if (params.size() == 1 && joinedChannel && existChannel) {
 		// show specific channel topic
 		const Channel &channel = channels[channelName];
 		const std::string topic = channel.getTopic();
