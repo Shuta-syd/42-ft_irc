@@ -5,7 +5,7 @@
  *
  * CAP LS | CAP END
  */
-void CAP(Client &client, const Server &server) {
+void CAP(Client &client,  Server &server) {
 	const int &fd = client.getFd();
 
 	if (params.at(0) == "LS")
@@ -13,7 +13,7 @@ void CAP(Client &client, const Server &server) {
 	else if (params.at(0) == "END")
 	{
 		if (client.getIsAuth() == false)
-			QUIT(client, )
+			QUIT(client, server);
 		sendWelcomeMessage(client);
 	}
 
