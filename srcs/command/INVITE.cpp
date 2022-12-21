@@ -1,7 +1,5 @@
 #include <Command.hpp>
 
-
-
 bool validate_msg(Client &client, const std::vector< std::string> &params, const std::string &nick_name, Server &server) {
 	if (params.size() != 2) {
 		sendMessage(client.getFd(), ERR_NEEDMOREPARAMS(nick_name, "INVITE"), 0);
@@ -41,7 +39,11 @@ void INVITE(Client &client, const std::map<std::string, Channel> &channels, Serv
 	/* no error happen */
 	sendMessage(server.getFd_from_nick(params[0]), RPL_INVITING(client.getNickname(), params[1]), 0);
 	std::map<int, Client > &tmp_mp_nick_to_fd_ = server.getUsers();
-	//std::vector<std::string > &new_params = change_fmt_to_join(params);
-	//JOIN(tmp_mp_nick_to_fd_[server.getFd_from_nick(params[0])], new_params, server.getChannels());
+	/* skip params[0] */
+	std::vector<std::string>::const_iterator it = params.begin();
+	std::vector<std::string> tmp_params = params;
+	tmp_params.erase(it);
+	JOIN(tmp_mp_nick_to_fd_[server.getFd_from_nick(params[0])], tmp_params,  server.getChannels());
+
 	sendMessage(server.getFd_from_nick(params[0]), create_privmsg(tmp_mp_nick_to_fd_[server.getFd_from_nick(params[0])]), 0);
 }

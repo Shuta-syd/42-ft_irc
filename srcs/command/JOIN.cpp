@@ -104,8 +104,7 @@ void JOIN(
 			sendMessage(fd, RPL_NAMREPLY(nick, channelName, operNames), 0);
 			sendMessage(fd, RPL_ENDOFNAMES(nick, channelName), 0);
 		}
-		else
-		{ // key is wrong
+		else { // key is wrong
 			sendMessage(fd, ERR_BADCHANNELKEY(nick, channelName), 0);
 		}
 	}
