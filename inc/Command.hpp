@@ -16,4 +16,4 @@ void NAMES(Client &client, const std::vector<std::string> &params, std::map<std:
 void KICK(Client &client, std::map<std::string, Channel> channels);
 void TOPIC(Client &client, const std::vector<std::string> &params, const std::map<std::string, Channel> &allChannels);
 void MODE(Client &client, const std::vector<std::string> &params,std::map<std::string, Channel> &allChannels);
-void INVITE(Client &client, const std::map<std::string, Channel> &channels, std::map<std::string, int> mp_nick_to_fd_);
+void INVITE(Client &client, const std::map<std::string, Channel> &channels, Server &server);
