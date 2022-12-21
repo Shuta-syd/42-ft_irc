@@ -24,6 +24,13 @@ void TOPIC(
 	const bool joinedChannel = findChannel(channels, channelName);
 	const bool existChannel = findChannel(allChannels, channelName);
 
+	if (existChannel) {
+		bool isOper = false;
+		const Channel &channel = allChannels[channelName];
+		const std::vector<std::string> operNames = channel.getOper();
+		for (size_t i = 0; i < operNames.size(); i++)
+			operNames[i] == nick ? isOper = true : isOper;
+	}
 
 	if (params.size() == 1 && joinedChannel && existChannel) {
 		// show specific channel topic
