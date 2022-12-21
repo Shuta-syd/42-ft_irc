@@ -22,6 +22,7 @@ void drive_out_me_from_channel(std::string const &myname,
 //		}
 //	}
 }
+
 void PART(Client &client, std::map<std::string, Channel> &channels) {
 	int fd = client.getFd();
 	std::string myname = client.getNickname();

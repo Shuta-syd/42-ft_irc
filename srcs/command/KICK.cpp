@@ -48,6 +48,6 @@ void KICK(Client &client, std::map<std::string, Channel> channels) {
 				+ frightened_person
 				+ "\n";
 		sendMessage(fd, reply_mes, 0);
-		//PART();
+		channels.erase(frightened_person);
 	}
 }
