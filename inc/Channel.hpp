@@ -20,7 +20,7 @@ public:
 	void setKey(std::string key);
 	void setTopic(std::string topic);
 	void addOper(std::string name);
-	bool is_inChannel(std::string);
+	bool is_inChannel(std::string const &nick_name);
 
 private:
 	std::string name_;
