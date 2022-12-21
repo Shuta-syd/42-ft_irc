@@ -16,3 +16,7 @@ void Channel::setName(std::string name) { name_ = name; }
 void Channel::setKey(std::string key) { key_ = key; }
 void Channel::setTopic(std::string topic) { topic_ = topic; }
 void Channel::addOper(std::string name) { opers_.push_back(name); }
+
+void Channel::eraseMember(const std::string &name) {
+	//erase関数を考える;
+}

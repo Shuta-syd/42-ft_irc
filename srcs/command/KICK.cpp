@@ -46,8 +46,8 @@ void KICK(Client &client, std::map<std::string, Channel> channels) {
 				+ channel.getName()
 				+ " "
 				+ frightened_person
-				+ "\n";
+				+ "\r\n";
 		sendMessage(fd, reply_mes, 0);
-		channels.erase(frightened_person);
+//		channel.eraseMember();
 	}
 }
