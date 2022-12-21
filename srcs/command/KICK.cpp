@@ -32,19 +32,26 @@ void debug_channel_in_user(Client &client) {
 
 bool is_nick_in_channel(std::string const &nick, Channel &channel) {
 	std::vector<Client> const &members = channel.getMember();
-
-	for (std::vector<Client>::const_iterator it = members.begin(); it != members.end(); it++) {
+	std::vector<Client>::const_iterator it = members.begin();
+	for (; it != members.end(); it++) {
 		if (nick == it->getNickname()) {
 			return true;
 		}
 	}
 	return false;
 }
-
+//#ありで送られてくるの見逃してた。。。
 void KICK(Client &client, std::map<std::string, Channel> channels, Server &server) {
 	int fd = client.getFd();
 	std::string const &nick = client.getNickname();
-	Channel channel = channels[client.getParams()[0]];
+	std::string param1 = client.getParams()[0];
+	param1.erase(param1.begin());
+	Channel channel = channels[param1];
+	std::cout << "+++++++++++++++\n"
+	<< param1
+	<< std::endl
+	<< channel.getName()
+	<< "__________________________\n";
 	std::string const &frightened_person = client.getParams()[1];
 	sendMessage(fd, "KICK!!!!!!\r\n", 0);
 
@@ -76,9 +83,8 @@ void KICK(Client &client, std::map<std::string, Channel> channels, Server &serve
 		Client frightened_person_account = sock_client[frightened_person_fd];
 		channel.eraseMember(frightened_person_account);
 
-		std::cout << "!!!!!!!!!!!!!!!" << frightened_person << std::endl;
 		/* debug member */
-		debug_member_in_channel(channel);
-		debug_channel_in_user(client);
+//		debug_member_in_channel(channel);
+//		debug_channel_in_user(client);
 	}
 }
