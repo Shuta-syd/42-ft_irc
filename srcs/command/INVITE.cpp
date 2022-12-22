@@ -39,11 +39,11 @@ void INVITE(Client &client, const std::map<std::string, Channel> &channels, Serv
 	/* no error happen */
 	sendMessage(server.getFd_from_nick(params[0]), RPL_INVITING(client.getNickname(), params[1]), 0);
 	std::map<int, Client > &tmp_mp_nick_to_fd_ = server.getUsers();
+	// nick  #chennnel
+	// #channel
 	/* skip params[0] */
-	std::vector<std::string>::const_iterator it = params.begin();
-	std::vector<std::string> tmp_params = params;
-
-	tmp_params.erase(it);
+	std::vector<std::string >tmp_params = params;
+	tmp_params.erase(tmp_params.begin());
 	JOIN(tmp_mp_nick_to_fd_[server.getFd_from_nick(params[0])], tmp_params,  server.getChannels());
 	sendMessage(server.getFd_from_nick(params[0]), create_privmsg(tmp_mp_nick_to_fd_[server.getFd_from_nick(params[0])]), 0);
 }
