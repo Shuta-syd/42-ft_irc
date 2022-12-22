@@ -40,15 +40,25 @@ bool is_nick_in_channel(std::string const &nick, Channel &channel) {
 	}
 	return false;
 }
-//#ありで送られてくるの見逃してた。。。
+
+bool is_exist_ch(std::string const &ch_name, std::map<std::string, Channel> &channels) {
+	std::map<std::string, Channel>::iterator it = channels.begin();
+	for (; it != channels.end(); it++) {
+		if (it->second.getName() == ch_name) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void KICK(Client &client, std::map<std::string, Channel> &channels, Server &server) {
 	int fd = client.getFd();
 	std::string const &nick = client.getNickname();
-	std::string param1 = client.getParams()[0];
-	param1.erase(param1.begin());
-	Channel &channel = channels[param1];
+	std::string ch_name = client.getParams()[0];
+	ch_name.erase(ch_name.begin());
+	Channel &channel = channels[ch_name];
 	std::cout << "+++++++++++++++\n"
-	<< param1
+	<< ch_name
 	<< std::endl
 	<< channel.getName()
 	<< "__________________________\n";
@@ -67,9 +77,10 @@ void KICK(Client &client, std::map<std::string, Channel> &channels, Server &serv
 //	else if (is_nick_in_channel(nick, channel) == false) {
 //		sendMessage(fd, ERR_NOTONCHANNEL(nick, channel.getName()), 0);
 //		↓未検証
-//	} else if (channel.getName().empty()) {
-//		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channel.getName()), 0);
 //	}
+	else if (!is_exist_ch(ch_name, channels)) {
+		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channel.getName()), 0);
+	}
 	else {
 		std::string reply_mes =
 				client.getNickname()
