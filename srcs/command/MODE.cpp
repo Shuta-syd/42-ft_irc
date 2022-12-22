@@ -3,6 +3,7 @@ bool isCorrectMode(const char &mode);
 bool isOper(Channel channel, Client client);
 bool isMember(Channel channel, Client client, std::string targetName);
 void exec_t(const char isAllow, Channel &channel, const Client &client);
+void exec_k(const char isAllow, Channel &channel, const Client &client, const std::vector<std::string> &params);
 void exec_o(const char isAllow, Channel &channel, const Client &client, const std::string &target);
 void executeMode(const char isAllow, const char &mode, const std::vector<std::string> &params, Channel &channel, const Client &client);
 
@@ -38,8 +39,9 @@ void MODE(
 	Channel &channel = allChannels[channelName];
 
 	if (params.size() == 1) {
+			channel.setCreatedTime(getTimestamp());
 			sendMessage(fd, RPL_CHANNELMODEIS(nick, channelName, "+", "nt"), 0);
-			sendMessage(fd, RPL_CREATIONTIME(nick, channelName, getTimestamp()), 0);
+			sendMessage(fd, RPL_CREATIONTIME(nick, channelName, channel.getCreatedTime()), 0);
 	}
 	else if (params.size() > 1) {
 		const char isAllow = params.at(1)[0]; // + or -
@@ -70,8 +72,11 @@ void executeMode(
 		exec_o(isAllow, channel, client, params.at(2));
 	else if (mode == 't')
 		exec_t(isAllow, channel, client);
-	else if (mode == 'k') {}
-	else if (mode == 'l') {}
+	else if (mode == 'k')
+		exec_k(isAllow, channel, client, params);
+	else if (mode == 'l')
+	{
+	}
 }
 
 /**
@@ -136,6 +141,51 @@ void exec_t(
 		channel.setTopicAllow(true);
 	for (size_t i = 0; i < members.size(); i++)
 		sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), "host", "", channel.getName(), isAllow, 't'), 0);
+}
+
+/**
+ * @brief set password or not
+ *
+ */
+void exec_k(
+	const char isAllow,
+	Channel &channel,
+	const Client &client,
+	const std::vector<std::string> &params
+) {
+	int fd = client.getFd();
+	const std::string nick = client.getNickname();
+	const std::vector<Client> members = channel.getMember();
+
+	if (isOper(channel, client) == false)
+		return;
+	else if (params.size() < 3)
+	{
+		sendMessage(fd, RPL_CHANNELMODEIS(nick, channel.getName(), "+", "nt"), 0);
+		sendMessage(fd, RPL_CREATIONTIME(nick, channel.getName(), channel.getCreatedTime()), 0);
+		return;
+	}
+
+	if (isAllow == '+' && params.size() > 2)
+		channel.setKey(params.at(2));
+	else if (isAllow == '-')
+		channel.setKey("");
+	for (size_t i = 0; i < members.size(); i++)
+		sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), "host", channel.getKey(), channel.getName(), isAllow, 'k'), 0);
+}
+
+
+/**
+ * @brief set password or not
+ *
+ */
+void exec_l(
+	const char isAllow,
+	Channel &channel,
+	const Client &client,
+	const std::vector<std::string> &params
+) {
+
 }
 
 
