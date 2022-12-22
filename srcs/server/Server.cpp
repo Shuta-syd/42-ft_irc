@@ -140,15 +140,12 @@ void Server::execute(Client &client)
 		QUIT(client, *this);
 	else if (cmd == "KICK")
 		KICK(client, channels_, *this);
-	else if (cmd == "MOTD") {}
-	else if (cmd == "INVITE") {
+	else if (cmd == "INVITE")
 		INVITE(client, channels_, *this);
-	}
-	else if (cmd == "PART") {
+	else if (cmd == "PART")
 		PART(client, channels_);
-	}
-	else if (cmd == "KILL") {}
-	else if (cmd == "QUIT") {}
+	else if (cmd == "QUIT")
+		QUIT(client, *this);
 }
 
 //--------------Functions related to Socket------------------
