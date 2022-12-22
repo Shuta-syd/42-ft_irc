@@ -40,7 +40,7 @@ private:
 	std::vector<std::string> opers_;
 	bool topicAllow_;
 	std::string topic_;
-	std::string mode_;
+	std::string mode_; // 本当はabc順に並べ直すのがベター
 	int maxMember_;
 	std::string createdTime_;
 	std::vector<Client> members_;

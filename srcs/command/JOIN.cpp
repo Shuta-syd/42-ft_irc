@@ -92,7 +92,7 @@ void enterChannel(
 		sendMessage(fd, RPL_NAMREPLY(nick, channelName, "@" + nick), 0);
 		sendMessage(fd, RPL_ENDOFNAMES(nick, channelName), 0);
 	}
-	else if (key == channelKey || channelKey == "")
+	else if ((key == channelKey || channelKey == "") && channel.getMaxMember() > channel.getMember().size())
 	{ // already exist
 		channel.setMember(client);
 		client.setChannel(channelName, channel);
@@ -109,6 +109,8 @@ void enterChannel(
 		channelDebug(allChannel, client.getChannels(), channelName);
 
 	}
+	else if (channel.getMaxMember() <= channel.getMember().size())
+		sendMessage(fd, ERR_CHANNELISFULL(nick, channelName), 0);
 	else
 		sendMessage(fd, ERR_BADCHANNELKEY(nick, channelName), 0);
 }
