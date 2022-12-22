@@ -74,10 +74,9 @@ void KICK(Client &client, std::map<std::string, Channel> &channels, Server &serv
 	else if (is_nick_in_channel(frightened_person, channel) == false) {
 		sendMessage(fd, ERR_NOSUCHNICK(frightened_person), 0);
 	}
-//	else if (is_nick_in_channel(nick, channel) == false) {
-//		sendMessage(fd, ERR_NOTONCHANNEL(nick, channel.getName()), 0);
-//		↓未検証
-//	}
+	else if (is_nick_in_channel(nick, channel) == false) {
+		sendMessage(fd, ERR_NOTONCHANNEL(nick, channel.getName()), 0);
+	}
 	else if (!is_exist_ch(ch_name, channels)) {
 		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channel.getName()), 0);
 	}
