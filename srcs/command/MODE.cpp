@@ -40,8 +40,11 @@ void MODE(
 
 	if (params.size() == 1) {
 			channel.setCreatedTime(getTimestamp());
-			sendMessage(fd, RPL_CHANNELMODEIS(nick, channelName, "+", "nt"), 0);
-			sendMessage(fd, RPL_CREATIONTIME(nick, channelName, channel.getCreatedTime()), 0);
+			sendMessage(
+					fd,
+					RPL_CHANNELMODEIS(nick, channel.getName(), "+", "nt")
+					+ RPL_CREATIONTIME(nick, channel.getName(), channel.getCreatedTime()),
+					0);
 	}
 	else if (params.size() > 1) {
 		const char isAllow = params.at(1)[0]; // + or -
@@ -75,8 +78,7 @@ void executeMode(
 	else if (mode == 'k')
 		exec_k(isAllow, channel, client, params);
 	else if (mode == 'l')
-	{
-	}
+		;
 }
 
 /**
@@ -161,8 +163,11 @@ void exec_k(
 		return;
 	else if (params.size() < 3)
 	{
-		sendMessage(fd, RPL_CHANNELMODEIS(nick, channel.getName(), "+", "nt"), 0);
-		sendMessage(fd, RPL_CREATIONTIME(nick, channel.getName(), channel.getCreatedTime()), 0);
+		sendMessage(
+			fd,
+		RPL_CHANNELMODEIS(nick, channel.getName(), "+", "nt")
+		+ RPL_CREATIONTIME(nick, channel.getName(), channel.getCreatedTime()),
+		 0);
 		return;
 	}
 
