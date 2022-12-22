@@ -23,14 +23,13 @@ public:
 	// setter getter
 	void clearParsedMessage();
 
-	const int &getFd() const { return fd_; }
-	const std::string &getNickname() const { return nickname_; }
-	const std::string &getUsername() const { return username_; }
-	const std::string &getHostname() const { return hostname_; }
-	const std::string &getRealname() const { return realname_; }
-	const std::string &getPrefix() const { return prefix_; }
-	const std::string &getCommand() const { return command_; }
-	std::map<std::string, Channel> &getChannels() ;
+	const int getFd() const { return fd_; }
+	const std::string getNickname() const { return nickname_; }
+	const std::string getUsername() const { return username_; }
+	const std::string getRealname() const { return realname_; }
+	const std::string getPrefix() const { return prefix_; }
+	const std::string getCommand() const { return command_; }
+	std::map<std::string, Channel> getChannels() ;
 
 	const std::vector<std::string> &getParams() const { return params_; }
 	void setNickname(std::string nick) { nickname_ = nick; }
