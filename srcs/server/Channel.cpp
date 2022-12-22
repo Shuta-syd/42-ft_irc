@@ -1,7 +1,7 @@
 #include <Channel.hpp>
 #include <Client.hpp>
 
-Channel::Channel(): topicAllow_(false), maxMember_(-1) {}
+Channel::Channel(): topicAllow_(false), maxMember_(-1), mode_("nt") {}
 
 Channel::~Channel(){}
 
@@ -45,10 +45,6 @@ void Channel::eraseMember(Client const &client) {
 	std::vector<Client>::iterator itr_begin = members_.begin();
 
 	for (; itr_begin != members_.end(); itr_begin++) {
-//		std::cout
-//		<< "NICK: "
-//		<< itr_begin->getNickname()
-//		<< std::endl;
 		if (client.getNickname() == itr_begin->getNickname()) {
 		if (!members_.empty()) {
 
@@ -79,3 +75,29 @@ void Channel::delOper(std::string name) {
 			}
 }
 
+
+void Channel::addMode(const char mode) {
+	for (
+			std::string::iterator it = mode_.begin();
+			it != mode_.end();
+			++it)
+	{
+		if (*it == mode)
+		return;
+	}
+	mode_.push_back(mode);
+}
+
+void Channel::delMode(const char mode) {
+	for (
+		std::string::iterator it = mode_.begin();
+		it != mode_.end();
+		++it)
+	{
+		if (*it == mode)
+		{
+			mode_.erase(it);
+			return ;
+		}
+	}
+}

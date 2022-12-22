@@ -43,8 +43,8 @@ void MODE(
 			channel.setCreatedTime(getTimestamp());
 			sendMessage(
 					fd,
-					RPL_CHANNELMODEIS(nick, channel.getName(), "+", "nt")
-					+ RPL_CREATIONTIME(nick, channel.getName(), channel.getCreatedTime()),
+					RPL_CHANNELMODEIS(nick, channel.getName(), "+", channel.getMode() + " " + channel.getKey())
+					+RPL_CREATIONTIME(nick, channel.getName(), channel.getCreatedTime()),
 					0);
 	}
 	else if (params.size() > 1) {
@@ -119,15 +119,22 @@ void exec_o(
 	{
 		sendMessage(
 				clientFd,
-				RPL_CHANNELMODEIS(nick, channel.getName(), "+", "nt") + RPL_CREATIONTIME(nick, channel.getName(), channel.getCreatedTime()),
+				RPL_CHANNELMODEIS(nick, channel.getName(), "+", channel.getMode() + " " + channel.getKey())
+				+ RPL_CREATIONTIME(nick, channel.getName(), channel.getCreatedTime()),
 				0);
 		return;
 	}
 
 	if (isAllow == '+')
+	{
 		channel.addOper(params.at(2));
+		channel.addMode('o');
+	}
 	else if (isAllow == '-')
+	{
 		channel.delOper(params.at(2));
+		channel.delMode('-');
+	}
 
 		for (size_t i = 0; i < members.size(); i++)
 			sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), "host", target, channel.getName(), isAllow, 'o'), 0);
@@ -148,9 +155,15 @@ void exec_t(
 	if (isOper(channel, client) == false)
 		return;
 	if (isAllow == '+')
+	{
 		channel.setTopicAllow(false);
+		channel.addMode('t');
+	}
 	else if (isAllow == '-')
+	{
 		channel.setTopicAllow(true);
+		channel.delMode('t');
+	}
 	for (size_t i = 0; i < members.size(); i++)
 		sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), "host", "", channel.getName(), isAllow, 't'), 0);
 }
@@ -175,16 +188,22 @@ void exec_k(
 	{
 		sendMessage(
 			fd,
-		RPL_CHANNELMODEIS(nick, channel.getName(), "+", "nt")
-		+ RPL_CREATIONTIME(nick, channel.getName(), channel.getCreatedTime()),
+			RPL_CHANNELMODEIS(nick, channel.getName(), "+", channel.getMode() + " " + channel.getKey())
+			+ RPL_CREATIONTIME(nick, channel.getName(), channel.getCreatedTime()),
 		 0);
 		return;
 	}
 
 	if (isAllow == '+' && params.size() > 2)
+	{
 		channel.setKey(params.at(2));
+		channel.addMode('k');
+	}
 	else if (isAllow == '-')
+	{
 		channel.setKey("");
+		channel.delMode('k');
+	}
 	for (size_t i = 0; i < members.size(); i++)
 		sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), "host", channel.getKey(), channel.getName(), isAllow, 'k'), 0);
 }
@@ -211,7 +230,8 @@ void exec_l(
 	{
 		sendMessage(
 				fd,
-				RPL_CHANNELMODEIS(nick, channel.getName(), "+", "nt") + RPL_CREATIONTIME(nick, channel.getName(), channel.getCreatedTime()),
+				RPL_CHANNELMODEIS(nick, channel.getName(), "+", channel.getMode() + " " + channel.getKey())
+				+ RPL_CREATIONTIME(nick, channel.getName(), channel.getCreatedTime()),
 				0);
 		return;
 	}
@@ -220,11 +240,15 @@ void exec_l(
 	{
 		channel.setMaxMember(std::stoi(params.at(2)));
 		maxMember = params.at(2);
+		channel.addMode('l');
 	}
 	else if (isAllow == '-')
+	{
 		channel.setMaxMember(-1);
+		channel.delMode('l');
+	}
 	for (size_t i = 0; i < members.size(); i++)
-		sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), "host", channel.getKey(), channel.getName(), isAllow, "l " + maxMember), 0);
+		sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), "host", "", channel.getName(), isAllow, "l " + maxMember), 0);
 }
 
 
