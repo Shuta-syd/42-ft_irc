@@ -38,8 +38,12 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define RPL_NAMREPLY(nick, channelName, memberNames) ":ft_irc 353 " + nick + " = #" + channelName + " :" + memberNames + "\r\n"
 #define RPL_ENDOFNAMES(nick, channelName) ":ft_irc 366 " + nick + " #" + channelName + " :End of /NAMES list\r\n"
 
+# define RPL_INVITING(nick, channel)				":ircserv 341 " + nick + " " + channel + " :Inviting " + nick + " to " + channel + "\r\n"
+
+
 #define RPL_CHANNELMODEIS(nick, channelName, isAllow, mode) ":ft_irc 324 " + nick + " #" + channelName + " " + isAllow + mode + "\r\n"
 #define RPL_CREATIONTIME(nick, channelName, nowTime) ":ft_irc 329 " + nick + " #" + channelName + " " + nowTime + "\r\n"
+
 
 /**
  * ERROR Response
@@ -54,3 +58,4 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define ERR_NOSUCHNICK(nick) ":ft_irc 401 " + nick + " :No such nick\r\n"
 #define ERR_NOTJOIN(nick, channelName) ":ft_irc #" + channelName + " You're not on that channel\r\n"
 #define ERR_NOTONCHANNEL(nick, channel) ":ircserv 442 " + nick + " #" + channel + " :You're not on that channel\n"
+# define ERR_ALREADYREGISTRED(nick)					":ircserv 462 " + nick + " :You may not reregister\r\n"

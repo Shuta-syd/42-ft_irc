@@ -31,8 +31,6 @@ public:
 	const std::string &getPrefix() const { return prefix_; }
 	const std::string &getCommand() const { return command_; }
 	std::map<std::string, Channel> &getChannels() ;
-
-
 	const std::vector<std::string> &getParams() const { return params_; }
 	void setNickname(std::string nick) { nickname_ = nick; }
 	void setUsername(std::string username) { username_ = username; }

@@ -17,6 +17,29 @@ void Channel::setKey(std::string key) { key_ = key; }
 void Channel::setTopic(std::string topic) { topic_ = topic; }
 void Channel::addOper(std::string name) { opers_.push_back(name); }
 
+
+bool Channel::is_inChannel(std::string const &nick_nme)  {
+
+	std::vector<Client> const &members = this->getMember();
+	for (std::vector<Client>::const_iterator  it = members.begin(); it !=members.end(); it++) {
+		if (it->getNickname() == nick_nme) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Channel::is_operator(const std::string &nick_name) {
+
+	std::vector<std::string> const  &members = this->getOper();
+	for (std::vector<std::string>::const_iterator  it = members.begin(); it != members.end(); it++) {
+		if (*it== nick_name) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void Channel::eraseMember(Client const &client) {
 	std::cout << "\nthis is in erase member function" << std::endl;
 	std::vector<Client>::iterator itr_begin = members_.begin();
@@ -55,3 +78,4 @@ void Channel::delOper(std::string name) {
 					return;
 			}
 }
+

@@ -26,8 +26,11 @@ public:
 	void setTopic(std::string topic);
 	void setTopicAllow(bool isAllow) { topicAllow_ = isAllow; }
 	void addOper(std::string name);
+	bool is_inChannel(std::string const &nick_name);
+	bool is_operator(std::string const &nick_name);
 	void eraseMember(Client const &name);
 	void delOper(std::string name);
+
 
 private:
 	std::string name_;

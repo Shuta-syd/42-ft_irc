@@ -21,7 +21,7 @@ srcs += $(addprefix srcs/utils/,\
 srcs += $(addprefix srcs/command/,\
 		CAP.cpp NICK.cpp USER.cpp PONG.cpp MODE.cpp PASS.cpp\
 		JOIN.cpp PRIVMSG.cpp QUIT.cpp NAMES.cpp TOPIC.cpp KICK.cpp\
-		PART.cpp \
+		INVITE.cpp PART.cpp\
 )
 
 OBJS := $(srcs:%.cpp=OBJS/%.o)
@@ -55,7 +55,7 @@ $(NAME): $(OBJS)
 	@echo "$(CYN)==============$(RES)"
 
 ./OBJS/%.o: %.cpp $(OBJS_DIR) $(DEPS_DIR)
-	@$(CXX) $(CXXFLAGS) -I$(INC) $(headerflags) -MF ./DEPS/$(*).d -c $< -o $@
+	@$(CXX) $(CXXFLAGS)  -I$(INC) $(headerflags) -MF ./DEPS/$(*).d -c $< -o $@
 	@echo "$< =========> $(GRN) $@ $(RES)"
 
 $(OBJS_DIR):

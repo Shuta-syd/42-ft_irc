@@ -103,9 +103,11 @@ void enterChannel(
 
 		if (channel.getTopic() != "")
 				sendMessage(fd, RPL_TOPIC(nick, channelName, channel.getTopic()), 0);
+
 		sendMessage(fd, RPL_NAMREPLY(nick, channelName, names), 0);
 		sendMessage(fd, RPL_ENDOFNAMES(nick, channelName), 0);
 		channelDebug(allChannel, client.getChannels(), channelName);
+
 	}
 	else
 		sendMessage(fd, ERR_BADCHANNELKEY(nick, channelName), 0);

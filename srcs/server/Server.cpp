@@ -110,7 +110,7 @@ void Server::execute(Client &client)
 	std::cout << CYN << cmd << " COMMAND" << RES << std::endl;
 
 	if (cmd == "CAP") {
-		CAP(client, params);
+		CAP(client, *this);
 		return;
 	} else if (cmd == "PASS") {
 		PASS(client, password_);
@@ -141,10 +141,12 @@ void Server::execute(Client &client)
 	else if (cmd == "KICK")
 		KICK(client, channels_, *this);
 	else if (cmd == "MOTD") {}
+	else if (cmd == "INVITE") {
+		INVITE(client, channels_, *this);
+	}
 	else if (cmd == "PART") {
 		PART(client, channels_);
 	}
-	else if (cmd == "INVITE") {}
 	else if (cmd == "KILL") {}
 	else if (cmd == "QUIT") {}
 }
