@@ -1,5 +1,6 @@
 #include <Utils.hpp>
-#include <iostream>
+#include <Client.hpp>
+
 
 /**
  * @brief find target from str
@@ -71,6 +72,9 @@ const std::vector<std::string> splitChannel(const std::string &param)
 	return channels;
 }
 
+/**
+ * @brief
+ */
 std::vector<std::string> split(std::string str, std::string del) {
 	uint64_t first = 0;
 	uint64_t last = str.find_first_of(del);
@@ -89,4 +93,54 @@ std::vector<std::string> split(std::string str, std::string del) {
 		}
 	}
 	return res;
+}
+
+/**
+ * @brief output difference between server channels and client
+ */
+void channelDebug(std::map<std::string, Channel> server, std::map<std::string, Channel> client, std::string channelName) {
+	const Channel serverCh = server[channelName];
+	const Channel clientCh = client[channelName];
+
+	std::cout << CYN << "------------------------Channel diff------------------------" << RES <<std::endl;
+	std::cout << "Name: "<< "server[" << serverCh.getName() << "]  " << "client [" << clientCh.getName() << "]" << std::endl;
+	std::cout << "Key: "<< "server[" << serverCh.getKey() << "]  " << "client [" << clientCh.getKey() << "]" << std::endl;
+	std::cout << "Topic: "<< "server[" << serverCh.getTopic() << "]  " << "client [" << clientCh.getTopic() << "]" << std::endl;
+	const std::vector<std::string> serverOper = serverCh.getOper();
+	const std::vector<std::string> clientOper = clientCh.getOper();
+
+	std::cout << "---server channel opers---" << std::endl;
+	for (size_t i = 0; i < serverOper.size(); i++)
+		std::cout << "[" << serverOper[i] << "] ";
+	std::cout << std::endl;
+
+	std::cout << "---client channel opers---" << std::endl;
+	for (size_t i = 0; i < clientOper.size(); i++)
+		std::cout << "[" << clientOper[i] << "] ";
+	std::cout << std::endl;
+
+	const std::vector<Client> serverMember = serverCh.getMember();
+	const std::vector<Client> clientMember = clientCh.getMember();
+
+	std::cout << "---server channel members---" << std::endl;
+	for (size_t i = 0; i < serverMember.size(); i++)
+		std::cout << "[" << serverMember[i].getNickname() << "]";
+	std::cout << std::endl;
+
+	std::cout << "---client channel members---" << std::endl;
+	for (size_t i = 0; i < clientMember.size(); i++)
+		std::cout << "[" << clientMember[i].getNickname() << "]";
+	std::cout << std::endl;
+
+	std::cout << CYN << "------------------------------------------------------------" <<  RES << std::endl;
+}
+
+/**
+ * @brief get current time
+ */
+std::string getTimestamp() {
+	std::time_t timestamp = std::time(0);
+	std::string time = std::to_string(timestamp);
+
+	return time;
 }
