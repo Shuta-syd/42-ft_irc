@@ -1,5 +1,5 @@
 NAME := ircserv
-CXXFLAGS := c++
+CXX := c++
 RM := rm -rf
 
 OBJS_DIR += srcs/
@@ -21,7 +21,7 @@ srcs += $(addprefix srcs/utils/,\
 srcs += $(addprefix srcs/command/,\
 		CAP.cpp NICK.cpp USER.cpp PONG.cpp MODE.cpp PASS.cpp\
 		JOIN.cpp PRIVMSG.cpp QUIT.cpp NAMES.cpp TOPIC.cpp KICK.cpp\
-		INVITE.cpp\
+		INVITE.cpp PART.cpp\
 )
 
 OBJS := $(srcs:%.cpp=OBJS/%.o)
@@ -37,7 +37,8 @@ INC= inc
 
 debugflags := -g3 -fsanitize=address
 headerflags := -MMD -MP
-CXXFLAGS := #-Wall -Werror -Wextra -std=c++98
+#CXXFLAGS := -Wall -Werror -Wextra -std=c++17
+CXXFLAGS := -std=c++17
 
 ############# basic rules ##############
 .PHONY: all clean fclean re

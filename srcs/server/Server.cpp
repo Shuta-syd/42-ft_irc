@@ -87,8 +87,23 @@ void Server::chat(int fd) {
  * @brief command execute func
  * @param client
  */
+
+void Server::debug_all_channels_situation() {
+	std::cerr << "_____CHANNEL SITUATION_______" << std::endl;
+	for (auto ch : this->channels_) {
+		std::cerr << "CHANNEL NAME : " << ch.first << std::endl;
+		for (auto member : ch.second.getMember()) {
+			std::cerr << member.getNickname() << std::endl;
+		}
+	}
+	std::cerr << "_____________________________" << std::endl;
+}
+
+
 void Server::execute(Client &client)
 {
+	this->debug_all_channels_situation();
+
 	const std::string &cmd = client.getCommand();
 	const std::vector<std::string> &params = client.getParams();
 
@@ -124,11 +139,13 @@ void Server::execute(Client &client)
 	else if (cmd == "QUIT")
 		QUIT(client, *this);
 	else if (cmd == "KICK")
-		KICK(client, channels_);
+		KICK(client, channels_, *this);
 	else if (cmd == "MOTD") {}
-	else if (cmd == "PART") {}
 	else if (cmd == "INVITE") {
 		INVITE(client, channels_, *this);
+	}
+	else if (cmd == "PART") {
+		PART(client, channels_);
 	}
 	else if (cmd == "KILL") {}
 	else if (cmd == "QUIT") {}

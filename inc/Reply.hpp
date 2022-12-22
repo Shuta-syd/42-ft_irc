@@ -25,19 +25,26 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define NICK_MESSAGE(oldNick, newNick) ":" + oldNick + " NICK :"+ newNick + "\r\n"
 #define PONG_MESSAGE(serverName) ":ft_irc PONG :" + serverName + "\r\n"
 
-#define JOIN_MESSAGE(nick, channelName) ":" + nick + " JOIN #" + channelName + "\r\n"
-#define SETTOPIC_MESSAGE(nick, channelName, topic) ":" + nick + " TOPIC #" + channelName + " :" + topic + "\r\n"
+#define JOIN_MESSAGE(nick, user, host, channelName) ":" + nick + "!" + user +  "@" + host + " JOIN #" + channelName + "\r\n"
+#define SETTOPIC_MESSAGE(nick, user, host, channelName, topic) ":" + nick + "!" + user + "@" + host + " TOPIC #" + channelName + " :" + topic + "\r\n"
 #define RPL_NOTOPIC(nick, channelName) ":ft_irc 331 " + nick + " TOPIC " + channelName + " :No topic set for #" + channelName + "\r\n"
-#define MODE_MESSAGE(operNick, targetNick, channelName, isAllow, mode) ":" + operNick + " MODE #" + channelName + " " + isAllow + mode + " " + targetNick + "\r\n"
+#define MODE_MESSAGE(operNick, user, host, targetNick, channelName, isAllow, mode) ":" + operNick + "!" + user + "@" + host + " MODE #" + channelName + " " + isAllow + mode + " " + targetNick + "\r\n"
 
 #define RPL_NONE(message) ":ircserv 300 * :" + message + "\n"
 # define ERR_NORECIPIENT(nick, command)				":ircserv 411 " + nick + " :No recipient given " + command + "\n"
 # define ERR_NOTEXTTOSEND(nick)						":ircserv 412 " + nick + " :No text to send\n"
 
 #define RPL_TOPIC(nick, channelName, topic) ":ft_irc 332 " + nick + " #" + channelName + " :" + topic + "\r\n"
-#define RPL_NAMREPLY(nick, channelName, operNames) ":ft_irc 353 " + nick + " = #" + channelName + " " + operNames + "\r\n"
+#define RPL_NAMREPLY(nick, channelName, memberNames) ":ft_irc 353 " + nick + " = #" + channelName + " :" + memberNames + "\r\n"
 #define RPL_ENDOFNAMES(nick, channelName) ":ft_irc 366 " + nick + " #" + channelName + " :End of /NAMES list\r\n"
+
 # define RPL_INVITING(nick, channel)				":ircserv 341 " + nick + " " + channel + " :Inviting " + nick + " to " + channel + "\r\n"
+
+
+#define RPL_CHANNELMODEIS(nick, channelName, isAllow, mode) ":ft_irc 324 " + nick + " #" + channelName + " " + isAllow + mode + "\r\n"
+#define RPL_CREATIONTIME(nick, channelName, nowTime) ":ft_irc 329 " + nick + " #" + channelName + " " + nowTime + "\r\n"
+
+
 /**
  * ERROR Response
  */
@@ -45,7 +52,7 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define ERR_TOOMANYCHANNELS(nick, channelName) ":ft_irc 405 " + nick + " #" + channelName + " :Too many channel\r\n"
 #define ERR_BADCHANNELKEY(nick, channelName) ":ft_irc 457 " + nick + " #" + channelName + " :Cannot join channel (+k) - bad key\r\n"
 #define ERR_NEEDMOREPARAMS(nick, cmdName) ":ft_irc 461 " + nick + " " + cmdName + " :Not enough parameters\r\n"
-#define ERR_NOPRIVILEGES(nick) ":ircserv 481 " + nick + " :Permission Denied- You're not an IRC operator\n"
+#define ERR_NOPRIVILEGES(nick) ":ft_irc 481 " + nick + " :Permission Denied- You're not an IRC operator\r\n"
 #define ERR_NOCHANMODES(nick, mode) ":ft_irc 472 " + nick + " " + mode + " :is an unknown mode character to me\r\n"
 #define ERR_CHANOPRIVSNEEDED(nick, channelName) ":ft_irc 482 " + nick + " #" + channelName + " :You're not a channel operator\r\n"
 #define ERR_NOSUCHNICK(nick) ":ft_irc 401 " + nick + " :No such nick\r\n"
