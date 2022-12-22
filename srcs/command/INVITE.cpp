@@ -28,6 +28,7 @@ bool validate_msg(Client &client, const std::vector< std::string> &params, const
 	}
 	return true;
 }
+
 void INVITE(Client &client, const std::map<std::string, Channel> &channels, Server &server)
 {
 	/* error check part */
