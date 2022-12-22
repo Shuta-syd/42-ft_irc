@@ -11,6 +11,7 @@ void TOPIC(
 	std::map<std::string, Channel> &allChannels
 	) {
 	bool isOper = false;
+	bool isSetTopicAllow = false;
 	const int &fd = client.getFd();
 	const std::string &nick = client.getNickname();
 	std::map<std::string, Channel> channels = client.getChannels();
@@ -30,13 +31,15 @@ void TOPIC(
 		const std::vector<std::string> operNames = channel.getOper();
 		for (size_t i = 0; i < operNames.size(); i++)
 			operNames[i] == nick ? isOper = true : isOper;
+		isSetTopicAllow = channel.getTopicAllow();
+		std::cout << isSetTopicAllow << std::endl;
 	}
 
 	if (joinedChannel == false && existChannel)
 		sendMessage(fd, ERR_NOTJOIN(nick, channelName), 0);
 	else if (existChannel == false)
 		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channelName), 0);
-	else if (isOper == false)
+	else if (isOper == false && isSetTopicAllow == false)
 		sendMessage(fd, ERR_CHANOPRIVSNEEDED(nick, channelName), 0);
 	else if (params.size() == 1 && joinedChannel && existChannel) {
 		// show specific channel topic

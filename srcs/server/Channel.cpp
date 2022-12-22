@@ -1,7 +1,7 @@
 #include <Channel.hpp>
 #include <Client.hpp>
 
-Channel::Channel() {}
+Channel::Channel(): topicAllow_(false) {}
 
 Channel::~Channel(){}
 
