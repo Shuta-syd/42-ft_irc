@@ -23,17 +23,20 @@ public:
 	// setter getter
 	void clearParsedMessage();
 
-	const int getFd() const { return fd_; }
-	const std::string getNickname() const { return nickname_; }
-	const std::string getUsername() const { return username_; }
-	const std::string getRealname() const { return realname_; }
-	const std::string getPrefix() const { return prefix_; }
-	const std::string getCommand() const { return command_; }
-	std::map<std::string, Channel> getChannels() ;
+	const int &getFd() const { return fd_; }
+	const std::string &getNickname() const { return nickname_; }
+	const std::string &getUsername() const { return username_; }
+	const std::string &getHostname() const { return hostname_; }
+	const std::string &getRealname() const { return realname_; }
+	const std::string &getPrefix() const { return prefix_; }
+	const std::string &getCommand() const { return command_; }
+	std::map<std::string, Channel> &getChannels() ;
+
 
 	const std::vector<std::string> &getParams() const { return params_; }
 	void setNickname(std::string nick) { nickname_ = nick; }
 	void setUsername(std::string username) { username_ = username; }
+	void setHostname(std::string hostname) { hostname_ = hostname; }
 	void setRealname(std::string realname) { realname_ = realname; }
 	const bool &getIsAuth() const { return is_auth_; }
 	void setIsAuth(bool is_auth) { is_auth_ = is_auth; }
@@ -49,9 +52,11 @@ private:
 	bool is_auth_;
 	std::string nickname_; // max len 9
 	std::string username_;
+	std::string hostname_;
 	std::string realname_;
 	std::string prefix_;
 	std::string command_;
 	std::vector<std::string> params_;
 	std::map<std::string, Channel> channels_; // channels This belong to
+	void debug_parser();
 };

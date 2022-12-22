@@ -26,6 +26,7 @@ public:
 	void setTopic(std::string topic);
 	void setTopicAllow(bool isAllow) { topicAllow_ = isAllow; }
 	void addOper(std::string name);
+	void eraseMember(Client const &name);
 	void delOper(std::string name);
 
 private:

@@ -63,6 +63,6 @@ private:
 	void allow();
 
 	void chat(int);
-
 	void execute(Client & client);
+	void debug_all_channels_situation();
 };

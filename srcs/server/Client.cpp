@@ -11,14 +11,8 @@ Client::~Client() {}
 /**
  * @brief Parsing irc client messages into three types
 	*/
-void Client::parse(const std::string &message) {
-	int i = 0;
 
-	if (message[i] == ':')
-		this->parsePrefix(message, i);
-	this->parseCommand(message, i);
-	this->parseParams(message, i);
-
+void Client::debug_parser() {
 	std::cout << GRN << "-------Parsed Message-------" << RES << std::endl;
 	std::cout << "Prefix: " << "[" << this->getPrefix() << "]"<< std::endl;
 	std::cout << "Command: " << "["<< this->getCommand() << "]" << std::endl;
@@ -27,6 +21,16 @@ void Client::parse(const std::string &message) {
 		std::cout << "["<< this->getParams()[i] << "]" << std::endl;
 	std::cout << "End" << std::endl;
 	std::cout << GRN << "---------------------------" << RES << std::endl;
+}
+
+void Client::parse(const std::string &message) {
+	int i = 0;
+
+	if (message[i] == ':')
+		this->parsePrefix(message, i);
+	this->parseCommand(message, i);
+	this->parseParams(message, i);
+//	void debug_parser();
 }
 
 /**
