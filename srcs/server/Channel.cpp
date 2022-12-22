@@ -21,17 +21,25 @@ void Channel::eraseMember(Client const &client) {
 	std::cout << "\nthis is in erase member function" << std::endl;
 	std::vector<Client>::iterator itr_begin = members_.begin();
 
-//	for (; itr_begin != members_.end(); itr_begin++) {
+	for (; itr_begin != members_.end(); itr_begin++) {
 //		std::cout
 //		<< "NICK: "
 //		<< itr_begin->getNickname()
 //		<< std::endl;
-//		if (client.getNickname() == itr_begin->getNickname()) {
-//		if (!members_.empty()) {
-			std::cout << itr_begin->getNickname();
-			std::cout << this->getName();
+		if (client.getNickname() == itr_begin->getNickname()) {
+		if (!members_.empty()) {
+
+			std::cout << "!!this!!\n"
+			<< "itr_begin->getNickname() : "
+			<< itr_begin->getNickname()
+			<< "\n";
+			std::cout
+			<< "channel name: "
+			<< this->getName()
+			<< "\n";
 			members_.erase(itr_begin);
-//		}
-//		}
-//	}
+			return ;
+		}
+		}
+	}
 }

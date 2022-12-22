@@ -41,12 +41,12 @@ bool is_nick_in_channel(std::string const &nick, Channel &channel) {
 	return false;
 }
 //#ありで送られてくるの見逃してた。。。
-void KICK(Client &client, std::map<std::string, Channel> channels, Server &server) {
+void KICK(Client &client, std::map<std::string, Channel> &channels, Server &server) {
 	int fd = client.getFd();
 	std::string const &nick = client.getNickname();
 	std::string param1 = client.getParams()[0];
 	param1.erase(param1.begin());
-	Channel channel = channels[param1];
+	Channel &channel = channels[param1];
 	std::cout << "+++++++++++++++\n"
 	<< param1
 	<< std::endl
