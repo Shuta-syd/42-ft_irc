@@ -30,7 +30,7 @@ void Client::parse(const std::string &message) {
 		this->parsePrefix(message, i);
 	this->parseCommand(message, i);
 	this->parseParams(message, i);
-//	void debug_parser();
+	debug_parser();
 }
 
 /**

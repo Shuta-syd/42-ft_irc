@@ -59,3 +59,4 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define ERR_NOTJOIN(nick, channelName) ":ft_irc #" + channelName + " You're not on that channel\r\n"
 #define ERR_NOTONCHANNEL(nick, channel) ":ircserv 442 " + nick + " #" + channel + " :You're not on that channel\n"
 # define ERR_ALREADYREGISTRED(nick)					":ircserv 462 " + nick + " :You may not reregister\r\n"
+#define ERR_CHANNELISFULL(nick, channelName) ":ft_irc 471 " + nick +  " #" + channelName + " :Cannot join channel (+l)\r\n"

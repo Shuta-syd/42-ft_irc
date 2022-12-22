@@ -102,7 +102,7 @@ void Server::debug_all_channels_situation() {
 
 void Server::execute(Client &client)
 {
-	this->debug_all_channels_situation();
+	// this->debug_all_channels_situation();
 
 	const std::string &cmd = client.getCommand();
 	const std::vector<std::string> &params = client.getParams();
