@@ -54,7 +54,7 @@ $(NAME): $(OBJS)
 	@echo "$(CYN)==============$(RES)"
 
 ./OBJS/%.o: %.cpp $(OBJS_DIR) $(DEPS_DIR)
-	@$(CXX) $(CXXFLAGS) -I$(INC) $(headerflags) -MF ./DEPS/$(*).d -c $< -o $@
+	@$(CXX) $(CXXFLAGS)  -I$(INC) $(headerflags) -MF ./DEPS/$(*).d -c $< -o $@
 	@echo "$< =========> $(GRN) $@ $(RES)"
 
 $(OBJS_DIR):
