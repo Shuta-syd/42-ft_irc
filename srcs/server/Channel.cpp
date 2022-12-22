@@ -42,6 +42,7 @@ void Channel::eraseMember(Client const &client) {
 		}
 		}
 	}
+}
 
 void Channel::delOper(std::string name) {
 	for (
