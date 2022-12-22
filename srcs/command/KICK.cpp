@@ -51,6 +51,16 @@ bool is_exist_ch(std::string const &ch_name, std::map<std::string, Channel> &cha
 	return false;
 }
 
+bool is_operator(Channel &channel, std::string const &nick) {
+	std::vector<std::string> opes = channel.getOper();
+	for (size_t i = 0; i < opes.size(); i++) {
+		if (opes[i] == nick) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void KICK(Client &client, std::map<std::string, Channel> &channels, Server &server) {
 	int fd = client.getFd();
 	std::string const &nick = client.getNickname();
@@ -68,16 +78,16 @@ void KICK(Client &client, std::map<std::string, Channel> &channels, Server &serv
 	if (client.getParams()[0].size() < 2) {
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "KICK"), 0);
 	}
-//	else if (channel.getOper() != nick) {
-//		sendMessage(fd, ERR_NOPRIVILEGES(nick), 0);
-//	} //operatorは複数人いる可能性があるのでvectorになる
+	else if (is_operator(channel, nick) == false) {
+		sendMessage(fd, ERR_NOPRIVILEGES(nick), 0);
+	}
 	else if (is_nick_in_channel(frightened_person, channel) == false) {
 		sendMessage(fd, ERR_NOSUCHNICK(frightened_person), 0);
 	}
 	else if (is_nick_in_channel(nick, channel) == false) {
 		sendMessage(fd, ERR_NOTONCHANNEL(nick, channel.getName()), 0);
 	}
-	else if (!is_exist_ch(ch_name, channels)) {
+	else if (is_exist_ch(ch_name, channels) == false) {
 		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channel.getName()), 0);
 	}
 	else {
