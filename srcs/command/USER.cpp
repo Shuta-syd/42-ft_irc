@@ -21,6 +21,7 @@ void USER(Client &client) {
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "USER "), 0);
 	} else {
 		client.setUsername(client.getParams()[0]);
+		client.setHostname(client.getParams()[1]);
 		client.setRealname(client.getParams()[3]);
 	}
 }
