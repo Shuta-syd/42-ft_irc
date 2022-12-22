@@ -38,6 +38,9 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define RPL_NAMREPLY(nick, channelName, memberNames) ":ft_irc 353 " + nick + " = #" + channelName + " :" + memberNames + "\r\n"
 #define RPL_ENDOFNAMES(nick, channelName) ":ft_irc 366 " + nick + " #" + channelName + " :End of /NAMES list\r\n"
 
+#define RPL_CHANNELMODEIS(nick, channelName, isAllow, mode) ":ft_irc 324 " + nick + " #" + channelName + " " + isAllow + mode + "\r\n"
+#define RPL_CREATIONTIME(nick, channelName, nowTime) ":ft_irc 329 " + nick + " #" + channelName + " " + nowTime + "\r\n"
+
 /**
  * ERROR Response
  */

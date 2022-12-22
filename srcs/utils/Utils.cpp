@@ -1,7 +1,6 @@
 #include <Utils.hpp>
-#include <iostream>
 #include <Client.hpp>
-#include <Colors.hpp>
+
 
 /**
  * @brief find target from str
@@ -134,4 +133,14 @@ void channelDebug(std::map<std::string, Channel> server, std::map<std::string, C
 	std::cout << std::endl;
 
 	std::cout << CYN << "------------------------------------------------------------" <<  RES << std::endl;
+}
+
+/**
+ * @brief get current time
+ */
+std::string getTimestamp() {
+	std::time_t timestamp = std::time(0);
+	std::string time = std::to_string(timestamp);
+
+	return time;
 }

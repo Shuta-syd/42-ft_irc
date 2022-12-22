@@ -1,5 +1,6 @@
 #include <Command.hpp>
 bool isCorrectMode(const char &mode);
+void exec_t(const char isAllow, Channel &channel, const Client &client);
 void exec_o(const char isAllow, Channel &channel, const Client &client, const std::string &target);
 void executeMode(const char isAllow, const char &mode, const std::vector<std::string> &params, Channel &channel, const Client &client);
 
@@ -33,7 +34,11 @@ void MODE(
 	}
 	Channel &channel = allChannels[channelName];
 
-	if (params.size() > 1) {
+	if (params.size() == 1) {
+			sendMessage(fd, RPL_CHANNELMODEIS(nick, channelName, "+", "nt"), 0);
+			sendMessage(fd, RPL_CREATIONTIME(nick, channelName, getTimestamp()), 0);
+	}
+	else if (params.size() > 1) {
 		const char isAllow = params.at(1)[0]; // + or -
 		const std::string &mode = &params.at(1)[1];
 		for (size_t i = 0; i < mode.size(); i++)
@@ -118,4 +123,16 @@ void exec_o(
 
 		for (size_t i = 0; i < members.size(); i++)
 			sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), "host", target, channel.getName(), isAllow, 'o'), 0);
+}
+
+
+/**
+ * @brief set topic right is allowed or disallowed
+ */
+void exec_t(
+	const char isAllow,
+	Channel &channel,
+	const Client &client
+) {
+
 }
