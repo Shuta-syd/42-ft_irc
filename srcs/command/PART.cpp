@@ -24,6 +24,12 @@ void PART(Client &client, std::map<std::string, Channel> &channels, Server &serv
 	} else if (is_exist_ch(ch_name, channels) == false) {
 			sendMessage(fd, ERR_NOSUCHCHANNEL(my_name, channel.getName()), 0);
 	} else {
+		std::string reply_message = client.getNickname()
+				+ " PART "
+				+ ch_name
+				+ "\n";
+		sendMessage(fd, reply_message, 0);
+
 		int my_fd = server.getFd_from_nick(my_name);
 		std::map<int, Client> mp = server.getUsers();
 		Client my_account = mp[my_fd];
