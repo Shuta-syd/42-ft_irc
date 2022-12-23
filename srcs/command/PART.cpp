@@ -21,6 +21,8 @@ void PART(Client &client, std::map<std::string, Channel> &channels, Server &serv
 		sendMessage(fd, ERR_NEEDMOREPARAMS(my_name, "PART"), 0);
 	} else if (is_nick_in_channel(my_name, channel) == false) {
 		sendMessage(fd, ERR_NOTONCHANNEL(my_name, ch_name), 0);
+	} else if (is_exist_ch(ch_name, channels) == false) {
+			sendMessage(fd, ERR_NOSUCHCHANNEL(my_name, channel.getName()), 0);
 	} else {
 		int my_fd = server.getFd_from_nick(my_name);
 		std::map<int, Client> mp = server.getUsers();

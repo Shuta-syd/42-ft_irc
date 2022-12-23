@@ -21,5 +21,5 @@ void PART(Client &client, std::map<std::string, Channel> &channels, Server &serv
 void debug_member_in_channel(Channel const &channel);
 void debug_channel_in_user(Client &client);
 bool is_nick_in_channel(std::string const &nick, Channel &channel);
-
+bool is_exist_ch(std::string const &ch_name, std::map<std::string, Channel> &channels);
 
