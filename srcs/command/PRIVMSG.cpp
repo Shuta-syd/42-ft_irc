@@ -6,7 +6,7 @@ bool isCorrectFmt(std::vector<std::string> const &params, Client &client);
  *
  * PRIVMSG <target> <message to send>
  */
-void PRIVMSG(Client &client, Server &server, std::map<std::string, Channel> &channels)
+void PRIVMSG(Client &client, std::map<std::string, int> mp_nick_to_fd, std::map<std::string, Channel> &channels)
 {
 	std::string nick = client.getNickname();
 	std::vector<std::string> const &params = client.getParams();
@@ -38,7 +38,7 @@ void PRIVMSG(Client &client, Server &server, std::map<std::string, Channel> &cha
 		int fd;
 		const std::string targetNick = params.at(0);
 		/* get Target fd but if there is no client that is the same as the Target name, it returns 0  */
-		if ((fd = server.getFd_from_nick(targetNick))==0)
+		if ((fd = mp_nick_to_fd[targetNick])==0)
 		{
 			sendMessage(client.getFd(), ERR_NOSUCHNICK(client.getNickname()), 0);
 			return ;

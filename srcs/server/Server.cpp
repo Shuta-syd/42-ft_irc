@@ -139,7 +139,7 @@ void Server::execute(Client &client)
 	else if (cmd == "MODE")
 		MODE(client, params, channels_);
 	else if (cmd == "PRIVMSG")
-		PRIVMSG(client, *this, channels_);
+		PRIVMSG(client, mp_nick_to_fd_, channels_);
 	else if (cmd == "QUIT")
 		QUIT(client, *this, params);
 	else if (cmd == "KICK")
