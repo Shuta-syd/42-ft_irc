@@ -11,7 +11,7 @@ void JOIN(Client &client, const std::vector<std::string> &params, std::map<std::
 
 void PRIVMSG(Client &client, Server &server, std::map<std::string, Channel> &channels);
 std::string create_privmsg(Client const &client);
-void QUIT(Client &client, Server &server);
+void QUIT(Client &client, Server &server, const std::vector<std::string> &params);
 void NAMES(Client &client, const std::vector<std::string> &params, std::map<std::string, Channel> &allChannels);
 void KICK(Client &client, std::map<std::string, Channel> &channels, Server &server);
 void TOPIC(Client &client, const std::vector<std::string> &params, std::map<std::string, Channel> &allChannels);
@@ -20,6 +20,3 @@ void INVITE(Client &client, const std::map<std::string, Channel> &channels, Serv
 void PART(Client &client, std::map<std::string, Channel> &channels);
 void debug_member_in_channel(Channel const &channel);
 void debug_channel_in_user(Client &client);
-
-
-

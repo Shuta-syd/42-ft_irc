@@ -29,6 +29,8 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define SETTOPIC_MESSAGE(nick, user, host, channelName, topic) ":" + nick + "!" + user + "@" + host + " TOPIC #" + channelName + " :" + topic + "\r\n"
 #define RPL_NOTOPIC(nick, channelName) ":ft_irc 331 " + nick + " TOPIC " + channelName + " :No topic set for #" + channelName + "\r\n"
 #define MODE_MESSAGE(operNick, user, host, target, channelName, isAllow, mode) ":" + operNick + "!" + user + "@" + host + " MODE #" + channelName + " " + isAllow + mode + " " + target + "\r\n"
+#define QUIT_MESSAGE(nick, user, host, msg) ":" + nick + "!" + user + "@" + host + " QUIT :Quit: " + msg + "\r\n"
+
 
 #define RPL_NONE(message) ":ircserv 300 * :" + message + "\n"
 # define ERR_NORECIPIENT(nick, command)				":ircserv 411 " + nick + " :No recipient given " + command + "\n"
