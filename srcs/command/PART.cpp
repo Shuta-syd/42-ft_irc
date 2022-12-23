@@ -10,26 +10,19 @@
  * <channel> [<reason>]
  */
 
-void drive_out_me_from_channel(std::string const &myname,
-							   const Channel& channel,
-							   std::map<std::string, Channel> &channels) {
-//	/* iteratorがうまく撮れない */
-//	std::vector<std::string>::const_iterator itr_begin = channel.getMember().begin();
-//	std::vector<std::string>::const_iterator itr_end = channel.getMember().end();
-//	for (; itr_begin != itr_end; itr_begin++) {
-//		if (*itr_begin == myname) {
-			channels.erase(myname);
-//		}
-//	}
-}
-
-void PART(Client &client, std::map<std::string, Channel> &channels) {
+void PART(Client &client, std::map<std::string, Channel> &channels, Server &server) {
 	int fd = client.getFd();
-	std::string myname = client.getNickname();
-	Channel channel = channels[myname];
+	std::string ch_name = client.getParams()[0];
+	ch_name.erase(ch_name.begin());
+	Channel &channel = channels[ch_name];
+	std::string const &my_name = client.getNickname();
+
 	if (client.getParams().size() < 1) {
-		sendMessage(fd, ERR_NEEDMOREPARAMS(myname, "PART"), 0);
+		sendMessage(fd, ERR_NEEDMOREPARAMS(my_name, "PART"), 0);
 	} else {
-		drive_out_me_from_channel(myname, channel, channels);;
+		int my_fd = server.getFd_from_nick(my_name);
+		std::map<int, Client> mp = server.getUsers();
+		Client my_account = mp[my_fd];
+		channel.eraseMember(my_account);
 	}
 }

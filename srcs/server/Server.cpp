@@ -143,7 +143,7 @@ void Server::execute(Client &client)
 	else if (cmd == "INVITE")
 		INVITE(client, channels_, *this);
 	else if (cmd == "PART")
-		PART(client, channels_);
+		PART(client, channels_, *this);
 	else if (cmd == "QUIT")
 		QUIT(client, *this);
 }
