@@ -54,7 +54,9 @@ private:
 	std::string realname_;
 	std::string prefix_;
 	std::string command_;
+	std::map<std::string, bool> isInvited; // <channelName, isInvited>?
 	std::vector<std::string> params_;
 	std::map<std::string, Channel> channels_; // channels This belong to
+
 	void debug_parser();
 };

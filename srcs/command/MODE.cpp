@@ -63,7 +63,7 @@ void MODE(
 /**
  * @brief execute specified mode
  *
- * can execute mode -> o, t, k, l
+ * can execute mode -> o, t, k, l, i, I
  */
 void executeMode(
 	const char isAllow,
@@ -80,6 +80,12 @@ void executeMode(
 		exec_k(isAllow, channel, client, params);
 	else if (mode == 'l')
 		exec_l(isAllow, channel, client, params);
+	else if (mode == 'i')
+		;
+	// exec_i(isAllow, channel, client, params);
+	else if (mode == 'I')
+		;
+	// exec_i(isAllow, channel, client, params);
 }
 
 /**

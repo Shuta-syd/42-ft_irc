@@ -117,18 +117,18 @@ void Server::execute(Client &client)
 	}
 
 	// no coming PASS COMMAND, if auth failed, terminate client
+	// falseの場合、クライアント接続終わらしたい、NICKリストから削除して同じ名前で再接続できるようにする
 	if (client.getIsAuth() == false)
 	{
 		sendAuthfail(client);
 		// QUIT(client, *this, params);
 	}
 
-	// mapで管理しても良さそう
 	if (cmd == "NICK")
-		NICK(client, *this);
+		NICK(client, *this); //*this解消
 	else if (cmd == "USER")
 		USER(client);
-	else if (cmd == "JOIN")
+	else if (cmd == "JOIN") // invite専用はclient isInvitedで判断
 		JOIN(client, params, channels_);
 	else if (cmd == "TOPIC")
 		TOPIC(client, params, channels_);
@@ -136,18 +136,20 @@ void Server::execute(Client &client)
 		PONG(client, params);
 	else if (cmd == "NAMES")
 		NAMES(client, params, channels_);
-	else if (cmd == "MODE")
+	else if (cmd == "MODE") // MODE i Iフラグ実装必要
 		MODE(client, params, channels_);
 	else if (cmd == "PRIVMSG")
 		PRIVMSG(client, mp_nick_to_fd_, channels_);
-	else if (cmd == "QUIT")
+	else if (cmd == "QUIT") //*this解消 // QUITしたらNICKリストから削除して同じ名前で再接続できるようにする
 		QUIT(client, *this, params);
-	else if (cmd == "KICK")
+	else if (cmd == "KICK")// *this解消
 		KICK(client, channels_, *this);
 	else if (cmd == "INVITE")
 		INVITE(client, mp_nick_to_fd_, channels_);
 	else if (cmd == "PART")
 		PART(client, channels_);
+	else if (cmd == "OPER") // OPERの実装も一応しとく必要あるかも、評価シート次第
+		{}
 }
 
 //--------------Functions related to Socket------------------

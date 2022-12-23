@@ -47,6 +47,7 @@ void PRIVMSG(Client &client, std::map<std::string, int> mp_nick_to_fd, std::map<
 	}
 }
 
+
 bool isCorrectFmt(std::vector<std::string> const &params, Client &client)
 {
 	if (params.size() == 0)
