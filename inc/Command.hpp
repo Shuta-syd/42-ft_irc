@@ -10,7 +10,6 @@ void PONG(Client &client, const std::vector<std::string> &params);
 void JOIN(Client &client, const std::vector<std::string> &params, std::map<std::string, Channel> &allChannel);
 
 void PRIVMSG(Client &client, Server &server, std::map<std::string, Channel> &channels);
-std::string create_privmsg(Client const &client);
 void QUIT(Client &client, Server &server, const std::vector<std::string> &params);
 void NAMES(Client &client, const std::vector<std::string> &params, std::map<std::string, Channel> &allChannels);
 void KICK(Client &client, std::map<std::string, Channel> &channels, Server &server);

@@ -46,5 +46,5 @@ void INVITE(Client &client, const std::map<std::string, Channel> &channels, Serv
 	std::vector<std::string >tmp_params = params;
 	tmp_params.erase(tmp_params.begin());
 	JOIN(tmp_mp_nick_to_fd_[server.getFd_from_nick(params[0])], tmp_params,  server.getChannels());
-	sendMessage(server.getFd_from_nick(params[0]), create_privmsg(tmp_mp_nick_to_fd_[server.getFd_from_nick(params[0])]), 0);
+	// sendMessage(server.getFd_from_nick(params[0]), create_privmsg(tmp_mp_nick_to_fd_[server.getFd_from_nick(params[0])]), 0);
 }

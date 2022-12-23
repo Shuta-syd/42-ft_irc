@@ -116,8 +116,12 @@ void Server::execute(Client &client)
 		PASS(client, password_);
 	}
 
-	if (client.getIsAuth() == false) // no coming PASS COMMAND, if auth failed, terminate client
+	// no coming PASS COMMAND, if auth failed, terminate client
+	if (client.getIsAuth() == false)
+	{
 		sendAuthfail(client);
+		// QUIT(client, *this, params);
+	}
 
 	// mapで管理しても良さそう
 	if (cmd == "NICK")
