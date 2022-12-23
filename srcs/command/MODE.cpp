@@ -137,7 +137,7 @@ void exec_o(
 	}
 
 		for (size_t i = 0; i < members.size(); i++)
-			sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), "host", target, channel.getName(), isAllow, 'o'), 0);
+			sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), client.getHostname(), target, channel.getName(), isAllow, 'o'), 0);
 }
 
 
@@ -165,7 +165,7 @@ void exec_t(
 		channel.delMode('t');
 	}
 	for (size_t i = 0; i < members.size(); i++)
-		sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), "host", "", channel.getName(), isAllow, 't'), 0);
+		sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), client.getHostname(), "", channel.getName(), isAllow, 't'), 0);
 }
 
 /**
@@ -205,7 +205,7 @@ void exec_k(
 		channel.delMode('k');
 	}
 	for (size_t i = 0; i < members.size(); i++)
-		sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), "host", channel.getKey(), channel.getName(), isAllow, 'k'), 0);
+		sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), client.getHostname(), channel.getKey(), channel.getName(), isAllow, 'k'), 0);
 }
 
 
@@ -248,7 +248,7 @@ void exec_l(
 		channel.delMode('l');
 	}
 	for (size_t i = 0; i < members.size(); i++)
-		sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), "host", "", channel.getName(), isAllow, "l " + maxMember), 0);
+		sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), client.getHostname(), "", channel.getName(), isAllow, "l " + maxMember), 0);
 }
 
 
