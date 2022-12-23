@@ -31,7 +31,6 @@ public:
 	void eraseMember(Client const &name);
 	void delOper(std::string name);
 
-
 private:
 	std::string name_;
 	std::string key_;
