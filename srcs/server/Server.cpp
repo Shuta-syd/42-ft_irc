@@ -145,7 +145,7 @@ void Server::execute(Client &client)
 	else if (cmd == "KICK")
 		KICK(client, channels_, *this);
 	else if (cmd == "INVITE")
-		INVITE(client, channels_, *this);
+		INVITE(client, mp_nick_to_fd_, channels_);
 	else if (cmd == "PART")
 		PART(client, channels_);
 }
