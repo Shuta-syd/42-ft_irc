@@ -29,11 +29,6 @@ public:
 	Server(int port, const std::string &password);
 	~Server();
 
-	std::map<std::string , int > &getMp_nick_to_fd() {
-		return mp_nick_to_fd_;
-	}
-
-	std::vector<struct pollfd> &get_polldfs(){return pollfds_;}
 
   void start();
 
@@ -42,12 +37,12 @@ public:
 		mp_nick_to_fd_[nick] = fd;
 	}
 	int getFd_from_nick(std::string const &nick) {
-		std::map<std::string, int> dummy = mp_nick_to_fd_;
-		return dummy[nick];
+		std::map<std::string, int> tmp = mp_nick_to_fd_;
+		return tmp[nick];
 	}
-	std::map<std::string , Channel> &getChannels()  {
-		return channels_;
-	}
+	std::map<std::string , Channel> &getChannels() { return channels_; }
+	std::map<std::string, int> &getMp_nick_to_fd() { return mp_nick_to_fd_; }
+	std::vector<struct pollfd> &get_polldfs(){return pollfds_;}
 
 private:
 	int port_; // port number to connect to client
