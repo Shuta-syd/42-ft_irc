@@ -90,8 +90,11 @@ void enterChannel(
 		sendMessage(fd, RPL_NAMREPLY(nick, channelName, "@" + nick), 0);
 		sendMessage(fd, RPL_ENDOFNAMES(nick, channelName), 0);
 	}
-	else if ((key == channelKey || channelKey == "") && channel.getMaxMember() > channel.getMember().size())
-	{ // already exist
+	else if (
+		(key == channelKey || channelKey == "") &&
+		channel.getMaxMember() > channel.getMember().size() &&
+		client.isInvited(channel.getMode(), channelName)
+		) { // already exist
 		channel.setMember(client);
 		client.setChannel(channelName, channel);
 		const std::string names = getMemberNames(channel.getMember(), channel.getOper());
@@ -106,6 +109,8 @@ void enterChannel(
 		sendMessage(fd, RPL_ENDOFNAMES(nick, channelName), 0);
 		channelDebug(allChannel, client.getChannels(), channelName);
 	}
+	else if (client.isInvited(channel.getMode(), channelName))
+		sendMessage(fd, ERR_INVITEONLYCHAN(nick, channelName), 0);
 	else if (channel.getMaxMember() <= channel.getMember().size())
 		sendMessage(fd, ERR_CHANNELISFULL(nick, channelName), 0);
 	else

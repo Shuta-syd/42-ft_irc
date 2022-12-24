@@ -58,5 +58,6 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define ERR_USERONCHANNEL(nick, target, channelName) ":ft_irc 443 " + nick + " " + target + " #" + channelName + " :User is already on that channel\r\n"
 #define ERR_ALREADYREGISTRED(nick)					":ft_irc 462 " + nick + " :You may not reregister\r\n"
 #define ERR_CHANNELISFULL(nick, channelName) ":ft_irc 471 " + nick +  " #" + channelName + " :Cannot join channel (+l)\r\n"
+#define ERR_INVITEONLYCHAN(nick, channelName) ":ft_irc 473 " + nick + " #" + channelName + " :Cannot join channel (+i)\r\n"
 #define ERR_NORECIPIENT(nick, command) ":ft_irc 411 " + nick + " :No recipient given " + command + "\n"
 #define ERR_NOTEXTTOSEND(nick) ":ft_irc 412 " + nick + " :No text to send\n"
