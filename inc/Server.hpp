@@ -48,6 +48,7 @@ public:
 	std::map<std::string , Channel> &getChannels()  {
 		return channels_;
 	}
+	void signal_setup(int signal);
 
 private:
 	int port_; // port number to connect to client
