@@ -11,6 +11,7 @@
 #include <fcntl.h>
 #include <vector>
 #include <map>
+#include <signal.h>
 
 #include <Client.hpp>
 #include <Reply.hpp>
@@ -49,6 +50,7 @@ public:
 		return channels_;
 	}
 	void signal_setup(int signal);
+	void signal_handler(int signal);
 
 private:
 	int port_; // port number to connect to client

@@ -108,7 +108,6 @@ void Server::execute(Client &client)
 	const std::vector<std::string> &params = client.getParams();
 
 	std::cout << CYN << cmd << " COMMAND" << RES << std::endl;
-
 	if (cmd == "CAP") {
 		CAP(client, *this);
 		return;
