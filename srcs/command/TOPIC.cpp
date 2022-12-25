@@ -51,7 +51,7 @@ void TOPIC(
 		const std::string &newTopic = params.at(1);
 		Channel &channel = allChannels[channelName];
 		channel.setTopic(newTopic);
-		sendMessage(fd, SETTOPIC_MESSAGE(nick, client.getUsername(), "host", channelName, newTopic), 0);
+		sendMessage(fd, SETTOPIC_MESSAGE(nick, client.getUsername(), client.getHostname(), channelName, newTopic), 0);
 		channelDebug(allChannels, channels, channelName);
 	}
 }

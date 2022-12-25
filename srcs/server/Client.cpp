@@ -30,7 +30,7 @@ void Client::parse(const std::string &message) {
 		this->parsePrefix(message, i);
 	this->parseCommand(message, i);
 	this->parseParams(message, i);
-//	void debug_parser();
+	debug_parser();
 }
 
 /**
@@ -115,3 +115,14 @@ std::map<std::string, Channel> &Client::getChannels() { return channels_; }
 void Client::setChannel(const std::string &name, Channel &channel) {
 	channels_[name] = channel;
 }
+
+bool Client::isInvited(std::string mode, std::string channelName) {
+	std::map<std::string, bool> isInvited = isInvited_;
+	if (find(mode, "i") == -1)
+		return true;
+	else {
+		if (isInvited[channelName])
+			return true;
+	}
+	return false;
+};
