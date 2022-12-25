@@ -11,6 +11,7 @@ Server::~Server() {}
  */
 void Server::start() {
 
+	this->signal_setup();
 	this->setupServerSocket();
 	this->createPoll(master_sd_);
 

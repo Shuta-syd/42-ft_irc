@@ -50,7 +50,10 @@ public:
 	std::map<std::string , Channel> &getChannels()  {
 		return channels_;
 	}
-	void signal_setup(int signal);
+
+
+	int getMstersd() { return master_sd_;}
+	void signal_setup();
 	void signal_handler(int signal);
 
 private:
