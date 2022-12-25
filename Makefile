@@ -81,7 +81,6 @@ debug: re
 
 run: all
 	./ircserv 8080 password
-
 RED = \033[31m
 GRN = \033[32m
 YEL = \033[33m

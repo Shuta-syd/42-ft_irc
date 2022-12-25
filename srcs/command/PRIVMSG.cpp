@@ -61,7 +61,10 @@ void PRIVMSG(Client &client, Server &server, std::map<std::string, Channel> &cha
 			sendMessage(client.getFd(), ERR_NOSUCHNICK(client.getNickname()), 0);
 			return ;
 		}
+		//:sara!yukikondo@127.0.0.1 PRIVMSG haru :hello\r\n
+		//yuki!yukikondo@Yuki Kondo PRIVMSG hoge :hello
 		sendMessage(fd, create_privmsg(client) + " PRIVMSG " + params[0] + " :" + params[1] + "\r\n", 0);
+		std::cout << create_privmsg(client) + " PRIVMSG " + params[0] + " :" + params[1] + "\r\n" << std::endl;
 	}
 
 }
