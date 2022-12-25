@@ -8,7 +8,7 @@ void signal_handler(int signal)
 	std::map<int, Client>::iterator it = server->getUsers().begin();
 
 
-	for (;it != users_.end(); it++) {
+	for (;it != server->getUsers().end(); it++) {
 		std::cout << "close:" << it->second.getNickname()<< "[" << it->second.getFd() << "]" << std::endl;
 		close(it->first);
 	}

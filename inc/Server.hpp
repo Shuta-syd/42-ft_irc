@@ -54,7 +54,7 @@ public:
 
 	int getMstersd() { return master_sd_;}
 	void signal_setup();
-	void signal_handler(int signal);
+
 
 private:
 	int port_; // port number to connect to client
@@ -76,3 +76,5 @@ private:
 	void execute(Client & client);
 	void debug_all_channels_situation();
 };
+
+void signal_handler(int signal);
