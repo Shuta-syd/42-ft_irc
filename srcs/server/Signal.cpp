@@ -7,6 +7,7 @@ void Server::signal_handler(int signal)
 
 	for (;it != users_.end(); it++) {
 		std::cout << "close:" << it->second.getNickname()<< "[" << it->second.getFd() << "]" << std::endl;
+		FD_CLR(it->second.getFd(), master_sd_);
 		close(it->first);
 	}
 	close(master_sd_);
@@ -19,5 +20,5 @@ void Server::signal_setup(int signal)
 
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
-	signal(SIGPROF, SIG_IGN);
+	signal(SIGPIPE, SIG_IGN);
 }

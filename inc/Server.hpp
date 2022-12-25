@@ -12,6 +12,7 @@
 #include <vector>
 #include <map>
 #include <signal.h>
+#include <sys/select.h>
 
 #include <Client.hpp>
 #include <Reply.hpp>
