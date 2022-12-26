@@ -33,7 +33,7 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define PRIVMSG_MESSAGE(nick, user, host, target, msg) ":" + nick + "!" + user + "@" + host + " PRIVMSG " + target + " :" + msg + "\r\n"
 #define INVITE_MESSAGE(nick, user, host, target, channelName) ":" + nick + "!" + user + "@" + host + " INVITE " + target + " #" + channelName + "\r\n"
 #define KICK_MESSAGE(nick, user, host, channelName, target) ":" + nick + "!" + user + "@" + host + " KICK #" + channelName + " " + target + " " + nick + "\r\n"
-#define PART_MESSAGE(nick, user, host, channelName, target)
+#define PART_MESSAGE(nick, user, host, channelName, message) ":" + nick + "!" + user + "@" + host + " PART #" + channelName + " " + message + "\r\n"
 
 #define RPL_NONE(message) ":ft_irc 300 * :" + message + "\n"
 #define RPL_TOPIC(nick, channelName, topic) ":ft_irc 332 " + nick + " #" + channelName + " :" + topic + "\r\n"

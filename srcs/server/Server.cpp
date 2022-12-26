@@ -160,7 +160,7 @@ void Server::execute(Client &client)
 	else if (cmd == "INVITE")
 		INVITE(client, mp_nick_to_fd_, channels_);
 	else if (cmd == "PART")
-		PART(client, channels_, *this);
+		PART(client, channels_, params);
 }
 
 //--------------Functions related to Socket------------------
