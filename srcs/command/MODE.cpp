@@ -127,12 +127,12 @@ void exec_o(
 
 	if (isAllow == '+')
 	{
-		channel.addOper(params.at(2));
+		channel.addOper(params[2]);
 		channel.addMode('o');
 	}
 	else if (isAllow == '-')
 	{
-		channel.delOper(params.at(2));
+		channel.delOper(params[2]);
 		channel.delMode('-');
 	}
 
@@ -201,7 +201,7 @@ void exec_k(
 
 	if (isAllow == '+' && params.size() > 2)
 	{
-		channel.setKey(params.at(2));
+		channel.setKey(params[2]);
 		channel.addMode('k');
 	}
 	else if (isAllow == '-')
@@ -233,7 +233,7 @@ void exec_l(
 		sendMessage(fd, ERR_CHANOPRIVSNEEDED(nick, channel.getName()), 0);
 		return;
 	}
-	else if (params.size() < 3 && isAllow != '-' && is_number(params.at(2)) == false)
+	else if (params.size() < 3 && isAllow != '-' && is_number(params[2]) == false)
 	{
 		sendMessage(
 				fd,
@@ -244,8 +244,8 @@ void exec_l(
 
 	if (isAllow == '+' && params.size() > 2)
 	{
-		channel.setMaxMember(std::stoi(params.at(2)));
-		maxMember = params.at(2);
+		channel.setMaxMember(std::stoi(params[2]));
+		maxMember = params[2];
 		channel.addMode('l');
 	}
 	else if (isAllow == '-')
