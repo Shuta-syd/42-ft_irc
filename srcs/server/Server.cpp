@@ -147,9 +147,9 @@ void Server::execute(Client &client)
 	else if (cmd == "INVITE")
 		INVITE(client, mp_nick_to_fd_, channels_);
 	else if (cmd == "PART")
-		PART(client, channels_);
-	else if (cmd == "OPER") // OPERの実装も一応しとく必要あるかも、評価シート次第
-		{}
+		PART(client, channels_, *this);
+	else if (cmd == "QUIT")
+		QUIT(client, *this);
 }
 
 //--------------Functions related to Socket------------------

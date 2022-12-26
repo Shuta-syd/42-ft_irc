@@ -40,36 +40,46 @@ bool is_nick_in_channel(std::string const &nick, Channel &channel) {
 	}
 	return false;
 }
-//#ありで送られてくるの見逃してた。。。
+
+bool is_exist_ch(std::string const &ch_name, std::map<std::string, Channel> &channels) {
+	std::map<std::string, Channel>::iterator it = channels.begin();
+	for (; it != channels.end(); it++) {
+		if (it->second.getName() == ch_name) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool is_operator(Channel &channel, std::string const &nick) {
+	std::vector<std::string> opes = channel.getOper();
+	for (size_t i = 0; i < opes.size(); i++) {
+		if (opes[i] == nick) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void KICK(Client &client, std::map<std::string, Channel> &channels, Server &server) {
 	int fd = client.getFd();
 	std::string const &nick = client.getNickname();
-	std::string param1 = client.getParams()[0];
-	param1.erase(param1.begin());
-	Channel &channel = channels[param1];
-	std::cout << "+++++++++++++++\n"
-	<< param1
-	<< std::endl
-	<< channel.getName()
-	<< "__________________________\n";
+	std::string ch_name = client.getParams()[0];
+	ch_name.erase(ch_name.begin());
+	Channel &channel = channels[ch_name];
 	std::string const &frightened_person = client.getParams()[1];
-	sendMessage(fd, "KICK!!!!!!\r\n", 0);
 
 	if (client.getParams()[0].size() < 2) {
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "KICK"), 0);
-	}
-//	else if (channel.getOper() != nick) {
-//		sendMessage(fd, ERR_NOPRIVILEGES(nick), 0);
-//	} //operatorは複数人いる可能性があるのでvectorになる
-//	else if (is_nick_in_channel(frightened_person, channel) == false) {
-//		sendMessage(fd, ERR_NOSUCHNICK(frightened_person), 0);
-//	} else if (is_nick_in_channel(nick, channel) == false) {
-//		sendMessage(fd, ERR_NOTONCHANNEL(nick, channel.getName()), 0);
-//		↓未検証
-//	} else if (channel.getName().empty()) {
-//		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channel.getName()), 0);
-//	}
-	else {
+	} else if (is_operator(channel, nick) == false) {
+		sendMessage(fd, ERR_NOPRIVILEGES(nick), 0);
+	} else if (is_nick_in_channel(frightened_person, channel) == false) {
+		sendMessage(fd, ERR_NOSUCHNICK(frightened_person), 0);
+	} else if (is_nick_in_channel(nick, channel) == false) {
+		sendMessage(fd, ERR_NOTONCHANNEL(nick, channel.getName()), 0);
+	} else if (is_exist_ch(ch_name, channels) == false) {
+		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channel.getName()), 0);
+	} else {
 		std::string reply_mes =
 				client.getNickname()
 				+ " KICK "
@@ -82,9 +92,5 @@ void KICK(Client &client, std::map<std::string, Channel> &channels, Server &serv
 		std::map<int, Client> sock_client = server.getUsers();
 		Client frightened_person_account = sock_client[frightened_person_fd];
 		channel.eraseMember(frightened_person_account);
-
-		/* debug member */
-//		debug_member_in_channel(channel);
-//		debug_channel_in_user(client);
 	}
 }
