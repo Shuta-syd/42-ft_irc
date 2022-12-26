@@ -7,11 +7,11 @@ bool is_already_registered(std::string const &nick, std::map<std::string, int> m
  * @brief set nickname client
  * NICK <nickname>
  *
- * bool should_be_cap = true; ← clientごとに終わらせる
+ * bool should_be_cap_nick = true; ← clientごとに終わらせる
  * もし情報が不足していたら、これをfalseにする
  */
 void NICK(Client &client, std::map<std::string, int> &mp_nick_to_fd) {
-	client.should_be_cap = false;
+	client.should_be_cap_nick = false;
 	const int &fd = client.getFd();
 
 	if (client.getParams().size() < 1)
@@ -33,7 +33,7 @@ void NICK(Client &client, std::map<std::string, int> &mp_nick_to_fd) {
 		mp_nick_to_fd[newNick] = fd;
 		client.setNickname(newNick);
 		sendMessage(fd, NICK_MESSAGE(oldNick, newNick), 0);
-		client.should_be_cap = true;
+		client.should_be_cap_nick = true;
 	}
 };
 
