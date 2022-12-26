@@ -51,7 +51,8 @@ bool validateMessage(Client &client, const std::vector<std::string> &params, std
 	}
 	else if (channel.is_operator(nick) == false)
 	{
-		sendMessage(client.getFd(), ERR_CHANOPRIVSNEEDED(nick, &params[1][1]), 0);
+		std::string channelName = &params[1][1];
+		sendMessage(client.getFd(), ERR_CHANOPRIVSNEEDED(channelName), 0);
 		return false;
 	}
 	else if (channel.is_inChannel(params[0]) == true)

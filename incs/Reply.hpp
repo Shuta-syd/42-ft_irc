@@ -53,7 +53,7 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define ERR_NEEDMOREPARAMS(nick, cmdName) ":ft_irc 461 " + nick + " " + cmdName + " :Not enough parameters\r\n"
 #define ERR_NOPRIVILEGES(nick) ":ft_irc 481 " + nick + " :Permission Denied- You're not an IRC operator\r\n"
 #define ERR_NOCHANMODES(nick, mode) ":ft_irc 472 " + nick + " " + mode + " :is an unknown mode character to me\r\n"
-#define ERR_CHANOPRIVSNEEDED(nick, channelName) ":ft_irc 482 " + nick + " #" + channelName + " :You're not a channel operator\r\n"
+#define ERR_CHANOPRIVSNEEDED(channelName) ":ft_irc 482 #" + channelName + " :You're not a channel operator\r\n"
 #define ERR_NOSUCHNICK(nick) ":ft_irc 401 " + nick + " :No such nick\r\n"
 #define ERR_NOTJOIN(nick, channelName) ":ft_irc #" + channelName + " You're not on that channel\r\n"
 #define ERR_NOTONCHANNEL(nick, channel) ":ft_irc 442 " + nick + " #" + channel + " :You're not on that channel\r\n"

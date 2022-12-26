@@ -89,7 +89,6 @@ void Server::execute(Client &client)
 	const std::string &cmd = client.getCommand();
 	const std::vector<std::string> &params = client.getParams();
 
-
 	if (cmd == "CAP")
 		CAP(client, pollfds_, users_, mp_nick_to_fd_);
 	else if (cmd == "PASS")
