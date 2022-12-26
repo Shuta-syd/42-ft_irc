@@ -10,7 +10,6 @@ bool is_already_registered(std::string const &nick, std::map<std::string, int> m
  * もし情報が不足していたら、これをfalseにする
  */
 void NICK(Client &client, std::map<std::string, int> &mp_nick_to_fd) {
-	client.should_be_cap_nick = false;
 	const int &fd = client.getFd();
 
 	if (client.should_be_cap_pass == false)

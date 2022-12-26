@@ -3,7 +3,7 @@
 
 Client::Client() {}
 
-Client::Client(int fd, const std::string  &nick): fd_(fd), nickname_(nick) {}
+Client::Client(int fd, const std::string &nick) : should_be_cap_nick(false), should_be_cap_pass(false), fd_(fd), nickname_(nick) {}
 
 Client::~Client() {}
 

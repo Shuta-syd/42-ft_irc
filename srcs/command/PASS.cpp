@@ -13,9 +13,6 @@ void PASS(Client &client, std::string const &server_password){
 	std::string const &password = client.getParams()[0];
 
 
-	//defaultでshould_be_capをfalseにしておいて、
-	//Errorでない時に、trueにする仕様にした
-	client.should_be_cap_pass = false;
 	if (client.getParams().size() != 1) {
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "PASS"), 0);
 	} else if (password != server_password) {
