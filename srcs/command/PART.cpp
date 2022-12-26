@@ -12,11 +12,10 @@ void PART(Client &client, std::map<std::string, Channel> &allChannels, const std
 	int fd = client.getFd();
 	std::string const &nick = client.getNickname();
 
-
 	if (params.size() < 1) {
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "PART"), 0);
 		return ;
-	}else if (params.size() == 2)
+	} else if (params.size() == 2)
 		message = params[1];
 
 	const std::vector<std::string> channels = splitChannel(params[0]);

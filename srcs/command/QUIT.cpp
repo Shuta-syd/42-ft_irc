@@ -17,8 +17,8 @@ void QUIT(
 	const int &clientFd = client.getFd();
 	std::string quitMessage = "leaving";
 
-	if (params.size() > 0)
-		quitMessage = params.at(0);
+	if (!params.empty())
+		quitMessage = params[0];
 
 	if (client.getChannels().empty() == false)
 	{
@@ -34,9 +34,9 @@ void QUIT(
 					mem_it != members.end();
 					mem_it++)
 			{
-				const int memFd = (*mem_it).getFd();
+				const int memFd = mem_it->getFd();
 				if (memFd == clientFd)
-					(*it).second.eraseMember(client);
+					it->second.eraseMember(client);
 				else
 					sendMessage(memFd, QUIT_MESSAGE(nick, client.getUsername(), client.getHostname(), quitMessage), 0);
 			}

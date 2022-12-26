@@ -3,10 +3,7 @@ bool validateMessage(Client &client, const std::vector<std::string> &params, std
 
 /**
  * @brief invite a user to a channel
- *
  * INVITE <nickname> <channel>
- *
- * [NOTE] 招待フラグをクライアントに付与するだけでJOINはしない。MODEで招待者しか入れないとかの設定する必要あり！
  */
 void INVITE(Client &client, std::map<std::string, int> nick_to_fd, std::map<std::string, Channel> &channels)
 {
@@ -14,16 +11,11 @@ void INVITE(Client &client, std::map<std::string, int> nick_to_fd, std::map<std:
 	const std::vector<std::string> &params = client.getParams();
 	const std::string &nick = client.getNickname();
 
-	/* error check part */
 	if (validateMessage(client, params, channels, nick_to_fd) == false)
-	{
 		return;
-	}
 	const std::string channelName = &params[1][1];
-	/* no error happen */
 	sendMessage(fd, RPL_INVITING(nick, params[0], channelName), 0);
 	sendMessage(nick_to_fd[params[0]], INVITE_MESSAGE(nick, client.getUsername(), client.getHostname(), params[0], channelName), 0);
-
 	client.addInvited(channelName);
 }
 
@@ -43,7 +35,6 @@ bool validateMessage(Client &client, const std::vector<std::string> &params, std
 	}
 
 	Channel &channel = channels[&params[1][1]];
-
 	if (nick_to_fd[params[0]] == 0)
 	{
 		sendMessage(client.getFd(), ERR_NOSUCHNICK(nick), 0);
@@ -63,6 +54,7 @@ bool validateMessage(Client &client, const std::vector<std::string> &params, std
 	{
 		sendMessage(client.getFd(), ERR_USERONCHANNEL(nick, params.at(0), &params.at(0)[1]), 0);
 		return false;
+	} else {
+		return true;
 	}
-	return true;
 }
