@@ -8,11 +8,7 @@
 
 #include <string>
 
-void NAMES(
-	Client &client,
-	const std::vector<std::string> &params,
-	std::map<std::string, Channel> &allChannels
-	) {
+void NAMES(Client &client, const std::vector<std::string> &params, std::map<std::string, Channel> &allChannels) {
 	const int &fd = client.getFd();
 	const std::string &nick = client.getNickname();
 

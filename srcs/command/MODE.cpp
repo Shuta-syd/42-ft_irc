@@ -23,23 +23,20 @@ void MODE(
 	const int &fd = client.getFd();
 	const std::string &nick = client.getNickname();
 
-	if (params.size() > 0 & params.at(0)[0] != '#')
+	if (!params.empty() && params[0][0] != '#')
 		return;
-	else if (params.size() == 0)
+	else if (params.empty())
 	{
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "MODE"), 0);
 		return;
 	}
-
-	const std::string &channelName = &params.at(0)[1];
+	const std::string &channelName = &params[0][1];
 	if (findChannel(allChannels, channelName) == false)
 	{
 		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channelName), 0);
 		return;
 	}
-
 	Channel &channel = allChannels[channelName];
-
 	if (params.size() == 1)
 	{
 		channel.setCreatedTime(getTimestamp());
@@ -50,8 +47,8 @@ void MODE(
 	}
 	else if (params.size() > 1)
 	{
-		const char isAllow = params.at(1)[0]; // + or -
-		const std::string &mode = &params.at(1)[1];
+		const char isAllow = params[1][0]; // + or -
+		const std::string &mode = &params[1][1];
 		for (size_t i = 0; i < mode.size(); i++)
 		{
 			if (isCorrectMode(mode[i]))

@@ -54,41 +54,31 @@ void Channel::eraseMember(Client const &client) {
 }
 
 void Channel::delOper(std::string name) {
-	for (
-			std::vector<std::string>::iterator it = opers_.begin();
-			it != opers_.end();
-			++it)
-			{
-				if ((*it) == name)
-					opers_.erase(it);
-					return;
-			}
+	std::vector<std::string>::iterator it = opers_.begin();
+	for (; it != opers_.end(); ++it) {
+		if ((*it) == name)
+			opers_.erase(it);
+		return;
+	}
 }
 
 void Channel::addMode(const char mode)
 {
-			for (
-					std::string::iterator it = mode_.begin();
-					it != mode_.end();
-					++it)
-			{
-					if (*it == mode)
-					return;
-			}
-			mode_.push_back(mode);
+	std::string::iterator it = mode_.begin();
+	for (; it != mode_.end(); ++it) {
+		if (*it == mode)
+			return;
+	}
+	mode_.push_back(mode);
 }
 
 void Channel::delMode(const char mode)
 {
-			for (
-					std::string::iterator it = mode_.begin();
-					it != mode_.end();
-					++it)
-			{
-					if (*it == mode)
-					{
-					mode_.erase(it);
-					return;
-					}
-			}
+	std::string::iterator it = mode_.begin();
+	for (;it != mode_.end();++it) {
+		if (*it == mode) {
+			mode_.erase(it);
+			return;
+		}
+	}
 }
