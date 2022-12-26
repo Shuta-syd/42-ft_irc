@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <Utils.hpp>
 #include <Colors.hpp>
 
 class Channel;
@@ -11,10 +12,10 @@ class Client
 {
 public:
 	Client();
-	Client(int fd, const std::string& nick);
+	Client(int fd, const std::string &nick);
 	~Client();
 
-	//parse
+	// parse
 	void parse(const std::string &message);
 	void parsePrefix(const std::string &, int &);
 	void parseCommand(const std::string &, int &);
@@ -30,7 +31,7 @@ public:
 	const std::string &getRealname() const { return realname_; }
 	const std::string &getPrefix() const { return prefix_; }
 	const std::string &getCommand() const { return command_; }
-	std::map<std::string, Channel> &getChannels() ;
+	std::map<std::string, Channel> &getChannels();
 	const std::vector<std::string> &getParams() const { return params_; }
 	void setNickname(std::string nick) { nickname_ = nick; }
 	void setUsername(std::string username) { username_ = username; }
@@ -39,10 +40,13 @@ public:
 	const bool &getIsAuth() const { return is_auth_; }
 	void setIsAuth(bool is_auth) { is_auth_ = is_auth; }
 	void setChannel(const std::string &name, Channel &channel);
+	void addInvited(std::string channelName) { isInvited_[channelName] = true; }
+	void delInvited(std::string channelName) { isInvited_.erase(channelName); }
+	bool isInvited(std::string mode, std::string channelName);
 
-	//CAPでcapをすべきか否かをはじめのNICK/USERの段階でチェックしないといけないので、
-	//should_be_capを追加した。
-	//↑これらが情報として不足している時にはfalseにするという仕様にした
+	// CAPでcapをすべきか否かをはじめのNICK/USERの段階でチェックしないといけないので、
+	// should_be_capを追加した。
+	// ↑これらが情報として不足している時にはfalseにするという仕様にした
 	bool should_be_cap;
 
 private:
@@ -54,7 +58,9 @@ private:
 	std::string realname_;
 	std::string prefix_;
 	std::string command_;
+	std::map<std::string, bool> isInvited_; // <channelName, isInvited>?
 	std::vector<std::string> params_;
 	std::map<std::string, Channel> channels_; // channels This belong to
+
 	void debug_parser();
 };

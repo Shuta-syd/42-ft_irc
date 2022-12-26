@@ -65,3 +65,30 @@ void Channel::delOper(std::string name) {
 			}
 }
 
+void Channel::addMode(const char mode)
+{
+			for (
+					std::string::iterator it = mode_.begin();
+					it != mode_.end();
+					++it)
+			{
+					if (*it == mode)
+					return;
+			}
+			mode_.push_back(mode);
+}
+
+void Channel::delMode(const char mode)
+{
+			for (
+					std::string::iterator it = mode_.begin();
+					it != mode_.end();
+					++it)
+			{
+					if (*it == mode)
+					{
+					mode_.erase(it);
+					return;
+					}
+			}
+}

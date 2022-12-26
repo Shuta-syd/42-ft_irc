@@ -13,7 +13,7 @@ void CAP(Client &client,  Server &server) {
 	else if (client.getParams().at(0) == "END")
 	{
 		if (client.getIsAuth() == false)
-			QUIT(client, server);
+			QUIT(client, server, {});
 		sendWelcomeMessage(client);
 	}
 
