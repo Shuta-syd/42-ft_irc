@@ -115,7 +115,7 @@ void Server::execute(Client &client)
 
 	if (cmd == "CAP")
 	{
-		CAP(client);
+		CAP(client, pollfds_, users_, mp_nick_to_fd_, params););
 		return;
 	}
 	else if (cmd == "PASS")
