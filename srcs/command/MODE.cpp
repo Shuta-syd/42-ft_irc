@@ -1,12 +1,12 @@
 #include <Command.hpp>
 bool isCorrectMode(const char &mode);
 bool isOper(Channel channel, Client client);
-void exec_i(const char isAllow, Channel &channel, const Client &client);
-void exec_l(const char isAllow, Channel &channel, const Client &client, const std::vector<std::string> &params);
-void exec_t(const char isAllow, Channel &channel, const Client &client);
-void exec_k(const char isAllow, Channel &channel, const Client &client, const std::vector<std::string> &params);
-void exec_o(const char isAllow, Channel &channel, const Client &client, const std::vector<std::string> &params);
-void executeMode(const char isAllow, const char &mode, const std::vector<std::string> &params, Channel &channel, const Client &client);
+void exec_i(char isAllow, Channel &channel, const Client &client);
+void exec_l(char isAllow, Channel &channel, const Client &client, const std::vector<std::string> &params);
+void exec_t(char isAllow, Channel &channel, const Client &client);
+void exec_k(char isAllow, Channel &channel, const Client &client, const std::vector<std::string> &params);
+void exec_o(char isAllow, Channel &channel, const Client &client, const std::vector<std::string> &params);
+void executeMode(char isAllow, const char &mode, const std::vector<std::string> &params, Channel &channel, const Client &client);
 
 /**
  * @brief changes which affect either how the client is seen by others or what 'extra'
@@ -23,35 +23,29 @@ void MODE(
 	const int &fd = client.getFd();
 	const std::string &nick = client.getNickname();
 
-	if (params.size() > 0 & params.at(0)[0] != '#')
+	if (!params.empty() && params[0][0] != '#')
 		return;
-	else if (params.size() == 0)
+	else if (params.empty())
 	{
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "MODE"), 0);
 		return;
 	}
-
-	const std::string &channelName = &params.at(0)[1];
+	const std::string &channelName = &params[0][1];
 	if (findChannel(allChannels, channelName) == false)
 	{
 		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channelName), 0);
 		return;
 	}
-
 	Channel &channel = allChannels[channelName];
-
-	if (params.size() == 1)
-	{
+	if (params.size() == 1) {
 		channel.setCreatedTime(getTimestamp());
 		sendMessage(
 				fd,
 				RPL_CHANNELMODEIS(nick, channel.getName(), "+", channel.getMode() + " " + channel.getKey()) + RPL_CREATIONTIME(nick, channel.getName(), channel.getCreatedTime()),
 				0);
-	}
-	else if (params.size() > 1)
-	{
-		const char isAllow = params.at(1)[0]; // + or -
-		const std::string &mode = &params.at(1)[1];
+	} else {
+		const char isAllow = params[1][0]; // + or -
+		const std::string &mode = &params[1][1];
 		for (size_t i = 0; i < mode.size(); i++)
 		{
 			if (isCorrectMode(mode[i]))
@@ -92,8 +86,23 @@ void executeMode(
  */
 bool isCorrectMode(const char &mode)
 {
-	if (
-			mode == 'O' || mode == 'o' || mode == 'v' || mode == 'a' || mode == 'i' || mode == 'm' || mode == 'n' || mode == 'q' || mode == 'p' || mode == 's' || mode == 'r' || mode == 't' || mode == 'k' || mode == 'l' || mode == 'b' || mode == 'e' || mode == 'I')
+	if (mode == 'O'
+	|| mode == 'o'
+	|| mode == 'v'
+	|| mode == 'a'
+	|| mode == 'i'
+	|| mode == 'm'
+	|| mode == 'n'
+	|| mode == 'q'
+	|| mode == 'p'
+	|| mode == 's'
+	|| mode == 'r'
+	|| mode == 't'
+	|| mode == 'k'
+	|| mode == 'l'
+	|| mode == 'b'
+	|| mode == 'e'
+	|| mode == 'I')
 		return true;
 	return false;
 }
@@ -130,12 +139,12 @@ void exec_o(
 
 	if (isAllow == '+')
 	{
-		channel.addOper(params.at(2));
+		channel.addOper(params[2]);
 		channel.addMode('o');
 	}
 	else if (isAllow == '-')
 	{
-		channel.delOper(params.at(2));
+		channel.delOper(params[2]);
 		channel.delMode('-');
 	}
 
@@ -204,7 +213,7 @@ void exec_k(
 
 	if (isAllow == '+' && params.size() > 2)
 	{
-		channel.setKey(params.at(2));
+		channel.setKey(params[2]);
 		channel.addMode('k');
 	}
 	else if (isAllow == '-')
@@ -236,7 +245,7 @@ void exec_l(
 		sendMessage(fd, ERR_CHANOPRIVSNEEDED(nick, channel.getName()), 0);
 		return;
 	}
-	else if (params.size() < 3 && isAllow != '-' && is_number(params.at(2)) == false)
+	else if (params.size() < 3 && isAllow != '-' && is_number(params[2]) == false)
 	{
 		sendMessage(
 				fd,
@@ -247,8 +256,8 @@ void exec_l(
 
 	if (isAllow == '+' && params.size() > 2)
 	{
-		channel.setMaxMember(std::stoi(params.at(2)));
-		maxMember = params.at(2);
+		channel.setMaxMember(std::stoi(params[2]));
+		maxMember = params[2];
 		channel.addMode('l');
 	}
 	else if (isAllow == '-')
