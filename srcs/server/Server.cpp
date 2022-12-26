@@ -196,7 +196,7 @@ void Server::setupClient(int sockfd)
  */
 void Server::createPoll(int sockfd)
 {
-	struct pollfd pollfd = (struct pollfd){
+	struct pollfd pollfd = {
 			.fd = sockfd,
 			.events = POLLIN,
 			.revents = 0,

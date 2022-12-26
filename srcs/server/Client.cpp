@@ -22,7 +22,6 @@ void Client::debug_parser() {
 	std::cout << "End" << std::endl;
 	std::cout << GRN << "---------------------------" << RES << std::endl;
 }
-
 void Client::parse(const std::string &message) {
 	int i = 0;
 
@@ -127,4 +126,4 @@ bool Client::isInvited(std::string mode, std::string channelName)
 			return true;
 	}
 	return false;
-};
+}
