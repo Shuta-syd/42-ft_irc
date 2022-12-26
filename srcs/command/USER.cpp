@@ -17,9 +17,11 @@ void USER(Client &client) {
 	int fd = client.getFd();
 	std::string nick = client.getNickname();
 
-	if (client.getParams().size() != 4) {
+	if (client.should_be_cap_pass == false || client.should_be_cap_pass == false)
+		return;
+	else if (client.getParams().size() != 4)
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "USER "), 0);
-	} else {
+	else {
 		client.setUsername(client.getParams()[0]);
 		client.setHostname(client.getParams()[1]);
 		client.setRealname(client.getParams()[3]);

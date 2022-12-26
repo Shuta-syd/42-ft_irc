@@ -37,8 +37,6 @@ public:
 	void setUsername(std::string username) { username_ = username; }
 	void setHostname(std::string hostname) { hostname_ = hostname; }
 	void setRealname(std::string realname) { realname_ = realname; }
-	const bool &getIsAuth() const { return is_auth_; }
-	void setIsAuth(bool is_auth) { is_auth_ = is_auth; }
 	void setChannel(const std::string &name, Channel &channel);
 	void addInvited(std::string channelName) { isInvited_[channelName] = true; }
 	void delInvited(std::string channelName) { isInvited_.erase(channelName); }
@@ -52,7 +50,6 @@ public:
 
 private:
 	int fd_;
-	bool is_auth_;
 	std::string nickname_; // max len 9
 	std::string username_;
 	std::string hostname_;

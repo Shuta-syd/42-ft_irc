@@ -22,7 +22,7 @@ void TOPIC(
 		return;
 	}
 
-	const std::string channelName = &params.at(0)[1];
+	const std::string channelName = &params[0][1];
 	const bool joinedChannel = findChannel(channels, channelName);
 	const bool existChannel = findChannel(allChannels, channelName);
 
