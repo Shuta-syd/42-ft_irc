@@ -13,7 +13,7 @@ void CAP(Client &client) {
 	else if (client.getParams()[0] == "END")
 	{
 		if (client.should_be_cap == false) {
-			QUIT(client, server, {});
+			//QUIT(client, server, {});
 			return ;
 		}
 		sendWelcomeMessage(client);
