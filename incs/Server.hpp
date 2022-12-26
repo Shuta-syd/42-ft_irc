@@ -14,7 +14,7 @@
 #include <map>
 #include <signal.h>
 #include <sys/select.h>
-
+#include <stdexcept>
 #include <Client.hpp>
 #include <Reply.hpp>
 #include <Utils.hpp>

@@ -3,12 +3,12 @@
 const std::string getMemberNames(std::vector<Client> members, std::vector<std::string> opers);
 bool isChannel(const Client &client, const std::string &channelName);
 const std::vector<std::string> splitKeys(const std::string &param, int size);
-void enterChannel(std::map<std::string, Channel> &allChannel, Client &client, const std::string &channelName, const std::string &key);
+void enterChannel(std::map<std::string, Channel> &allChannel, Client &client, std::string channelName, const std::string &key);
 
 /**
  * @brief request to start listening to the specific channel
  *
- * JOIN (<channel> *(',' <channel>) [<key> *(',' <key>)]) / "0"
+ * JOIN (<channel> *(',' <channel>) [<key> *(',' <key>)])
  *
  * client ex) JOIN #foo,&bar fubar
  * server ex)
@@ -24,14 +24,17 @@ void JOIN(
 	const int &fd = client.getFd();
 	const std::string &nick = client.getNickname();
 	std::vector<std::string> keys;
-	std::string keyParam = "";
+	std::string keyParam;
 
 	if (params.size() < 1)
+	{
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "JOIN"), 0);
+		return;
+	}
 	else if (params.size() == 2)
-		keyParam = params.at(1);
+		keyParam = params[1];
 
-	const std::vector<std::string> channels = splitChannel(params.at(0));
+	const std::vector<std::string> channels = splitChannel(params[0]);
 	keys = splitKeys(keyParam, channels.size());
 
 	for (size_t i = 0; i < channels.size(); i++) {
@@ -68,9 +71,11 @@ bool isChannel(const Client &client, const std::string &channelName) {
 void enterChannel(
 		std::map<std::string, Channel> &allChannel,
 		Client &client,
-		const std::string &channelName,
-		const std::string &key)
-{
+		std::string channelName,
+		const std::string &key
+		) {
+	if (channelName.empty())
+		channelName = " ";
 	const int &fd = client.getFd();
 	const std::string &nick = client.getNickname();
 	Channel &channel = allChannel[channelName];
@@ -78,7 +83,7 @@ void enterChannel(
 	const std::vector<Client> &members = channel.getMember();
 
 	// create new channel
-	if (channelName != channel.getName() && (key == channelKey || channelKey == ""))
+	if (channelName != channel.getName() && (key == channelKey || channelKey.empty()))
 	{
 		channel.setName(channelName);
 		channel.setMember(client);
@@ -89,10 +94,10 @@ void enterChannel(
 		sendMessage(fd, RPL_ENDOFNAMES(nick, channelName), 0);
 	}
 	else if (
-			(key == channelKey || channelKey == "") &&
-			channel.getMaxMember() > static_cast<int>(channel.getMember().size()) &&
-					client.isInvited(channel.getMode(), channelName))
-	{ // already exist
+			(key == channelKey || channelKey.empty()) &&
+			(channel.getMaxMember() > static_cast<int>(channel.getMember().size()) || channel.getMaxMember() == -1) &&
+			client.isInvited(channel.getMode(), channelName)
+			) { // already exist
 		channel.setMember(client);
 		client.setChannel(channelName, channel);
 		const std::string names = getMemberNames(channel.getMember(), channel.getOper());
@@ -100,14 +105,13 @@ void enterChannel(
 		for (size_t i = 0; i < members.size(); i++)
 			sendMessage(members.at(i).getFd(), JOIN_MESSAGE(nick, client.getUsername(), client.getHostname(), channelName), 0);
 
-		if (channel.getTopic() != "")
+		if (!channel.getTopic().empty())
 			sendMessage(fd, RPL_TOPIC(nick, channelName, channel.getTopic()), 0);
 
 		sendMessage(fd, RPL_NAMREPLY(nick, channelName, names), 0);
 		sendMessage(fd, RPL_ENDOFNAMES(nick, channelName), 0);
-		channelDebug(allChannel, client.getChannels(), channelName);
 	}
-	else if (client.isInvited(channel.getMode(), channelName))
+	else if (client.isInvited(channel.getMode(), channelName) == false)
 		sendMessage(fd, ERR_INVITEONLYCHAN(nick, channelName), 0);
 	else if (channel.getMaxMember() <= static_cast<int>(channel.getMember().size()))
 		sendMessage(fd, ERR_CHANNELISFULL(nick, channelName), 0);

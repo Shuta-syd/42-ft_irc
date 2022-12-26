@@ -26,7 +26,7 @@ void Server::start()
 			if (pollfds_[i].revents == 0)
 				continue;
 
-			// not pollin event (SIGINT -> loop発生) throw
+			// not pollin event
 			if (pollfds_[i].revents != POLLIN)
 			{
 				std::cerr << "error revents " << pollfds_[i].revents << std::endl;
@@ -53,31 +53,26 @@ void Server::chat(int fd)
 {
 	char message[MSG_MAX] = {0};
 
-	int bytes = recv(fd, message, sizeof(message), 0);
+	ssize_t bytes = recv(fd, message, sizeof(message), 0);
 	if (bytes == 0)
-	{ // quit
-		std::cout << "Connection closed" << std::endl;
-		return;
-	}
+		throw std::exception();
 
 	Client &user = users_[fd];
-
 	std::cout << "-------------Client Message-------------" << std::endl;
 	std::cout << "client fd: [" << fd << "]" << std::endl;
 	std::cout << "client : " << message << std::endl;
 	std::cout << "----------------------------------------" << std::endl;
 
-	int i = 0;
-	while (find(&message[i], "\r\n") != -1)
-	{
+	size_t i = 0;
+	while (find(&message[i], "\r\n") != -1) {
 		int len = 0;
 		std::string cmd_line;
 
-		while (message[i] != '\r' && message[i] != '\n')
-		{
+		while (message[i] != '\r' && message[i] != '\n') {
 			i++;
 			len++;
 		}
+		
 		cmd_line.append(&message[i - len], len + 2);
 		user.parse(cmd_line);
 		this->execute(user);
@@ -88,38 +83,9 @@ void Server::chat(int fd)
 
 /**
  * @brief command execute func
- * @param client
  */
-
-//void Server::debug_all_channels_situation()
-//{
-//	std::cerr << "_____CHANNEL SITUATION_______" << std::endl;
-//	for (auto ch : this->channels_)
-//	{
-//		std::cerr << "CHANNEL NAME : " << ch.first << std::endl;
-//		for (auto member : ch.second.getMember())
-//		{
-//			std::cerr << member.getNickname() << std::endl;
-//		}
-//	}
-//	std::cerr << "_____________________________" << std::endl;
-//}
-
-void Server::debug_all_members() {
-	std::cerr << "_____MEMBER SITUATION_______" << std::endl;
-
-	std::map<std::string, int>::iterator it = mp_nick_to_fd_.begin();
-
-	for (; it != mp_nick_to_fd_.end(); it++) {
-		std::cerr << it->first << std::endl;
-	}
-	std::cerr << "____________________________" << std::endl;
-}
-
 void Server::execute(Client &client)
 {
-	// this->debug_all_channels_situation();
-//	this->debug_all_members();
 	const std::string &cmd = client.getCommand();
 	const std::vector<std::string> &params = client.getParams();
 
@@ -160,23 +126,22 @@ void Server::execute(Client &client)
 /**
  * @brief to accept connections from clients.
  */
-void Server::allow()
-{
-	int client_fd = accept(this->master_sd_, NULL, NULL);
-	if (client_fd < 0)
-	{ // accept fails with EWOULDBLOCK, then we have accepted all of them.
-		if (errno != EWOULDBLOCK)
-		{
-			std::cerr << "accept error" << std::endl;
-			close(this->master_sd_);
-		}
-	}
-	else
+void Server::allow() {
+	int client_fd = -1;
+	do
 	{
-		std::cout << "New incoming connection - " << client_fd << std::endl;
-		this->createPoll(client_fd);
-		setupClient(client_fd);
-	}
+		client_fd = accept(this->master_sd_, NULL, NULL);
+		if (client_fd < 0) { // accept fails with EWOULDBLOCK, then we have accepted all of them.
+			if (errno != EWOULDBLOCK) {
+				throw std::exception();
+			}
+		}
+		else {
+			std::cout << "New incoming connection - " << client_fd << std::endl;
+			this->createPoll(client_fd);
+			setupClient(client_fd);
+		}
+	} while (client_fd != -1);
 }
 
 /**
@@ -231,3 +196,28 @@ void Server::setupServerSocket()
 	/* try to specify maximum of sockets pending connections for the server socket */
 	listen(this->master_sd_, SOMAXCONN);
 }
+
+// void Server::debug_all_channels_situation()
+//{
+//	std::cerr << "_____CHANNEL SITUATION_______" << std::endl;
+//	for (auto ch : this->channels_)
+//	{
+//		std::cerr << "CHANNEL NAME : " << ch.first << std::endl;
+//		for (auto member : ch.second.getMember())
+//		{
+//			std::cerr << member.getNickname() << std::endl;
+//		}
+//	}
+//	std::cerr << "_____________________________" << std::endl;
+// }
+
+// void Server::debug_all_members() {
+// 	std::cerr << "_____MEMBER SITUATION_______" << std::endl;
+
+// 	std::map<std::string, int>::iterator it = mp_nick_to_fd_.begin();
+
+// 	for (; it != mp_nick_to_fd_.end(); it++) {
+// 		std::cerr << it->first << std::endl;
+// 	}
+// 	std::cerr << "____________________________" << std::endl;
+// }
