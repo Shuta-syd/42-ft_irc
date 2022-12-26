@@ -1,5 +1,4 @@
 #include <Server.hpp>
-void clearClientInfo(Client &client, std::vector<struct pollfd> pollfds, std::map<int, Client> &users, std::map<std::string, int> &nick_to_fd);
 
 /**
  * @brief a client session is terminated with a quit message
@@ -21,7 +20,7 @@ void QUIT(
 	if (params.size() > 0)
 		quitMessage = params.at(0);
 
-	if (client.getChannels().empty() != true)
+	if (client.getChannels().empty() == false)
 	{
 		std::map<std::string, Channel> &channels = client.getChannels();
 		for (
@@ -50,7 +49,7 @@ void QUIT(
 
 void clearClientInfo(
 	Client &client,
-	std::vector<struct pollfd> pollfds,
+	std::vector<struct pollfd> &pollfds,
 	std::map<int, Client> &users,
 	std::map<std::string, int> &nick_to_fd
 	) {
@@ -62,7 +61,6 @@ void clearClientInfo(
 			break;
 		}
 	}
-
 	users.erase(client.getFd());
 	nick_to_fd.erase(client.getNickname());
 	close(client.getFd());
