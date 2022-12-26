@@ -8,7 +8,6 @@ class Channel
 {
 public:
 	Channel();
-	// Channel(const Channel&);
 	~Channel();
 	const std::vector<Client> getMember() const ;
 	const std::string getTopic() const ;
@@ -40,7 +39,7 @@ private:
 	std::vector<std::string> opers_;
 	bool topicAllow_;
 	std::string topic_;
-	std::string mode_; // 本当はabc順に並べ直すのがベター
+	std::string mode_;
 	int maxMember_;
 	std::string createdTime_;
 	std::vector<Client> members_;
