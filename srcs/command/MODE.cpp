@@ -125,7 +125,7 @@ void exec_o(
 
 	if (channel.is_operator(nick) == false)
 	{
-		sendMessage(clientFd, ERR_CHANOPRIVSNEEDED(nick, channel.getName()), 0);
+		sendMessage(clientFd, ERR_NOPRIVILEGES(nick), 0);
 		return;
 	}
 	else if (params.size() < 3)
@@ -166,7 +166,7 @@ void exec_t(
 
 	if (channel.is_operator(nick) == false)
 	{
-		sendMessage(fd, ERR_CHANOPRIVSNEEDED(nick, channel.getName()), 0);
+		sendMessage(fd, ERR_NOPRIVILEGES(nick), 0);
 		return;
 	}
 	if (isAllow == '+')
