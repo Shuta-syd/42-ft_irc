@@ -148,8 +148,6 @@ void Server::execute(Client &client)
 		INVITE(client, mp_nick_to_fd_, channels_);
 	else if (cmd == "PART")
 		PART(client, channels_, *this);
-	else if (cmd == "QUIT")
-		QUIT(client, *this);
 }
 
 //--------------Functions related to Socket------------------
