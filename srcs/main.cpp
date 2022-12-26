@@ -2,10 +2,9 @@
 #include <stdlib.h>
 
 Server *server;
-void signal_handler(int signal)
+void terminate(int signal)
 {
 	std::map<int, Client>::iterator it = server->getUsers().begin();
-
 
 	for (;it != server->getUsers().end(); it++) {
 		std::cout << "close:" << it->second.getNickname()<< "[" << it->second.getFd() << "]" << std::endl;
@@ -14,6 +13,13 @@ void signal_handler(int signal)
 	close(server->getMstersd());
 	std::cout << "SERVER HANG UP." << std::endl;
 	std::exit(signal);
+
+
+}
+
+void signal_handler(int signal)
+{
+	terminate(signal);
 }
 
 
@@ -33,6 +39,7 @@ int main(int argc, char const *argv[])
 			Irc.start();
 		} catch (const std::exception &e) {
 			std::cout << "ERROR:" << e.what() << std::endl;
+			terminate(1);
 		}
 	}
 	else

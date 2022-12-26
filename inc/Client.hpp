@@ -47,7 +47,8 @@ public:
 	// CAPでcapをすべきか否かをはじめのNICK/USERの段階でチェックしないといけないので、
 	// should_be_capを追加した。
 	// ↑これらが情報として不足している時にはfalseにするという仕様にした
-	bool should_be_cap;
+	bool should_be_cap_nick;
+	bool should_be_cap_pass;
 
 private:
 	int fd_;
