@@ -5,6 +5,9 @@
  *
  * NAMES [<channel> *(',' <channel>)]
  */
+
+#include <string>
+
 void NAMES(
 	Client &client,
 	const std::vector<std::string> &params,
@@ -20,9 +23,9 @@ void NAMES(
 		{
 			const std::string &channelName = channelNames[i];
 			std::cout << RED << channelName << RES << std::endl;
+			std::string specific_chars("&#+!");
 			if (
-					(channelName[0] == '&' || channelName[0] == '#'
-					|| channelName[0] == '+' || channelName[0] == '!')
+					(specific_chars.find_first_not_of(channelName[0]) != std::string::npos)
 					&& findChannel(allChannels, &channelName[1])
 				)
 			{
