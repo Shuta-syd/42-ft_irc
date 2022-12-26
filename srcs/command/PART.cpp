@@ -20,7 +20,6 @@ void PART(Client &client, std::map<std::string, Channel> &allChannels, const std
 		message = params[1];
 
 	const std::vector<std::string> channels = splitChannel(params[0]);
-	std::string ch_name = &params[0][1];
 
 	for (size_t i = 0; i < channels.size(); i++)
 	{
