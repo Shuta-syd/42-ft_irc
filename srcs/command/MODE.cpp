@@ -1,12 +1,12 @@
 #include <Command.hpp>
 bool isCorrectMode(const char &mode);
 bool isOper(Channel channel, Client client);
-void exec_i(const char isAllow, Channel &channel, const Client &client);
-void exec_l(const char isAllow, Channel &channel, const Client &client, const std::vector<std::string> &params);
-void exec_t(const char isAllow, Channel &channel, const Client &client);
-void exec_k(const char isAllow, Channel &channel, const Client &client, const std::vector<std::string> &params);
-void exec_o(const char isAllow, Channel &channel, const Client &client, const std::vector<std::string> &params);
-void executeMode(const char isAllow, const char &mode, const std::vector<std::string> &params, Channel &channel, const Client &client);
+void exec_i(char isAllow, Channel &channel, const Client &client);
+void exec_l(char isAllow, Channel &channel, const Client &client, const std::vector<std::string> &params);
+void exec_t(char isAllow, Channel &channel, const Client &client);
+void exec_k(char isAllow, Channel &channel, const Client &client, const std::vector<std::string> &params);
+void exec_o(char isAllow, Channel &channel, const Client &client, const std::vector<std::string> &params);
+void executeMode(char isAllow, const char &mode, const std::vector<std::string> &params, Channel &channel, const Client &client);
 
 /**
  * @brief changes which affect either how the client is seen by others or what 'extra'
