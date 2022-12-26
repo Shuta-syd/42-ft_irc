@@ -114,24 +114,10 @@ void Server::execute(Client &client)
 	std::cout << CYN << cmd << " COMMAND" << RES << std::endl;
 
 	if (cmd == "CAP")
-	{
 		CAP(client, pollfds_, users_, mp_nick_to_fd_, params);
-		return;
-	}
 	else if (cmd == "PASS")
-	{
 		PASS(client, password_);
-	}
-
-	// no coming PASS COMMAND, if auth failed, terminate client
-	// falseの場合、クライアント接続終わらしたい、NICKリストから削除して同じ名前で再接続できるようにする
-	if (client.getIsAuth() == false)
-	{
-		sendAuthfail(client);
-		// QUIT(client, *this, params);
-	}
-
-	if (cmd == "NICK")
+	else if (cmd == "NICK")
 		NICK(client, mp_nick_to_fd_);
 	else if (cmd == "USER")
 		USER(client);

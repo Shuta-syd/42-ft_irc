@@ -12,7 +12,6 @@ void CAP(Client &client, std::vector<struct pollfd> &pollfds, std::map<int, Clie
 		sendMessage(fd, CAP_LS, 0);
 	else if (client.getParams()[0] == "END") {
 		if (client.should_be_cap_nick == false || client.should_be_cap_pass == false) {
-			std::cout << "test" << std::endl;
 			clearClientInfo(client, pollfds, users, nick_to_fd);
 			return;
 		}
