@@ -9,7 +9,7 @@ bool is_already_registered(std::string const &nick, std::map<std::string, int> m
  * bool should_be_cap_nick = true; ← clientごとに終わらせる
  * もし情報が不足していたら、これをfalseにする
  */
-void NICK(Client &client, std::map<std::string, int> &mp_nick_to_fd) {
+void NICK(Client &client, std::map<std::string, int> &mp_nick_to_fd, std::map<std::string, Channel> &server_channels) {
 	client.should_be_cap_nick = false;
 	const int &fd = client.getFd();
 
@@ -29,6 +29,17 @@ void NICK(Client &client, std::map<std::string, int> &mp_nick_to_fd) {
 		std::string const oldNick = client.getNickname();
 		mp_nick_to_fd[newNick] = fd;
 		mp_nick_to_fd.erase(oldNick);
+
+		std::map<std::string, Channel> &channels = server_channels;
+		std::map<std::string, Channel>::iterator it = channels.begin();
+		for (; it != channels.end(); it++) {
+			//もし自分が所属しているチャンネルの中に、operatorであるようなものがあった時には、
+			//既存のoldNickを消して、newNickをoperatorとしてセットする
+			if (it->second.is_operator(oldNick) == true) {
+				it->second.delOper(oldNick);
+				it->second.addOper(newNick);
+			}
+		}
 		client.setNickname(newNick);
 		sendMessage(fd, NICK_MESSAGE(oldNick, newNick), 0);
 		client.should_be_cap_nick = true;
