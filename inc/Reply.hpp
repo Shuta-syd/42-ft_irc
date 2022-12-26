@@ -60,3 +60,6 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define ERR_INVITEONLYCHAN(nick, channelName) ":ft_irc 473 " + nick + " #" + channelName + " :Cannot join channel (+i)\r\n"
 #define ERR_NORECIPIENT(nick, command) ":ft_irc 411 " + nick + " :No recipient given " + command + "\n"
 #define ERR_NOTEXTTOSEND(nick) ":ft_irc 412 " + nick + " :No text to send\n"
+#define ERR_NONICKNAMEGIVEN ":ft_irc 431 :No nickname given\n"
+#define ERR_ERRONEUSNICKNAME(nick) ":ft_irc 432 " + nick + " :Error one use nickname\n"
+#define ERR_NICKNAMEINUSE(nick) ":ft_irc 433 " + nick + " :Nickname is already in use\n"

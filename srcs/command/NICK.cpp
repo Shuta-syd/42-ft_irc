@@ -1,30 +1,15 @@
 #include "Command.hpp"
+bool is_proper_words(std::string const &words);
+bool is_proper_size(std::string const &words);
+bool is_already_registered(std::string const &nick, std::map<std::string, int> mp_nick_to_fd);
 
 /**
  * @brief set nickname client
- *
  * NICK <nickname>
+ *
+ * bool should_be_cap = true; ← clientごとに終わらせる
+ * もし情報が不足していたら、これをfalseにする
  */
-
-//#issue7
-#define ERR_NONICKNAMEGIVEN ":ft_irc 431 :No nickname given\n"
-#define ERR_ERRONEUSNICKNAME(nick) ":ft_irc 432 " + nick + " :Error one use nickname\n"
-#define ERR_NICKNAMEINUSE(nick) ":ft_irc 433 " + nick + " :Nickname is already in use\n"
-//bool should_be_cap = true; ← clientごとに終わらせる
-//もし情報が不足していたら、これをfalseにする
-
-bool is_proper_words(std::string const &words) {
-	return words.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ") == std::string::npos;
-}
-
-bool is_proper_size(std::string const &words) {
-	return 1 <= words.size() && words.size() <= 9;
-}
-
-bool is_already_registered(std::string const &nick, std::map<std::string, int> mp_nick_to_fd) {
-	return mp_nick_to_fd[nick] > 0;
-}
-
 void NICK(Client &client, std::map<std::string, int> &mp_nick_to_fd) {
 	client.should_be_cap = false;
 	const int &fd = client.getFd();
@@ -51,3 +36,19 @@ void NICK(Client &client, std::map<std::string, int> &mp_nick_to_fd) {
 		client.should_be_cap = true;
 	}
 };
+
+
+bool is_proper_words(std::string const &words)
+{
+	return words.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ") == std::string::npos;
+}
+
+bool is_proper_size(std::string const &words)
+{
+	return 1 <= words.size() && words.size() <= 9;
+}
+
+bool is_already_registered(std::string const &nick, std::map<std::string, int> mp_nick_to_fd)
+{
+	return mp_nick_to_fd[nick] > 0;
+}

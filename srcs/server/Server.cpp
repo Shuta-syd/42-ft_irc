@@ -121,7 +121,7 @@ void Server::execute(Client &client)
 
 	if (cmd == "CAP")
 	{
-		CAP(client, *this);
+		CAP(client);
 		return;
 	}
 	else if (cmd == "PASS")
@@ -153,8 +153,8 @@ void Server::execute(Client &client)
 		MODE(client, params, channels_);
 	else if (cmd == "PRIVMSG")
 		PRIVMSG(client, mp_nick_to_fd_, channels_);
-	else if (cmd == "QUIT") //*this解消 // QUITしたらNICKリストから削除して同じ名前で再接続できるようにする
-		QUIT(client, *this, params);
+	else if (cmd == "QUIT") // QUITしたらNICKリストから削除して同じ名前で再接続できるようにする
+		QUIT(client, pollfds_, users_, mp_nick_to_fd_, params);
 	else if (cmd == "KICK") // *this解消
 		KICK(client, channels_, *this);
 	else if (cmd == "INVITE")

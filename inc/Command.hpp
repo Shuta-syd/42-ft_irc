@@ -2,15 +2,15 @@
 #include <Server.hpp>
 
 class Server;
-void CAP(Client &client, Server &server);
-void NICK(Client &client, std::map<std::string, int> mp_nick_to_fd_);
+void CAP(Client &client);
+void NICK(Client &client, std::map<std::string, int> &mp_nick_to_fd);
 void USER(Client &client);
 void PASS(Client &client, std::string const &server_password);
 void PONG(Client &client, const std::vector<std::string> &params);
 void JOIN(Client &client, const std::vector<std::string> &params, std::map<std::string, Channel> &allChannel);
 
 void PRIVMSG(Client &client, std::map<std::string, int> mp_nick_to_fd, std::map<std::string, Channel> &channels);
-void QUIT(Client &client, Server &server, const std::vector<std::string> &params);
+void QUIT(Client &client, std::vector<struct pollfd> &pollfds, std::map<int, Client> &users, std::map<std::string, int> &nick_to_fd, const std::vector<std::string> &params);
 void NAMES(Client &client, const std::vector<std::string> &params, std::map<std::string, Channel> &allChannels);
 void KICK(Client &client, std::map<std::string, Channel> &channels, Server &server);
 void TOPIC(Client &client, const std::vector<std::string> &params, std::map<std::string, Channel> &allChannels);
