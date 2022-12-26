@@ -1,7 +1,7 @@
 #include <Channel.hpp>
 #include <Client.hpp>
 
-Channel::Channel(): topicAllow_(false), maxMember_(-1) {}
+Channel::Channel() : topicAllow_(false), mode_("nt"), maxMember_(-1) {}
 
 Channel::~Channel(){}
 
