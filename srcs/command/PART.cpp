@@ -6,8 +6,11 @@ void leaveChannel(Client &client, std::map<std::string, Channel> &allChannels, c
  *
  * PART <channel> *( "," <channel> ) [ <Part Message> ]
  */
-void PART(Client &client, std::map<std::string, Channel> &allChannels, const std::vector<std::string> &params)
-{
+void PART(
+	Client &client,
+	std::map<std::string, Channel> &allChannels,
+	const std::vector<std::string> &params
+	) {
 	std::string message;
 	int fd = client.getFd();
 	std::string const &nick = client.getNickname();

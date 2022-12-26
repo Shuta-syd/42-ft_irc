@@ -5,7 +5,7 @@ bool validateMessage(Client &client, const std::vector<std::string> &params, std
  * @brief invite a user to a channel
  * INVITE <nickname> <channel>
  */
-void INVITE(Client &client, std::map<std::string, int> nick_to_fd, std::map<std::string, Channel> &channels)
+void INVITE(Client &client, std::map<std::string, int> nick_to_fd, std::map<std::string, Channel> &channels, std::map<int, Client> &users)
 {
 	const int fd = client.getFd();
 	const std::vector<std::string> &params = client.getParams();
@@ -13,10 +13,14 @@ void INVITE(Client &client, std::map<std::string, int> nick_to_fd, std::map<std:
 
 	if (validateMessage(client, params, channels, nick_to_fd) == false)
 		return;
+
+	const int targetFd = nick_to_fd[params[0]];
+	Client &targetClient = users[targetFd];
 	const std::string channelName = &params[1][1];
+
 	sendMessage(fd, RPL_INVITING(nick, params[0], channelName), 0);
-	sendMessage(nick_to_fd[params[0]], INVITE_MESSAGE(nick, client.getUsername(), client.getHostname(), params[0], channelName), 0);
-	client.addInvited(channelName);
+	sendMessage(targetFd, INVITE_MESSAGE(nick, client.getUsername(), client.getHostname(), params[0], channelName), 0);
+	targetClient.addInvited(channelName);
 }
 
 bool validateMessage(Client &client, const std::vector<std::string> &params, std::map<std::string, Channel> channels, std::map<std::string, int> nick_to_fd)

@@ -5,7 +5,6 @@ Channel::Channel() : topicAllow_(false), mode_("nt"), maxMember_(-1) {}
 
 Channel::~Channel(){}
 
-
 const std::vector<Client> Channel::getMember() const { return members_; }
 const std::string Channel::getTopic() const { return topic_; }
 const std::string Channel::getName() const { return name_; }
