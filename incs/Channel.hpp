@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DEFINE_IRC_CHANNEL
+#define DEFINE_IRC_CHANNEL
 
 #include <vector>
 #include <string>
@@ -45,3 +46,5 @@ private:
 	std::string createdTime_;
 	std::vector<Client> members_;
 };
+
+#endif

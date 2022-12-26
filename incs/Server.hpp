@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef DEFINE_IRC_SERVER
+#define DEFINE_IRC_SERVER
 #include <cstring>
 #include <string>
 #include <iostream>
@@ -17,7 +17,6 @@
 
 #include <Client.hpp>
 #include <Reply.hpp>
-#include <Command.hpp>
 #include <Utils.hpp>
 #include <Client.hpp>
 
@@ -73,3 +72,4 @@ private:
 };
 
 void signal_handler(int signal);
+#endif

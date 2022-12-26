@@ -2,14 +2,14 @@ NAME := ircserv
 CXX := c++
 RM := rm -rf
 
-OBJS_DIR += srcs/
-DEPS_DIR += srcs/
+objs_dir += srcs/
+deps_dir += srcs/
 srcs += $(addprefix srcs/, \
     main.cpp \
 )
 
-OBJS_DIR += srcs/server/ srcs/command/ srcs/utils/
-DEPS_DIR += srcs/server/ srcs/command/ srcs/utils/
+objs_dir += srcs/server/ srcs/command/ srcs/utils/
+deps_dir += srcs/server/ srcs/command/ srcs/utils/
 srcs += $(addprefix srcs/server/, \
 		Server.cpp Client.cpp Reply.cpp Channel.cpp Signal.cpp\
 )
@@ -24,16 +24,16 @@ srcs += $(addprefix srcs/command/,\
 		INVITE.cpp PART.cpp\
 )
 
-OBJS := $(srcs:%.cpp=OBJS/%.o)
-DEPS := $(srcs:%.cpp=DEPS/%.d)
+objs := $(srcs:%.cpp=objs/%.o)
+deps := $(srcs:%.cpp=deps/%.d)
 
-OBJS_DIR := $(addprefix OBJS/, $(OBJS_DIR))
-OBJS_DIR := $(addsuffix .keep, $(OBJS_DIR))
+objs_dir := $(addprefix objs/, $(objs_dir))
+objs_dir := $(addsuffix .keep, $(objs_dir))
 
-DEPS_DIR := $(addprefix DEPS/, $(DEPS_DIR))
-DEPS_DIR := $(addsuffix .keep, $(DEPS_DIR))
+deps_dir := $(addprefix deps/, $(deps_dir))
+deps_dir := $(addsuffix .keep, $(deps_dir))
 
-INC= inc
+INC= incs
 
 debugflags := -g3 -fsanitize=address
 headerflags := -MMD -MP
@@ -44,33 +44,33 @@ CXXFLAGS := -Wall -Werror -Wextra -std=c++98 -pedantic
 .PHONY: all clean fclean re
 all: $(NAME)
 
--include $(DEPS)
+-include $(deps)
 
-$(NAME): $(OBJS)
-	@$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
+$(NAME): $(objs)
+	@$(CXX) $(CXXFLAGS) $(objs) -o $(NAME)
 	@echo "$(CYN)\n=====link=====$(RES)"
-	@echo "$(YEL)Objects$(RES): $(OBJS)\n"
+	@echo "$(YEL)Objects$(RES): $(objs)\n"
 	@echo "$(YEL)Flags$(RES): $(CXXFLAGS)\n"
 	@echo "     $(MGN)--->$(RES) $(GRN)$(NAME)$(RES)"
 	@echo "$(CYN)==============$(RES)"
 
-./OBJS/%.o: %.cpp $(OBJS_DIR) $(DEPS_DIR)
-	@$(CXX) $(CXXFLAGS)  -I$(INC) $(headerflags) -MF ./DEPS/$(*).d -c $< -o $@
+./objs/%.o: %.cpp $(objs_dir) $(deps_dir)
+	@$(CXX) $(CXXFLAGS)  -I$(INC) $(headerflags) -MF ./deps/$(*).d -c $< -o $@
 	@echo "$< =========> $(GRN) $@ $(RES)"
 
-$(OBJS_DIR):
+$(objs_dir):
 	@mkdir -p $@
-$(DEPS_DIR):
+$(deps_dir):
 	@mkdir -p $@
 
 clean:
-	$(RM) $(OBJS)
-	$(RM) $(DEPS)
+	$(RM) $(objs)
+	$(RM) $(deps)
 
 fclean: clean
 	$(RM) $(NAME)
-	$(RM) ./OBJS
-	$(RM) ./DEPS
+	$(RM) ./objs
+	$(RM) ./deps
 
 re: fclean all
 

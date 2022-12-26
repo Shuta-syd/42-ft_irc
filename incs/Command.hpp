@@ -1,7 +1,7 @@
-#pragma once
+#ifndef DEFINE_IRC_COMMAND
+#define DEFINE_IRC_COMMAND
 #include <Server.hpp>
 
-class Server;
 void CAP(Client &client, std::vector<struct pollfd> &pollfds, std::map<int, Client> &users, std::map<std::string, int> &nick_to_fd);
 void NICK(Client &client, std::map<std::string, int> &mp_nick_to_fd);
 void USER(Client &client);
@@ -21,3 +21,5 @@ void PART(Client &client, std::map<std::string, Channel> &channels, const std::v
 void debug_member_in_channel(Channel const &channel);
 void debug_channel_in_user(Client &client);
 void clearClientInfo(Client &client, std::vector<struct pollfd> &pollfds, std::map<int, Client> &users, std::map<std::string, int> &nick_to_fd);
+
+#endif
