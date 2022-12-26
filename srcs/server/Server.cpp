@@ -89,14 +89,13 @@ void Server::execute(Client &client)
 	const std::string &cmd = client.getCommand();
 	const std::vector<std::string> &params = client.getParams();
 
-	std::cout << CYN << cmd << " COMMAND" << RES << std::endl;
 
 	if (cmd == "CAP")
 		CAP(client, pollfds_, users_, mp_nick_to_fd_);
 	else if (cmd == "PASS")
 		PASS(client, password_);
 	else if (cmd == "NICK")
-		NICK(client, mp_nick_to_fd_);
+		NICK(client, mp_nick_to_fd_, channels_);
 	else if (cmd == "USER")
 		USER(client);
 	else if (cmd == "JOIN")

@@ -39,7 +39,7 @@ void TOPIC(
 	else if (existChannel == false)
 		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channelName), 0);
 	else if (isOper == false && isSetTopicAllow == false)
-		sendMessage(fd, ERR_CHANOPRIVSNEEDED(nick, channelName), 0);
+		sendMessage(fd, ERR_NOPRIVILEGES(nick), 0);
 	else if (params.size() == 1 && joinedChannel && existChannel)
 	{
 		// show specific channel topic
