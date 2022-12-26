@@ -1,13 +1,18 @@
 #include <Server.hpp>
-void clearClientInfo(Client &client, Server &server);
+void clearClientInfo(Client &client, std::vector<struct pollfd> pollfds, std::map<int, Client> &users, std::map<std::string, int> &nick_to_fd);
 
 /**
  * @brief a client session is terminated with a quit message
  *
  * QUIT [<Quit Message>]
  */
-void QUIT(Client &client, Server &server, const std::vector<std::string> &params)
-{
+void QUIT(
+	Client &client,
+	std::vector<struct pollfd> &pollfds,
+	std::map<int, Client> &users,
+	std::map<std::string, int> &nick_to_fd,
+	const std::vector<std::string> &params
+	) {
 	/* once  funcs of channel have been created there should be more funcs */
 	const std::string nick = client.getNickname();
 	const int &clientFd = client.getFd();
@@ -39,13 +44,16 @@ void QUIT(Client &client, Server &server, const std::vector<std::string> &params
 		}
 	}
 	/* delete info as for this client  */
-	clearClientInfo(client, server);
+	clearClientInfo(client, pollfds, users, nick_to_fd);
 	std::cout << RED << nick << " LEAVE" << RES << std::endl;
 }
 
-void clearClientInfo(Client &client, Server &server)
-{
-	std::vector<struct pollfd> &pollfds = server.get_polldfs();
+void clearClientInfo(
+	Client &client,
+	std::vector<struct pollfd> pollfds,
+	std::map<int, Client> &users,
+	std::map<std::string, int> &nick_to_fd
+	) {
 	for (std::vector<struct pollfd>::iterator it = pollfds.begin(); it != pollfds.end(); it++)
 	{
 		if (client.getFd() == it->fd)
@@ -54,10 +62,8 @@ void clearClientInfo(Client &client, Server &server)
 			break;
 		}
 	}
-	std::map<int, Client> &user = server.getUsers();
 
-	std::map<std::string, int> &nick_to_fd = server.getMp_nick_to_fd();
-	user.erase(client.getFd());
+	users.erase(client.getFd());
 	nick_to_fd.erase(client.getNickname());
 	close(client.getFd());
 }
