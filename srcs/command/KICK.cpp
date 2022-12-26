@@ -1,6 +1,6 @@
 #include <Command.hpp>
-void debug_channel_in_user(Client &client);
-void debug_member_in_channel(Channel const &channel);
+//void debug_channel_in_user(Client &client);
+//void debug_member_in_channel(Channel const &channel);
 void kickMember(Client &client, std::map<std::string, Channel> &allChannels, const std::string &ch_name, const std::vector<std::string> &targets, const std::string &message);
 
 /**
@@ -69,29 +69,30 @@ void kickMember(
 
 }
 
-void debug_member_in_channel(Channel const &channel) {
-	std::cerr << "<<<members in channel>>>\n";
-	for (auto member : channel.getMember())
-	{
-		std::cerr << member.getNickname() << std::endl;
-	}
-	std::cout << "_____________________________________\n";
-}
-
-void debug_channel_in_user(Client &client) {
-	std::cerr << "<<<channel joined by the user>>>\n";
-	std::cerr << "THE USER : " << client.getNickname() << "\n";
-	if (client.getChannels().empty())
-	{
-		std::cerr << "now this use is not belong to any channel!\n";
-		return;
-	}
-	else
-	{
-		for (auto ch : client.getChannels())
-		{
-			std::cerr << ch.first << std::endl;
-		}
-	}
-	std::cout << "_____________________________________\n";
-}
+//void debug_member_in_channel(Channel const &channel) {
+//	std::cerr << "<<<members in channel>>>\n";
+//	for (auto member : channel.getMember())
+//	{
+//		std::cerr << member.getNickname() << std::endl;
+//	}
+//	std::cout << "_____________________________________\n";
+//}
+//
+//void debug_channel_in_user(Client &client) {
+//	std::cerr << "<<<channel joined by the user>>>\n";
+//	std::cerr << "THE USER : " << client.getNickname() << "\n";
+//	if (client.getChannels().empty())
+//	{
+//		std::cerr << "now this use is not belong to any channel!\n";
+//		return;
+//	}
+//	else
+//	{
+//		for (auto ch : client.getChannels())
+//		{
+//			std::cerr << ch.first << std::endl;
+//		}
+//	}
+//	std::cout << "_____________________________________\n";
+//}
+//

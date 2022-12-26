@@ -90,31 +90,42 @@ void Server::chat(int fd)
  * @param client
  */
 
-void Server::debug_all_channels_situation()
-{
-	std::cerr << "_____CHANNEL SITUATION_______" << std::endl;
-	for (auto ch : this->channels_)
-	{
-		std::cerr << "CHANNEL NAME : " << ch.first << std::endl;
-		for (auto member : ch.second.getMember())
-		{
-			std::cerr << member.getNickname() << std::endl;
-		}
+//void Server::debug_all_channels_situation()
+//{
+//	std::cerr << "_____CHANNEL SITUATION_______" << std::endl;
+//	for (auto ch : this->channels_)
+//	{
+//		std::cerr << "CHANNEL NAME : " << ch.first << std::endl;
+//		for (auto member : ch.second.getMember())
+//		{
+//			std::cerr << member.getNickname() << std::endl;
+//		}
+//	}
+//	std::cerr << "_____________________________" << std::endl;
+//}
+
+void Server::debug_all_members() {
+	std::cerr << "_____MEMBER SITUATION_______" << std::endl;
+
+	std::map<std::string, int>::iterator it = mp_nick_to_fd_.begin();
+
+	for (; it != mp_nick_to_fd_.end(); it++) {
+		std::cerr << it->first << std::endl;
 	}
-	std::cerr << "_____________________________" << std::endl;
+	std::cerr << "____________________________" << std::endl;
 }
 
 void Server::execute(Client &client)
 {
 	// this->debug_all_channels_situation();
-
+//	this->debug_all_members();
 	const std::string &cmd = client.getCommand();
 	const std::vector<std::string> &params = client.getParams();
 
 	std::cout << CYN << cmd << " COMMAND" << RES << std::endl;
 
 	if (cmd == "CAP")
-		CAP(client, pollfds_, users_, mp_nick_to_fd_, params);
+		CAP(client, pollfds_, users_, mp_nick_to_fd_);
 	else if (cmd == "PASS")
 		PASS(client, password_);
 	else if (cmd == "NICK")
@@ -208,7 +219,8 @@ void Server::setupServerSocket()
 	fcntl(master_sd_, O_NONBLOCK, &enable);
 
 	/* create address for server socket fd */
-	struct sockaddr_in addr = {0};
+	struct sockaddr_in addr;
+	bzero(&addr, sizeof(struct sockaddr));
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = INADDR_ANY;
 	addr.sin_port = htons(port_);
