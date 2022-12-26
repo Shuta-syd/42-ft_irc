@@ -43,7 +43,6 @@ void sendWelcomeMessage(const Client &client)
 
 /**
  * @brief send auth fail message to the client
- *
  */
 void sendAuthfail(const Client &client) {
 	const int &fd = client.getFd();

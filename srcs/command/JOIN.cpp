@@ -74,8 +74,6 @@ void enterChannel(
 		std::string channelName,
 		const std::string &key
 		) {
-	if (channelName.empty())
-		channelName = " ";
 	const int &fd = client.getFd();
 	const std::string &nick = client.getNickname();
 	Channel &channel = allChannel[channelName];
@@ -83,7 +81,7 @@ void enterChannel(
 	const std::vector<Client> &members = channel.getMember();
 
 	// create new channel
-	if (channelName != channel.getName() && (key == channelKey || channelKey.empty()))
+	if ((channelName != channel.getName() || channelName.empty())&& (key == channelKey || channelKey.empty()))
 	{
 		channel.setName(channelName);
 		channel.setMember(client);

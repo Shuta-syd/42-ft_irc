@@ -107,11 +107,11 @@ void Server::execute(Client &client)
 		PONG(client, params);
 	else if (cmd == "NAMES")
 		NAMES(client, params, channels_);
-	else if (cmd == "MODE") // MODE i Iフラグ実装必要
+	else if (cmd == "MODE")
 		MODE(client, params, channels_);
 	else if (cmd == "PRIVMSG")
 		PRIVMSG(client, mp_nick_to_fd_, channels_);
-	else if (cmd == "QUIT") // QUITしたらNICKリストから削除して同じ名前で再接続できるようにする
+	else if (cmd == "QUIT")
 		QUIT(client, pollfds_, users_, mp_nick_to_fd_, params);
 	else if (cmd == "KICK")
 		KICK(client, channels_, params);
