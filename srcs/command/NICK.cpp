@@ -9,6 +9,7 @@ bool is_already_registered(std::string const &nick, std::map<std::string, int> m
  * bool should_be_cap_nick = true; ← clientごとに終わらせる
  * もし情報が不足していたら、これをfalseにする
  */
+
 void NICK(Client &client, std::map<std::string, int> &mp_nick_to_fd, std::map<std::string, Channel> &server_channels) {
 	client.should_be_cap_nick = false;
 	const int &fd = client.getFd();

@@ -39,7 +39,7 @@ public:
 	void setHostname(std::string hostname) { hostname_ = hostname; }
 	void setRealname(std::string realname) { realname_ = realname; }
 	void setChannel(const std::string &name, Channel &channel);
-	void addInvited(std::string channelName) { isInvited_[channelName] = true; }
+	void addInvited(std::string channelName) {isInvited_[channelName] = true;}
 	void delInvited(std::string channelName) { isInvited_.erase(channelName); }
 	bool isInvited(std::string mode, std::string channelName);
 
@@ -57,8 +57,8 @@ private:
 	std::string realname_;
 	std::string prefix_;
 	std::string command_;
-	std::map<std::string, bool> isInvited_; // <channelName, isInvited>?
 	std::vector<std::string> params_;
+	std::map<std::string, bool> isInvited_; // <channelName, isInvited>?
 	std::map<std::string, Channel> channels_; // channels This belong to
 
 	void debug_parser();

@@ -72,7 +72,7 @@ void Server::chat(int fd)
 			i++;
 			len++;
 		}
-		
+
 		cmd_line.append(&message[i - len], len + 2);
 		user.parse(cmd_line);
 		this->execute(user);
@@ -115,7 +115,7 @@ void Server::execute(Client &client)
 	else if (cmd == "KICK")
 		KICK(client, channels_, params);
 	else if (cmd == "INVITE")
-		INVITE(client, mp_nick_to_fd_, channels_);
+		INVITE(client, mp_nick_to_fd_, channels_, users_);
 	else if (cmd == "PART")
 		PART(client, channels_, params);
 }

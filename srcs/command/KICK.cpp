@@ -42,7 +42,10 @@ void kickMember(
 	Channel &channel = allChannels[ch_name];
 
 	if (channel.is_operator(nick) == false)
+	{
 		sendMessage(fd, ERR_NOPRIVILEGES(nick), 0);
+		return ;
+	}
 
 	for (size_t i = 0; i < targets.size(); i++)
 	{

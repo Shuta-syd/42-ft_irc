@@ -3,7 +3,7 @@
 
 Client::Client() {}
 
-Client::Client(int fd, const std::string  &nick): fd_(fd), nickname_(nick) {}
+Client::Client(int fd, const std::string &nick) : should_be_cap_nick(false), should_be_cap_pass(false), fd_(fd), nickname_(nick) {}
 
 Client::~Client() {}
 
@@ -118,6 +118,7 @@ void Client::setChannel(const std::string &name, Channel &channel) {
 bool Client::isInvited(std::string mode, std::string channelName)
 {
 	std::map<std::string, bool> isInvited = isInvited_;
+
 	if (find(mode, "i") == -1)
 		return true;
 	else

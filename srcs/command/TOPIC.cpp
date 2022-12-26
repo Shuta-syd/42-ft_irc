@@ -28,12 +28,10 @@ void TOPIC(
 
 	if (existChannel)
 	{
-		const Channel &channel = allChannels[channelName];
+		Channel &channel = allChannels[channelName];
 		const std::vector<std::string> operNames = channel.getOper();
-		for (size_t i = 0; i < operNames.size(); i++)
-			operNames[i] == nick ? isOper = true : isOper;
+		isOper = channel.is_operator(nick);
 		isSetTopicAllow = channel.getTopicAllow();
-		std::cout << isSetTopicAllow << std::endl;
 	}
 
 	if (joinedChannel == false && existChannel)
