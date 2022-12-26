@@ -61,4 +61,5 @@ void leaveChannel(
 		if (targetNick == nick)
 			channel.eraseMember(*it);
 	}
+	channel.delOper(nick);
 }

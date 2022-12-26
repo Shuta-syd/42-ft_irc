@@ -43,7 +43,7 @@ void kickMember(
 
 	if (channel.is_operator(nick) == false)
 	{
-		sendMessage(fd, ERR_NOPRIVILEGES(nick), 0);
+		sendMessage(fd, ERR_CHANOPRIVSNEEDED(ch_name), 0);
 		return ;
 	}
 
@@ -63,10 +63,12 @@ void kickMember(
 					const std::string &targetNick = it->getNickname();
 					sendMessage(targetFd, KICK_MESSAGE(nick, client.getUsername(), client.getHostname(), ch_name, target, message), 0);
 					if (targetNick == target)
+					{
 						channel.eraseMember(*it);
+						if (channel.is_operator(targetNick))
+							channel.delOper(targetNick);
+					}
 				}
 		}
 	}
-
-
 }
