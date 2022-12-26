@@ -1,8 +1,37 @@
 #include <Command.hpp>
 
-bool validate_msg(Client &client, const std::vector< std::string> &params, const std::string &nick_name, Server &server) {
-	if (params.size() != 2) {
-		sendMessage(client.getFd(), ERR_NEEDMOREPARAMS(nick_name, "INVITE"), 0);
+bool validateMessage(Client &client, const std::vector<std::string> &params, std::map<std::string, Channel> channels, std::map<std::string, int> nick_to_fd)
+
+/**
+ * @brief invite a user to a channel
+ *
+ * INVITE <nickname> <channel>
+ */
+void INVITE(Client &client, std::map<std::string, int> nick_to_fd, std::map<std::string, Channel> &channels)
+{
+	const int fd = client.getFd();
+	const std::vector<std::string> &params = client.getParams();
+	const std::string &nick = client.getNickname();
+
+	/* error check part */
+	if (validateMessage(client, params, channels, nick_to_fd) == false) {
+		return ;
+	}
+	const std::string channelName = &params[1][1];
+	/* no error happen */
+	sendMessage(fd, RPL_INVITING(nick, params[0], channelName), 0);
+	sendMessage(nick_to_fd[params[0]], INVITE_MESSAGE(nick, client.getUsername(), client.getHostname(), params[0], channelName), 0);
+
+	client.addInvited(channelName);
+}
+
+bool validateMessage(Client &client, const std::vector<std::string> &params, std::map<std::string, Channel> channels, std::map<std::string, int> nick_to_fd)
+{
+	const std::string nick = client.getNickname();
+
+	if (params.size() != 2)
+	{
+		sendMessage(client.getFd(), ERR_NEEDMOREPARAMS(nick, "INVITE"), 0);
 		return false;
 	}
 	else if (findChannel(server.getChannels(), params[1]) == false) {
@@ -29,22 +58,3 @@ bool validate_msg(Client &client, const std::vector< std::string> &params, const
 	return true;
 }
 
-void INVITE(Client &client, const std::map<std::string, Channel> &channels, Server &server)
-{
-	/* error check part */
-	const std::vector< std::string> &params = client.getParams();
-	const std::string &nick_name = client.getNickname();
-	if (validate_msg(client, params, nick_name, server) == false) {
-		return ;
-	}
-	/* no error happen */
-	sendMessage(server.getFd_from_nick(params[0]), RPL_INVITING(client.getNickname(), params[1]), 0);
-	std::map<int, Client > &tmp_mp_nick_to_fd_ = server.getUsers();
-	// nick  #chennnel
-	// #channel
-	/* skip params[0] */
-	std::vector<std::string >tmp_params = params;
-	tmp_params.erase(tmp_params.begin());
-	JOIN(tmp_mp_nick_to_fd_[server.getFd_from_nick(params[0])], tmp_params,  server.getChannels());
-	sendMessage(server.getFd_from_nick(params[0]), create_privmsg(tmp_mp_nick_to_fd_[server.getFd_from_nick(params[0])]), 0);
-}

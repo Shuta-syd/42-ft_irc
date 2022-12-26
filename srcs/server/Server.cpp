@@ -137,15 +137,14 @@ void Server::execute(Client &client)
 	else if (cmd == "PRIVMSG")
 		PRIVMSG(client, *this, channels_);
 	else if (cmd == "QUIT")
-		QUIT(client, *this);
+		QUIT(client, *this, params);
 	else if (cmd == "KICK")
 		KICK(client, channels_, *this);
 	else if (cmd == "INVITE")
 		INVITE(client, channels_, *this);
 	else if (cmd == "PART")
-		PART(client, channels_);
-	else if (cmd == "QUIT")
-		QUIT(client, *this);
+		PART(client, channels_, *this);
+
 }
 
 //--------------Functions related to Socket------------------

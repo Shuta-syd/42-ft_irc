@@ -39,7 +39,6 @@ public:
 
   void start();
 
-  std::map<int, Client>&getUsers()  { return this->users_; };
 	void setMp_nick_to_fd(std::string const &nick, int const fd) {
 		mp_nick_to_fd_[nick] = fd;
 	}
@@ -50,16 +49,19 @@ public:
 	std::map<std::string , Channel> &getChannels()  {
 		return channels_;
 	}
-
-
 	int getMstersd() { return master_sd_;}
 	void signal_setup();
 
+  std::map<int, Client>&getUsers()  { return this->users_; };
+	std::map<std::string , Channel> &getChannels() { return channels_; }
+	std::map<std::string, int> &getMp_nick_to_fd() { return mp_nick_to_fd_; }
+	std::vector<struct pollfd> &get_polldfs(){return pollfds_;}
+
 
 private:
-	int port_; // port number to connect to client
-	int nfds_; // number of connected file  descriptor
-	int master_sd_; // server socket file descriptor
+	int port_;
+	int nfds_;
+	int master_sd_;
 	std::string password_;
 	std::map<int, Client> users_; //client users info map(fd, client);
 	std::vector<struct pollfd> pollfds_;
