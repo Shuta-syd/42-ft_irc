@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 Server *server;
-void terminate(int signal)
+void terminate(int exitStatus)
 {
 	std::map<int, Client>::iterator it = server->getUsers().begin();
 
@@ -11,10 +11,8 @@ void terminate(int signal)
 		close(it->first);
 	}
 	close(server->getMstersd());
-	std::cout << "SERVER HANG UP." << std::endl;
-	std::exit(signal);
-
-
+	std::cerr << "SERVER HANG UP." << std::endl;
+	std::exit(exitStatus);
 }
 
 void signal_handler(int signal)
@@ -25,10 +23,7 @@ void signal_handler(int signal)
 
 int main(int argc, char const *argv[])
 {
-
-
-	if (argc == 3)
-	{
+	if (argc == 3) {
 		int port = atoi(argv[1]);
 		std::string password(argv[2]);
 
@@ -38,14 +33,12 @@ int main(int argc, char const *argv[])
 		try	{
 			Irc.start();
 		} catch (const std::exception &e) {
-			std::cout << "ERROR:" << e.what() << std::endl;
+			std::cerr << "ERROR:" << e.what() << std::endl;
 			terminate(1);
 		}
 	}
-	else
-	{
+	else {
 		std::cerr << "[Usage] ./ircserv [Port] [Password]" << std::endl;
 		return 1;
 	}
-	return 0;
 }

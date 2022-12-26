@@ -32,8 +32,8 @@ void PRIVMSG(Client &client, std::map<std::string, int> mp_nick_to_fd, std::map<
 			const std::vector<Client> &members = channel.getMember();
 			for (std::vector<Client>::const_iterator it = members.begin(); it != members.end(); it++)
 			{
-				sendMessage(it->getFd(), PRIVMSG_MESSAGE(nick, client.getUsername(), client.getHostname(), "#" + channelName, message), 0);
-				return;
+				if ((*it).getNickname() != nick)
+					sendMessage(it->getFd(), PRIVMSG_MESSAGE(nick, client.getUsername(), client.getHostname(), "#" + channelName, message), 0);
 			}
 		}
 	}
