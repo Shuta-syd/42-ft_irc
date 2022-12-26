@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <Utils.hpp>
 #include <Colors.hpp>
 
 class Channel;
@@ -40,13 +39,10 @@ public:
 	const bool &getIsAuth() const { return is_auth_; }
 	void setIsAuth(bool is_auth) { is_auth_ = is_auth; }
 	void setChannel(const std::string &name, Channel &channel);
-	void addInvited(std::string channelName) { isInvited_[channelName] = true; }
-	void delInvited(std::string channelName) { isInvited_.erase(channelName); }
-	bool isInvited(std::string mode, std::string channelName);
 
-	// CAPでcapをすべきか否かをはじめのNICK/USERの段階でチェックしないといけないので、
-	// should_be_capを追加した。
-	// ↑これらが情報として不足している時にはfalseにするという仕様にした
+	//CAPでcapをすべきか否かをはじめのNICK/USERの段階でチェックしないといけないので、
+	//should_be_capを追加した。
+	//↑これらが情報として不足している時にはfalseにするという仕様にした
 	bool should_be_cap;
 
 private:
@@ -58,9 +54,7 @@ private:
 	std::string realname_;
 	std::string prefix_;
 	std::string command_;
-	std::map<std::string, bool> isInvited_; // <channelName, isInvited>?
 	std::vector<std::string> params_;
 	std::map<std::string, Channel> channels_; // channels This belong to
-
 	void debug_parser();
 };

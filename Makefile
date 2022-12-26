@@ -11,7 +11,7 @@ srcs += $(addprefix srcs/, \
 OBJS_DIR += srcs/server/ srcs/command/ srcs/utils/
 DEPS_DIR += srcs/server/ srcs/command/ srcs/utils/
 srcs += $(addprefix srcs/server/, \
-		Server.cpp Client.cpp Reply.cpp Channel.cpp\
+		Server.cpp Client.cpp Reply.cpp Channel.cpp Signal.cpp\
 )
 
 srcs += $(addprefix srcs/utils/,\
@@ -81,7 +81,6 @@ debug: re
 
 run: all
 	./ircserv 8080 password
-
 RED = \033[31m
 GRN = \033[32m
 YEL = \033[33m
