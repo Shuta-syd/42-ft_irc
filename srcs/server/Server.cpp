@@ -135,7 +135,7 @@ void Server::execute(Client &client)
 		NICK(client, mp_nick_to_fd_);
 	else if (cmd == "USER")
 		USER(client);
-	else if (cmd == "JOIN") // invite専用はclient isInvitedで判断
+	else if (cmd == "JOIN")
 		JOIN(client, params, channels_);
 	else if (cmd == "TOPIC")
 		TOPIC(client, params, channels_);
@@ -154,7 +154,7 @@ void Server::execute(Client &client)
 	else if (cmd == "INVITE")
 		INVITE(client, mp_nick_to_fd_, channels_);
 	else if (cmd == "PART")
-		PART(client, channels_, *this);
+		PART(client, channels_, params);
 }
 
 //--------------Functions related to Socket------------------

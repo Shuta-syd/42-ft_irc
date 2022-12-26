@@ -19,8 +19,8 @@ void enterChannel(std::map<std::string, Channel> &allChannel, Client &client, co
 void JOIN(
 		Client &client,
 		const std::vector<std::string> &params,
-		std::map<std::string, Channel> &allChannel)
-{
+		std::map<std::string, Channel> &allChannel
+		){
 	const int &fd = client.getFd();
 	const std::string &nick = client.getNickname();
 	std::vector<std::string> keys;
@@ -34,8 +34,7 @@ void JOIN(
 	const std::vector<std::string> channels = splitChannel(params.at(0));
 	keys = splitKeys(keyParam, channels.size());
 
-	for (size_t i = 0; i < channels.size(); i++)
-	{
+	for (size_t i = 0; i < channels.size(); i++) {
 		if (isChannel(client, channels[i]))
 			enterChannel(allChannel, client, &channels[i][1], keys[i]);
 	}
@@ -44,8 +43,7 @@ void JOIN(
 /**
  * @brief channel name is true or false
  */
-bool isChannel(const Client &client, const std::string &channelName)
-{
+bool isChannel(const Client &client, const std::string &channelName) {
 	const int &fd = client.getFd();
 	const std::string &nick = client.getNickname();
 
