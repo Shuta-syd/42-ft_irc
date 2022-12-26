@@ -17,7 +17,7 @@ void PRIVMSG(Client &client, std::map<std::string, int> mp_nick_to_fd, std::map<
 	const std::string message = params.at(1);
 
 	/* check if client sends msg to channnel or not  */
-	if (params.at(0)[0] == '#')
+	if (params[0][0] == '#')
 	{
 		const std::string channelName = &params[0][1];
 		/* in the case of "No such a channel" */
