@@ -2,7 +2,7 @@
 #include <Server.hpp>
 
 class Server;
-void CAP(Client &client, std::vector<struct pollfd> &pollfds, std::map<int, Client> &users, std::map<std::string, int> &nick_to_fd, const std::vector<std::string> &params);
+void CAP(Client &client, std::vector<struct pollfd> &pollfds, std::map<int, Client> &users, std::map<std::string, int> &nick_to_fd);
 void NICK(Client &client, std::map<std::string, int> &mp_nick_to_fd);
 void USER(Client &client);
 void PASS(Client &client, std::string const &server_password);

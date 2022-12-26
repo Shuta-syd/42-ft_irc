@@ -37,8 +37,8 @@ INC= inc
 
 debugflags := -g3 -fsanitize=address
 headerflags := -MMD -MP
-#CXXFLAGS := -Wall -Werror -Wextra -std=c++17
-CXXFLAGS := -std=c++17
+CXXFLAGS := -Wall -Werror -Wextra
+#CXXFLAGS := -std=c++17
 
 ############# basic rules ##############
 .PHONY: all clean fclean re

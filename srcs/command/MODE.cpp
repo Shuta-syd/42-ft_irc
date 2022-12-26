@@ -1,7 +1,7 @@
 #include <Command.hpp>
 bool isCorrectMode(const char &mode);
 bool isOper(Channel channel, Client client);
-void exec_i(const char isAllow, Channel &channel, const Client &client, const std::vector<std::string> &params);
+void exec_i(const char isAllow, Channel &channel, const Client &client);
 void exec_l(const char isAllow, Channel &channel, const Client &client, const std::vector<std::string> &params);
 void exec_t(const char isAllow, Channel &channel, const Client &client);
 void exec_k(const char isAllow, Channel &channel, const Client &client, const std::vector<std::string> &params);
@@ -83,7 +83,7 @@ void executeMode(
 	else if (mode == 'l')
 		exec_l(isAllow, channel, client, params);
 	else if (mode == 'i')
-		exec_i(isAllow, channel, client, params);
+		exec_i(isAllow, channel, client);
 }
 
 /**
@@ -267,8 +267,7 @@ void exec_l(
 void exec_i(
 		const char isAllow,
 		Channel &channel,
-		const Client &client,
-		const std::vector<std::string> &params)
+		const Client &client)
 {
 	int fd = client.getFd();
 	const std::string nick = client.getNickname();

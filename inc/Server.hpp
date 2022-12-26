@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstring>
 #include <string>
 #include <iostream>
 #include <sys/types.h>
@@ -68,6 +69,7 @@ private:
 	void chat(int);
 	void execute(Client & client);
 	void debug_all_channels_situation();
+	void debug_all_members();
 };
 
 void signal_handler(int signal);

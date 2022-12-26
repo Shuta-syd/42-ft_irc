@@ -90,8 +90,8 @@ void enterChannel(
 	}
 	else if (
 			(key == channelKey || channelKey == "") &&
-			channel.getMaxMember() > channel.getMember().size() &&
-			client.isInvited(channel.getMode(), channelName))
+			channel.getMaxMember() > static_cast<int>(channel.getMember().size()) &&
+					client.isInvited(channel.getMode(), channelName))
 	{ // already exist
 		channel.setMember(client);
 		client.setChannel(channelName, channel);
@@ -109,7 +109,7 @@ void enterChannel(
 	}
 	else if (client.isInvited(channel.getMode(), channelName))
 		sendMessage(fd, ERR_INVITEONLYCHAN(nick, channelName), 0);
-	else if (channel.getMaxMember() <= channel.getMember().size())
+	else if (channel.getMaxMember() <= static_cast<int>(channel.getMember().size()))
 		sendMessage(fd, ERR_CHANNELISFULL(nick, channelName), 0);
 	else
 		sendMessage(fd, ERR_BADCHANNELKEY(nick, channelName), 0);

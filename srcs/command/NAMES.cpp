@@ -26,7 +26,6 @@ void NAMES(
 					&& findChannel(allChannels, &channelName[1])
 				)
 			{
-				const Channel &channel = allChannels[channelName];
 				sendMessage(fd, RPL_NAMREPLY(nick, &channelName[1], "oper"), 0);
 				sendMessage(fd, RPL_ENDOFNAMES(nick, &channelName[1]), 0);
 			}
