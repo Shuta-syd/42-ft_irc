@@ -30,10 +30,7 @@ void PASS(Client &client, std::string const &server_password)
 	/******* Error handling ********/
 	if (client.getParams().size() != 1) {
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "PASS"), 0);
-	} //else if (client.getIsAuth() == true) {
-		//sendMessage(fd, ERR_ALREADYREGISTRED(nick), 0);
-	//}
-	else if (password != server_password) {
+	} else if (password != server_password) {
 		sendMessage(fd, ERR_PASSWDMISMATCH(nick), 0);
 	/*********************************/
 	} else {
