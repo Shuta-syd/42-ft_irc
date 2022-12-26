@@ -3,7 +3,7 @@
 
 class Server;
 void CAP(Client &client, Server &server);
-void NICK(Client &client, Server &server);
+void NICK(Client &client, std::map<std::string, int> mp_nick_to_fd_);
 void USER(Client &client);
 void PASS(Client &client, std::string const &server_password);
 void PONG(Client &client, const std::vector<std::string> &params);

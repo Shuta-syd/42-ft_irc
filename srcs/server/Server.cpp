@@ -138,7 +138,7 @@ void Server::execute(Client &client)
 	}
 
 	if (cmd == "NICK")
-		NICK(client, *this); //*this解消
+		NICK(client, mp_nick_to_fd_); //*this解消
 	else if (cmd == "USER")
 		USER(client);
 	else if (cmd == "JOIN") // invite専用はclient isInvitedで判断
