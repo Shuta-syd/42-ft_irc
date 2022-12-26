@@ -5,8 +5,6 @@ bool validateMessage(Client &client, const std::vector<std::string> &params, std
  * @brief invite a user to a channel
  *
  * INVITE <nickname> <channel>
- *
- * [NOTE] 招待フラグをクライアントに付与するだけでJOINはしない。MODEで招待者しか入れないとかの設定する必要あり！
  */
 void INVITE(Client &client, std::map<std::string, int> nick_to_fd, std::map<std::string, Channel> &channels)
 {

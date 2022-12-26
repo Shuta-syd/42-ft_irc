@@ -1,7 +1,7 @@
 #include <Command.hpp>
 
 /**
- * @brief
+ * @brief allows IRC clients and servers to negotiate new features in a backwards-compatible way
  *
  * CAP LS | CAP END
  */

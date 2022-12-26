@@ -13,8 +13,7 @@ void NAMES(
 	const int &fd = client.getFd();
 	const std::string &nick = client.getNickname();
 
-	if (params.size() == 0) {} // ?
-	else if (params.size() == 1)
+	if (params.size() == 1)
 	{
 		const std::vector<std::string> channelNames = splitChannel(params.at(0));
 		for (size_t i = 0; i < channelNames.size(); i++)
@@ -28,7 +27,6 @@ void NAMES(
 				)
 			{
 				const Channel &channel = allChannels[channelName];
-				// const std::string &operName = channel.getOper()->getNickname();
 				sendMessage(fd, RPL_NAMREPLY(nick, &channelName[1], "oper"), 0);
 				sendMessage(fd, RPL_ENDOFNAMES(nick, &channelName[1]), 0);
 			}
