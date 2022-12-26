@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 Server *server;
-
 void signal_handler(int signal)
 {
 	std::map<int, Client>::iterator it = server->getUsers().begin();
@@ -14,7 +13,7 @@ void signal_handler(int signal)
 	}
 	close(server->getMstersd());
 	std::cout << "SERVER HANG UP." << std::endl;
-	exit(signal);
+	std::exit(signal);
 }
 
 

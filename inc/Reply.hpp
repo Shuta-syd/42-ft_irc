@@ -32,6 +32,8 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define QUIT_MESSAGE(nick, user, host, msg) ":" + nick + "!" + user + "@" + host + " QUIT :Quit: " + msg + "\r\n"
 #define PRIVMSG_MESSAGE(nick, user, host, target, msg) ":" + nick + "!" + user + "@" + host + " PRIVMSG " + target + " :" + msg + "\r\n"
 #define INVITE_MESSAGE(nick, user, host, target, channelName) ":" + nick + "!" + user + "@" + host + " INVITE " + target + " #" + channelName + "\r\n"
+#define KICK_MESSAGE(nick, user, host, channelName, target) ":" + nick + "!" + user + "@" + host + " KICK #" + channelName + " " + target + " " + nick + "\r\n"
+#define PART_MESSAGE(nick, user, host, channelName, target)
 
 #define RPL_NONE(message) ":ft_irc 300 * :" + message + "\n"
 #define RPL_TOPIC(nick, channelName, topic) ":ft_irc 332 " + nick + " #" + channelName + " :" + topic + "\r\n"
@@ -60,3 +62,6 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define ERR_INVITEONLYCHAN(nick, channelName) ":ft_irc 473 " + nick + " #" + channelName + " :Cannot join channel (+i)\r\n"
 #define ERR_NORECIPIENT(nick, command) ":ft_irc 411 " + nick + " :No recipient given " + command + "\n"
 #define ERR_NOTEXTTOSEND(nick) ":ft_irc 412 " + nick + " :No text to send\n"
+#define ERR_NONICKNAMEGIVEN ":ft_irc 431 :No nickname given\n"
+#define ERR_ERRONEUSNICKNAME(nick) ":ft_irc 432 " + nick + " :Error one use nickname\n"
+#define ERR_NICKNAMEINUSE(nick) ":ft_irc 433 " + nick + " :Nickname is already in use\n"

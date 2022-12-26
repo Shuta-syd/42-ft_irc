@@ -115,7 +115,7 @@ void Server::execute(Client &client)
 
 	if (cmd == "CAP")
 	{
-		CAP(client, *this);
+		CAP(client);
 		return;
 	}
 	else if (cmd == "PASS")
@@ -132,7 +132,7 @@ void Server::execute(Client &client)
 	}
 
 	if (cmd == "NICK")
-		NICK(client, *this); //*this解消
+		NICK(client, mp_nick_to_fd_);
 	else if (cmd == "USER")
 		USER(client);
 	else if (cmd == "JOIN") // invite専用はclient isInvitedで判断
@@ -147,10 +147,10 @@ void Server::execute(Client &client)
 		MODE(client, params, channels_);
 	else if (cmd == "PRIVMSG")
 		PRIVMSG(client, mp_nick_to_fd_, channels_);
-	else if (cmd == "QUIT") //*this解消 // QUITしたらNICKリストから削除して同じ名前で再接続できるようにする
-		QUIT(client, *this, params);
-	else if (cmd == "KICK") // *this解消
-		KICK(client, channels_, *this);
+	else if (cmd == "QUIT") // QUITしたらNICKリストから削除して同じ名前で再接続できるようにする
+		QUIT(client, pollfds_, users_, mp_nick_to_fd_, params);
+	else if (cmd == "KICK")
+		KICK(client, channels_, params);
 	else if (cmd == "INVITE")
 		INVITE(client, mp_nick_to_fd_, channels_);
 	else if (cmd == "PART")
