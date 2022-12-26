@@ -14,7 +14,7 @@ void PRIVMSG(Client &client, std::map<std::string, int> mp_nick_to_fd, std::map<
 	if (isCorrectFmt(params, client) == false)
 		return;
 
-	const std::string message = params.at(1);
+	const std::string message = params[1];
 
 	/* check if client sends msg to channnel or not  */
 	if (params[0][0] == '#')
