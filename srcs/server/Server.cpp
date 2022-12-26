@@ -53,13 +53,7 @@ void Server::chat(int fd)
 	char message[MSG_MAX] = {0};
 
 	int bytes = recv(fd, message, sizeof(message), 0);
-	if (bytes < 0)
-	{ // exception
-		if (errno != EWOULDBLOCK)
-			std::cerr << "recv error" << std::endl;
-		return;
-	}
-	else if (bytes == 0)
+	if (bytes == 0)
 	{ // quit
 		std::cout << "Connection closed" << std::endl;
 		return;
