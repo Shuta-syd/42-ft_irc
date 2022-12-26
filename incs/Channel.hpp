@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DEFINE_IRC_CHANNEL
+#define DEFINE_IRC_CHANNEL
 
 #include <vector>
 #include <string>
@@ -8,7 +9,6 @@ class Channel
 {
 public:
 	Channel();
-	// Channel(const Channel&);
 	~Channel();
 	const std::vector<Client> getMember() const;
 	const std::string getTopic() const;
@@ -45,3 +45,5 @@ private:
 	std::string createdTime_;
 	std::vector<Client> members_;
 };
+
+#endif

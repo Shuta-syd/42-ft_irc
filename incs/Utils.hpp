@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DEFINE_IRC_UTILS
+#define DEFINE_IRC_UTILS
 
 #include <map>
 #include <string>
@@ -15,3 +16,5 @@ std::vector<std::string> split(std::string str, std::string del);
 void channelDebug(std::map<std::string, Channel> server, std::map<std::string, Channel> client, std::string channelName);
 std::string getTimestamp();
 bool is_number(const std::string &s);
+
+#endif

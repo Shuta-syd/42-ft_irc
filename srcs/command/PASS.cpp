@@ -7,11 +7,6 @@
  * <in short> [PASS CMD] check whether server should pass the client(user).
  */
 
-//bool is_already_used_password(std::string const &password, Server) {
-// passwordが既に使用済みのものかどうかを判定する関数をつくる
-//↓下の関数もその処理が抜けてる
-//}
-
 void PASS(Client &client, std::string const &server_password){
 	int const &fd = client.getFd();
 	std::string const &nick = client.getNickname();

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DEFINE_IRC_CLIENT
+#define DEFINE_IRC_CLIENT
 
 #include <map>
 #include <iostream>
@@ -62,3 +63,5 @@ private:
 
 	void debug_parser();
 };
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DEFINE_IRC_COLOR
+#define DEFINE_IRC_COLOR
 
 /**
  * color code
@@ -10,3 +11,5 @@
 #define MGN "\033[35m"
 #define CYN "\033[36m"
 #define RES "\033[m"
+
+#endif

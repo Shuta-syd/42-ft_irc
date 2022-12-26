@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DEFINE_IRC_REPLY
+#define DEFINE_IRC_REPLY
 #include <Server.hpp>
 #include <Colors.hpp>
 
@@ -65,4 +66,5 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define ERR_NONICKNAMEGIVEN ":ft_irc 431 :No nickname given\n"
 #define ERR_ERRONEUSNICKNAME(nick) ":ft_irc 432 " + nick + " :Error one use nickname\n"
 #define ERR_NICKNAMEINUSE(nick) ":ft_irc 433 " + nick + " :Nickname is already in use\n"
-#define ERR_PASSWDMISMATCH(nick) ":ft_irc 464 " + nick + " :Password incorrect\r\n"
+
+#endif
