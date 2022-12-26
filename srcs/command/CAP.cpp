@@ -12,7 +12,7 @@ void CAP(Client &client,  Server &server) {
 		sendMessage(fd, CAP_LS, 0);
 	else if (client.getParams().at(0) == "END")
 	{
-		if (client.getIsAuth() == false)
+		if (client.should_be_cap == false)
 			QUIT(client, server, {});
 		sendWelcomeMessage(client);
 	}
