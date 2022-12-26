@@ -37,16 +37,13 @@ void MODE(
 		return;
 	}
 	Channel &channel = allChannels[channelName];
-	if (params.size() == 1)
-	{
+	if (params.size() == 1) {
 		channel.setCreatedTime(getTimestamp());
 		sendMessage(
 				fd,
 				RPL_CHANNELMODEIS(nick, channel.getName(), "+", channel.getMode() + " " + channel.getKey()) + RPL_CREATIONTIME(nick, channel.getName(), channel.getCreatedTime()),
 				0);
-	}
-	else if (params.size() > 1)
-	{
+	} else {
 		const char isAllow = params[1][0]; // + or -
 		const std::string &mode = &params[1][1];
 		for (size_t i = 0; i < mode.size(); i++)
@@ -89,8 +86,23 @@ void executeMode(
  */
 bool isCorrectMode(const char &mode)
 {
-	if (
-			mode == 'O' || mode == 'o' || mode == 'v' || mode == 'a' || mode == 'i' || mode == 'm' || mode == 'n' || mode == 'q' || mode == 'p' || mode == 's' || mode == 'r' || mode == 't' || mode == 'k' || mode == 'l' || mode == 'b' || mode == 'e' || mode == 'I')
+	if (mode == 'O'
+	|| mode == 'o'
+	|| mode == 'v'
+	|| mode == 'a'
+	|| mode == 'i'
+	|| mode == 'm'
+	|| mode == 'n'
+	|| mode == 'q'
+	|| mode == 'p'
+	|| mode == 's'
+	|| mode == 'r'
+	|| mode == 't'
+	|| mode == 'k'
+	|| mode == 'l'
+	|| mode == 'b'
+	|| mode == 'e'
+	|| mode == 'I')
 		return true;
 	return false;
 }
