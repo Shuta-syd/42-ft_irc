@@ -35,7 +35,7 @@ void NICK(Client &client, std::map<std::string, int> &mp_nick_to_fd) {
 		sendMessage(fd, NICK_MESSAGE(oldNick, newNick), 0);
 		client.should_be_cap_nick = true;
 	}
-};
+}
 
 
 bool is_proper_words(std::string const &words)

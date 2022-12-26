@@ -37,7 +37,7 @@ INC= inc
 
 debugflags := -g3 -fsanitize=address
 headerflags := -MMD -MP
-CXXFLAGS := -Wall -Werror -Wextra
+CXXFLAGS := -Wall -Werror -Wextra -std=c++98 -pedantic
 #CXXFLAGS := -std=c++17
 
 ############# basic rules ##############
