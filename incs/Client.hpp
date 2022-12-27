@@ -44,10 +44,19 @@ public:
 	bool isInvited(std::string mode, std::string channelName);
 	bool getIsAuth() { return isAuth_; }
 	void setIsAuth() { isAuth_ = true; }
+	bool getIsNick() { return isNick_; }
+	void setIsNick() { isNick_ = true; }
+	bool getIsWelcome() { return isWelcome_; }
+	void setIsWelcome(bool isWelcome) { isWelcome_ = isWelcome; }
+	bool getIsConnected() { return isConnected_; }
+	void setIsConnected(bool isConnected) { isConnected_ = isConnected; }
 
 private:
 	int fd_;
 	bool isAuth_;
+	bool isNick_;
+	bool isWelcome_;
+	bool isConnected_;
 	std::string nickname_; // max len 9
 	std::string username_;
 	std::string hostname_;

@@ -90,7 +90,9 @@ void Server::execute(int fd)
 	const std::string &cmd = client.getCommand();
 	const std::vector<std::string> &params = client.getParams();
 
-	if (cmd == "CAP")
+	if (client.getIsWelcome() == false  && client.getIsConnected() == false && cmd != "NICK" && cmd != "QUIT" && cmd != "CAP")
+		clearClientInfo(client, pollfds_, users_, mp_nick_to_fd_);
+	else if (cmd == "CAP")
 		CAP(client, pollfds_, users_, mp_nick_to_fd_);
 	else if (cmd == "PASS")
 		PASS(client, password_);
@@ -131,10 +133,11 @@ void Server::allow() {
 	do
 	{
 		client_fd = accept(this->master_sd_, NULL, NULL);
-		if (client_fd < 0) { // accept fails with EWOULDBLOCK, then we have accepted all of them.
-			if (errno != EWOULDBLOCK) {
+		if (client_fd < 1) { // accept fails with EWOULDBLOCK, then we have accepted all of them.
+			if (errno != EWOULDBLOCK)
 				throw std::exception();
-			}
+			else if (client_fd == 0)
+				continue;
 		}
 		else {
 			std::cout << "New incoming connection - " << client_fd << std::endl;
