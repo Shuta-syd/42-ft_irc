@@ -128,7 +128,6 @@ void Server::execute(int fd)
 		INVITE(client, mp_nick_to_fd_, channels_, users_);
 	else if (cmd == "PART")
 		PART(client, channels_, params);
-	channelDebug(channels_, client.getChannels());
 }
 
 //--------------Functions related to Socket------------------
