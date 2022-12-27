@@ -16,7 +16,7 @@ void KICK(Client &client, std::map<std::string, Channel> &allChannels, const std
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "KICK"), 0);
 		return;
 	}	else if (params.size() == 3)
-		message = params[2];
+		message = " " + params[2];
 
 	const std::vector<std::string> channels = splitChannel(params[0]);
 	const std::vector<std::string> targets = splitChannel(params[1]);

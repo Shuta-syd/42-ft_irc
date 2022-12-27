@@ -55,8 +55,10 @@ void Channel::delOper(std::string name) {
 	std::vector<std::string>::iterator it = opers_.begin();
 	for (; it != opers_.end(); ++it) {
 		if ((*it) == name)
+		{
 			opers_.erase(it);
-		return;
+			return ;
+		}
 	}
 }
 

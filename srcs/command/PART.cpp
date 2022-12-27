@@ -58,9 +58,11 @@ void leaveChannel(
 		const int targetFd = (*it)->getFd();
 		const std::string &targetNick = (*it)->getNickname();
 		sendMessage(targetFd, PART_MESSAGE(nick, client.getUsername(), client.getHostname(), ch_name, message), 0);
-		if (targetNick == nick && channel.is_operator(nick))
-			channel.delOper(nick);
 		if (targetNick == nick)
+		{
+			if (channel.is_operator(targetNick))
+				channel.delOper(targetNick);
 			channel.eraseMember(**it);
+		}
 	}
 }
