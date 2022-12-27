@@ -3,7 +3,7 @@
 
 Client::Client() {}
 
-Client::Client(int fd, const std::string &nick) :isAuth_(false), isNick_(false), isWelcome_(true), isConnected_(false), fd_(fd), nickname_(nick) {}
+Client::Client(int fd, const std::string &nick) : fd_(fd), isAuth_(false), isNick_(false), isWelcome_(true), isConnected_(false), nickname_(nick) {}
 
 Client::~Client() {}
 
@@ -29,7 +29,7 @@ void Client::parse(const std::string &message) {
 		this->parsePrefix(message, i);
 	this->parseCommand(message, i);
 	this->parseParams(message, i);
-//	void debug_parser();
+	// debug_parser();
 }
 
 /**
