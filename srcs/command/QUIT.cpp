@@ -40,7 +40,6 @@ void QUIT(
 				else
 				{
 					sendMessage(memFd, QUIT_MESSAGE(nick, client.getUsername(), client.getHostname(), quitMessage), 0);
-					std::cout << 10 << std::endl;
 				}
 			}
 		}

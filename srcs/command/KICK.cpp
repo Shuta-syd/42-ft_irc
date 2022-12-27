@@ -39,12 +39,6 @@ void kickMember(
 	) {
 	int fd = client.getFd();
 	std::string const &nick = client.getNickname();
-
-	if (findChannelForServer(allChannels, ch_name) == false)
-	{
-		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, ch_name), 0);
-		return;
-	}
 	Channel &channel = allChannels[ch_name];
 
 	if (channel.is_operator(nick) == false)
@@ -70,9 +64,9 @@ void kickMember(
 					sendMessage(targetFd, KICK_MESSAGE(nick, client.getUsername(), client.getHostname(), ch_name, target, message), 0);
 					if (targetNick == target)
 					{
-						channel.eraseMember(**it);
 						if (channel.is_operator(targetNick))
 							channel.delOper(targetNick);
+						channel.eraseMember(**it);
 					}
 				}
 		}

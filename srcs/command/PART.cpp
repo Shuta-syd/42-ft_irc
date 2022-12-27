@@ -19,7 +19,7 @@ void PART(
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "PART"), 0);
 		return ;
 	} else if (params.size() == 2)
-		message = params[1];
+		message = " " + params[1];
 
 	const std::vector<std::string> channels = splitChannel(params[0]);
 
@@ -58,8 +58,9 @@ void leaveChannel(
 		const int targetFd = (*it)->getFd();
 		const std::string &targetNick = (*it)->getNickname();
 		sendMessage(targetFd, PART_MESSAGE(nick, client.getUsername(), client.getHostname(), ch_name, message), 0);
+		if (targetNick == nick && channel.is_operator(nick))
+			channel.delOper(nick);
 		if (targetNick == nick)
 			channel.eraseMember(**it);
 	}
-	channel.delOper(nick);
 }
