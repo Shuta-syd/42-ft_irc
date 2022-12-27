@@ -39,26 +39,32 @@ void kickMember(
 	) {
 	int fd = client.getFd();
 	std::string const &nick = client.getNickname();
+
+	if (findChannelForServer(allChannels, ch_name) == false)
+	{
+		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, ch_name), 0);
+		return;
+	}
 	Channel &channel = allChannels[ch_name];
 
 	if (channel.is_operator(nick) == false)
 	{
 		sendMessage(fd, ERR_CHANOPRIVSNEEDED(ch_name), 0);
-		return ;
+		return;
 	}
 
 	for (size_t i = 0; i < targets.size(); i++)
 	{
 		std::string const &target = targets[i];
 		if (channel.is_inChannel(target) == false)
-				sendMessage(fd, ERR_NOSUCHNICK(target), 0);
+				sendMessage(fd, ERR_NOSUCHNICK(nick, target), 0);
 		else {
 				const std::vector<Client *> members = channel.getMember();
 				for (
 						std::vector<Client *>::const_iterator it = members.begin();
 						it != members.end();
-						it++)
-				{
+						it++
+						) {
 					const int targetFd = (*it)->getFd();
 					const std::string &targetNick = (*it)->getNickname();
 					sendMessage(targetFd, KICK_MESSAGE(nick, client.getUsername(), client.getHostname(), ch_name, target, message), 0);

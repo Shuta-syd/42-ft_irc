@@ -3,7 +3,7 @@
 /**
  * @brief a user can list all nicknames that visible to him.
  *
- * NAMES [<channel> *(',' <channel>)]
+ * NAMES <channel> *(',' <channel>)
  */
 
 #include <string>

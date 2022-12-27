@@ -23,7 +23,6 @@ void QUIT(
 	if (client.getChannels().empty() == false)
 	{
 		std::map<std::string, Channel*> &channels = client.getChannels();
-		std::cout << 4 << std::endl;
 		for (
 				std::map<std::string, Channel*>::iterator it = channels.begin();
 				it != channels.end();

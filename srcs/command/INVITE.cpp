@@ -41,7 +41,7 @@ bool validateMessage(Client &client, const std::vector<std::string> &params, std
 	Channel &channel = channels[&params[1][1]];
 	if (nick_to_fd[params[0]] == 0)
 	{
-		sendMessage(client.getFd(), ERR_NOSUCHNICK(nick), 0);
+		sendMessage(client.getFd(), ERR_NOSUCHNICK(nick, params[0]), 0);
 		return false;
 	}
 	else if (channel.is_inChannel(nick) == false)
