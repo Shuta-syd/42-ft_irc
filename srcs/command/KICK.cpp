@@ -16,7 +16,7 @@ void KICK(Client &client, std::map<std::string, Channel> &allChannels, const std
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "KICK"), 0);
 		return;
 	}	else if (params.size() == 3)
-		message = params[2];
+		message = " " + params[2];
 
 	const std::vector<std::string> channels = splitChannel(params[0]);
 	const std::vector<std::string> targets = splitChannel(params[1]);
@@ -44,29 +44,29 @@ void kickMember(
 	if (channel.is_operator(nick) == false)
 	{
 		sendMessage(fd, ERR_CHANOPRIVSNEEDED(ch_name), 0);
-		return ;
+		return;
 	}
 
 	for (size_t i = 0; i < targets.size(); i++)
 	{
 		std::string const &target = targets[i];
 		if (channel.is_inChannel(target) == false)
-				sendMessage(fd, ERR_NOSUCHNICK(target), 0);
+				sendMessage(fd, ERR_NOSUCHNICK(nick, target), 0);
 		else {
 				const std::vector<Client *> members = channel.getMember();
 				for (
 						std::vector<Client *>::const_iterator it = members.begin();
 						it != members.end();
-						it++)
-				{
+						it++
+						) {
 					const int targetFd = (*it)->getFd();
 					const std::string &targetNick = (*it)->getNickname();
 					sendMessage(targetFd, KICK_MESSAGE(nick, client.getUsername(), client.getHostname(), ch_name, target, message), 0);
 					if (targetNick == target)
 					{
-						channel.eraseMember(**it);
 						if (channel.is_operator(targetNick))
 							channel.delOper(targetNick);
+						channel.eraseMember(**it);
 					}
 				}
 		}

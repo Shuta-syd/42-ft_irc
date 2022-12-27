@@ -33,8 +33,8 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define QUIT_MESSAGE(nick, user, host, msg) ":" + nick + "!" + user + "@" + host + " QUIT :Quit: " + msg + "\r\n"
 #define PRIVMSG_MESSAGE(nick, user, host, target, msg) ":" + nick + "!" + user + "@" + host + " PRIVMSG " + target + " :" + msg + "\r\n"
 #define INVITE_MESSAGE(nick, user, host, target, channelName) ":" + nick + "!" + user + "@" + host + " INVITE " + target + " #" + channelName + "\r\n"
-#define KICK_MESSAGE(nick, user, host, channelName, target, message) ":" + nick + "!" + user + "@" + host + " KICK #" + channelName + " " + target + " " + message + "\r\n"
-#define PART_MESSAGE(nick, user, host, channelName, message) ":" + nick + "!" + user + "@" + host + " PART #" + channelName + " " + message + "\r\n"
+#define KICK_MESSAGE(nick, user, host, channelName, target, message) ":" + nick + "!" + user + "@" + host + " KICK #" + channelName + " " + target +  message + "\r\n"
+#define PART_MESSAGE(nick, user, host, channelName, message) ":" + nick + "!" + user + "@" + host + " PART #" + channelName + "" + message + "\r\n"
 
 #define RPL_NONE(message) ":ft_irc 300 * :" + message + "\n"
 #define RPL_TOPIC(nick, channelName, topic) ":ft_irc 332 " + nick + " #" + channelName + " :" + topic + "\r\n"
@@ -54,7 +54,7 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define ERR_NOPRIVILEGES(nick) ":ft_irc 481 " + nick + " :Permission Denied- You're not an IRC operator\r\n"
 #define ERR_NOCHANMODES(nick, mode) ":ft_irc 472 " + nick + " " + mode + " :is an unknown mode character to me\r\n"
 #define ERR_CHANOPRIVSNEEDED(channelName) ":ft_irc 482 #" + channelName + " :You're not a channel operator\r\n"
-#define ERR_NOSUCHNICK(nick) ":ft_irc 401 " + nick + " :No such nick\r\n"
+#define ERR_NOSUCHNICK(nick, target) ":ft_irc 401 " + nick + " " + target  + " :No such nick\r\n"
 #define ERR_NOTJOIN(nick, channelName) ":ft_irc #" + channelName + " You're not on that channel\r\n"
 #define ERR_NOTONCHANNEL(nick, channel) ":ft_irc 442 " + nick + " #" + channel + " :You're not on that channel\r\n"
 #define ERR_USERONCHANNEL(nick, target, channelName) ":ft_irc 443 " + nick + " " + target + " #" + channelName + " :User is already on that channel\r\n"
@@ -65,7 +65,7 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define ERR_NOTEXTTOSEND(nick) ":ft_irc 412 " + nick + " :No text to send\r\n"
 #define ERR_NONICKNAMEGIVEN ":ft_irc 431 :No nickname given\r\n"
 #define ERR_ERRONEUSNICKNAME(nick) ":ft_irc 432 " + nick + " :Error one use nickname\r\n"
-#define ERR_NICKNAMEINUSE(nick) ":ft_irc 433 " + nick + " :Nickname is already in use\r\n"
+#define ERR_NICKNAMEINUSE(nick, target) ":ft_irc 433 " + nick + " " +  target + " :Nickname is already in use\r\n"
 #define ERR_PASSWDMISMATCH(nick) ":ft_irc 464 " + nick + " :Password incorrect\r\n"
 #define PASS_ERROR(host) "ERROR :Closing Link: " + host + "(Bad Password)\r\n"
 

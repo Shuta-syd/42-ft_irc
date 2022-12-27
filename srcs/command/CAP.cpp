@@ -19,6 +19,10 @@ void CAP(Client &client, std::vector<struct pollfd> &pollfds, std::map<int, Clie
 			return;
 		}
 		sendMessage(fd, RPL_NONE((std::string) "Authenticated ..."), 0);
-		sendWelcomeMessage(client);
+		if (client.getIsNick())
+		{
+			client.setIsConnected(true);
+			sendWelcomeMessage(client);
+		}
 	}
 }

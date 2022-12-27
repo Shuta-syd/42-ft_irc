@@ -131,49 +131,59 @@ std::string getTimestamp() {
 }
 
 void channelDebug(std::map<std::string, Channel> server, std::map<std::string, Channel*> client) {
-	std::map<std::string, Channel*>::iterator cit = client.begin();
+	std::cout << CYN << "------------------------Channel diff------------------------" << RES << std::endl;
 	for (
 			std::map<std::string, Channel>::iterator it = server.begin();
 			it != server.end();
 			it++)
 	{
-		std::cout << CYN << "------------------------Channel diff------------------------" << RES << std::endl;
 		std::cout << "Name: "
-							<< "server[" << it->second.getName() << "]  "
-							<< "client [" << cit->second->getName() << "]" << std::endl;
+							<< "server[" << it->second.getName() << "]  " << std::endl;
 		std::cout << "Key: "
-							<< "server[" << it->second.getKey() << "]  "
-							<< "client [" << cit->second->getKey() << "]" << std::endl;
+							<< "server[" << it->second.getKey() << "]" << std::endl;
 		std::cout << "Topic: "
-							<< "server[" << it->second.getTopic() << "]  "
-							<< "client [" << cit->second->getTopic() << "]" << std::endl;
+							<< "server[" << it->second.getTopic() << "] " << std::endl;
 		const std::vector<std::string> serverOper = it->second.getOper();
-		const std::vector<std::string> clientOper = cit->second->getOper();
 
 		std::cout << "---server channel opers---" << std::endl;
 		for (size_t i = 0; i < serverOper.size(); i++)
 			std::cout << "[" << serverOper[i] << "] ";
 		std::cout << std::endl;
+		const std::vector<Client *> serverMember = it->second.getMember();
+
+		std::cout << "---server channel members---" << std::endl;
+		for (size_t i = 0; i < serverMember.size(); i++)
+			std::cout << "[" << serverMember[i]->getNickname() << "]";
+		std::cout << std::endl;
+		std::cout << CYN << "------------------------------------------------------------" << RES << std::endl;
+	}
+
+	for (
+			std::map<std::string, Channel *>::iterator it = client.begin();
+			it != client.end();
+			it++)
+	{
+		std::cout << "Name: "
+							<< "client [" << it->second->getName() << "]" << std::endl;
+		std::cout << "Key: "
+							<< "client [" << it->second->getKey() << "]" << std::endl;
+		std::cout << "Topic: "
+							<< "client [" << it->second->getTopic() << "]" << std::endl;
+		const std::vector<std::string> clientOper = it->second->getOper();
+
 
 		std::cout << "---client channel opers---" << std::endl;
 		for (size_t i = 0; i < clientOper.size(); i++)
 			std::cout << "[" << clientOper[i] << "] ";
 		std::cout << std::endl;
 
-		const std::vector<Client *> serverMember = it->second.getMember();
-		const std::vector<Client *> clientMember = cit->second->getMember();
-
-		std::cout << "---server channel members---" << std::endl;
-		for (size_t i = 0; i < serverMember.size(); i++)
-			std::cout << "[" << serverMember[i]->getNickname() << "]";
-		std::cout << std::endl;
+		const std::vector<Client *> clientMember = it->second->getMember();
 
 		std::cout << "---client channel members---" << std::endl;
 		for (size_t i = 0; i < clientMember.size(); i++)
 			std::cout << "[" << clientMember[i]->getNickname() << "]";
 		std::cout << std::endl;
 
-		std::cout << CYN << "------------------------------------------------------------" << RES << std::endl;
-		cit++;
+	std::cout << CYN << "------------------------------------------------------------" << RES << std::endl;
 	}
 }

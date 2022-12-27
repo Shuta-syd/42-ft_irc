@@ -38,7 +38,7 @@ void PRIVMSG(Client &client, std::map<std::string, int> mp_nick_to_fd, std::map<
 		/* get Target fd but if there is no client that is the same as the Target name, it returns 0  */
 		if ((fd = mp_nick_to_fd[target_nick]) == 0)
 		{
-			sendMessage(client.getFd(), ERR_NOSUCHNICK(client.getNickname()), 0);
+			sendMessage(client.getFd(), ERR_NOSUCHNICK(client.getNickname(), target_nick), 0);
 			return;
 		}
 		sendMessage(fd, PRIVMSG_MESSAGE(nick, client.getUsername(), client.getHostname(), target_nick, message), 0);

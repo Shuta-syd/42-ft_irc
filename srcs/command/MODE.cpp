@@ -138,15 +138,9 @@ void exec_o(
 	}
 
 	if (isAllow == '+')
-	{
 		channel.addOper(params[2]);
-		channel.addMode('o');
-	}
 	else if (isAllow == '-')
-	{
 		channel.delOper(params[2]);
-		channel.delMode('-');
-	}
 
 	for (size_t i = 0; i < members.size(); i++)
 		sendMessage(members[i]->getFd(), MODE_MESSAGE(nick, client.getUsername(), client.getHostname(), target, channel.getName(), isAllow, 'o'), 0);

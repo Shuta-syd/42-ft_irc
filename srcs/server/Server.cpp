@@ -90,6 +90,16 @@ void Server::execute(int fd)
 	const std::string &cmd = client.getCommand();
 	const std::vector<std::string> &params = client.getParams();
 
+	if (client.getIsWelcome() == false  && client.getIsConnected() == false && cmd != "NICK" && cmd != "USER" && cmd != "CAP") {
+		clearClientInfo(client, pollfds_, users_, mp_nick_to_fd_);
+		return ;
+	} else if (client.getIsWelcome() == false  && client.getIsConnected() == false && cmd == "NICK") {
+		NICK(client, mp_nick_to_fd_, channels_);
+		if (client.getIsNick())
+			sendWelcomeMessage(client);
+		return;
+	}
+
 	if (cmd == "CAP")
 		CAP(client, pollfds_, users_, mp_nick_to_fd_);
 	else if (cmd == "PASS")
@@ -118,7 +128,6 @@ void Server::execute(int fd)
 		INVITE(client, mp_nick_to_fd_, channels_, users_);
 	else if (cmd == "PART")
 		PART(client, channels_, params);
-	debugUsers();
 }
 
 //--------------Functions related to Socket------------------
@@ -131,10 +140,11 @@ void Server::allow() {
 	do
 	{
 		client_fd = accept(this->master_sd_, NULL, NULL);
-		if (client_fd < 0) { // accept fails with EWOULDBLOCK, then we have accepted all of them.
-			if (errno != EWOULDBLOCK) {
+		if (client_fd < 1) { // accept fails with EWOULDBLOCK, then we have accepted all of them.
+			if (errno != EWOULDBLOCK)
 				throw std::exception();
-			}
+			else if (client_fd == 0)
+				continue;
 		}
 		else {
 			std::cout << "New incoming connection - " << client_fd << std::endl;
