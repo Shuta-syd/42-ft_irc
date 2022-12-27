@@ -26,7 +26,7 @@ void PART(
 	for (size_t i = 0; i < channels.size(); i++)
 	{
 		const std::string ch_name = &channels[i][1];
-		if (findChannel(allChannels, ch_name) == false)
+		if (findChannelForServer(allChannels, ch_name) == false)
 			sendMessage(fd, ERR_NOSUCHCHANNEL(nick, ch_name), 0);
 		else
 			leaveChannel(client, allChannels, ch_name, message);

@@ -32,7 +32,7 @@ public:
 	const std::string &getRealname() const { return realname_; }
 	const std::string &getPrefix() const { return prefix_; }
 	const std::string &getCommand() const { return command_; }
-	std::map<std::string, Channel> &getChannels();
+	std::map<std::string, Channel*> &getChannels();
 	const std::vector<std::string> &getParams() const { return params_; }
 	void setNickname(std::string nick) { nickname_ = nick; }
 	void setUsername(std::string username) { username_ = username; }
@@ -59,7 +59,7 @@ private:
 	std::string command_;
 	std::vector<std::string> params_;
 	std::map<std::string, bool> isInvited_; // <channelName, isInvited>?
-	std::map<std::string, Channel> channels_; // channels This belong to
+	std::map<std::string, Channel*> channels_; // channels This belong to
 
 	void debug_parser();
 };

@@ -22,7 +22,7 @@ void NAMES(Client &client, const std::vector<std::string> &params, std::map<std:
 			std::string specific_chars("&#+!");
 			if (
 					(specific_chars.find_first_not_of(channelName[0]) != std::string::npos)
-					&& findChannel(allChannels, &channelName[1])
+					&& findChannelForServer(allChannels, &channelName[1])
 				)
 			{
 				sendMessage(fd, RPL_NAMREPLY(nick, &channelName[1], "oper"), 0);

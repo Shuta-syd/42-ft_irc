@@ -32,7 +32,7 @@ bool validateMessage(Client &client, const std::vector<std::string> &params, std
 		sendMessage(client.getFd(), ERR_NEEDMOREPARAMS(nick, "INVITE"), 0);
 		return false;
 	}
-	else if (findChannel(channels, &params[1][1]) == false)
+	else if (findChannelForServer(channels, &params[1][1]) == false)
 	{
 		sendMessage(client.getFd(), ERR_NOSUCHCHANNEL(nick, &params[1][1]), 0);
 		return false;

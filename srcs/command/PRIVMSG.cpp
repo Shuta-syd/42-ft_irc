@@ -19,7 +19,7 @@ void PRIVMSG(Client &client, std::map<std::string, int> mp_nick_to_fd, std::map<
 	{
 		const std::string channelName = &params[0][1];
 		/* in the case of "No such a channel" */
-		if (findChannel(channels, channelName) == false) {
+		if (findChannelForServer(channels, channelName) == false) {
 			sendMessage(client.getFd(), ERR_NOTONCHANNEL(client.getNickname(), params[0]), 0);
 		} else {
 			const Channel &channel = channels[channelName];

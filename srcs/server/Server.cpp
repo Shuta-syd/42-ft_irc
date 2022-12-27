@@ -75,7 +75,7 @@ void Server::chat(int fd)
 
 		cmd_line.append(&message[i - len], len + 2);
 		user.parse(cmd_line);
-		this->execute(user);
+		this->execute(fd);
 		user.clearParsedMessage();
 		i += 2;
 	}
@@ -84,8 +84,9 @@ void Server::chat(int fd)
 /**
  * @brief command execute func
  */
-void Server::execute(Client &client)
+void Server::execute(int fd)
 {
+	Client &client = users_[fd];
 	const std::string &cmd = client.getCommand();
 	const std::vector<std::string> &params = client.getParams();
 
@@ -117,6 +118,7 @@ void Server::execute(Client &client)
 		INVITE(client, mp_nick_to_fd_, channels_, users_);
 	else if (cmd == "PART")
 		PART(client, channels_, params);
+	channelDebug(channels_, client.getChannels());
 }
 
 //--------------Functions related to Socket------------------
@@ -195,19 +197,19 @@ void Server::setupServerSocket()
 	listen(this->master_sd_, SOMAXCONN);
 }
 
-// void Server::debug_all_channels_situation()
-//{
-//	std::cerr << "_____CHANNEL SITUATION_______" << std::endl;
-//	for (auto ch : this->channels_)
-//	{
-//		std::cerr << "CHANNEL NAME : " << ch.first << std::endl;
-//		for (auto member : ch.second.getMember())
-//		{
-//			std::cerr << member.getNickname() << std::endl;
-//		}
-//	}
-//	std::cerr << "_____________________________" << std::endl;
-// }
+void Server::debug_all_channels_situation()
+{
+	std::cerr << "_____CHANNEL SITUATION_______" << std::endl;
+	for (auto ch : this->channels_)
+	{
+		std::cerr << "CHANNEL NAME : " << ch.first << std::endl;
+		for (auto member : ch.second.getMember())
+		{
+			std::cerr << member.getNickname() << std::endl;
+		}
+	}
+	std::cerr << "_____________________________" << std::endl;
+}
 
 // void Server::debug_all_members() {
 // 	std::cerr << "_____MEMBER SITUATION_______" << std::endl;

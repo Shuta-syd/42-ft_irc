@@ -14,7 +14,7 @@ void TOPIC(
 	bool isSetTopicAllow = false;
 	int fd = client.getFd();
 	const std::string &nick = client.getNickname();
-	std::map<std::string, Channel> channels = client.getChannels();
+	std::map<std::string, Channel*> channels = client.getChannels();
 
 	if (params.size() < 1)
 	{
@@ -24,7 +24,7 @@ void TOPIC(
 
 	const std::string channelName = &params[0][1];
 	const bool joinedChannel = findChannel(channels, channelName);
-	const bool existChannel = findChannel(allChannels, channelName);
+	const bool existChannel = findChannelForServer(allChannels, channelName);
 
 	if (existChannel)
 	{
@@ -41,7 +41,7 @@ void TOPIC(
 	else if (params.size() == 1 && joinedChannel && existChannel)
 	{
 		// show specific channel topic
-		const Channel &channel = channels[channelName];
+		const Channel &channel = allChannels[channelName];
 		const std::string topic = channel.getTopic();
 		sendMessage(fd, RPL_TOPIC(nick, channelName, topic), 0);
 	}

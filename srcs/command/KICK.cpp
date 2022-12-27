@@ -23,7 +23,7 @@ void KICK(Client &client, std::map<std::string, Channel> &allChannels, const std
 
 	for (size_t i = 0; i < channels.size(); i++) {
 		const std::string ch_name = &channels[i][1];
-		if (findChannel(allChannels, ch_name) == false)
+		if (findChannelForServer(allChannels, ch_name) == false)
 			sendMessage(fd, ERR_NOSUCHCHANNEL(nick, ch_name), 0);
 		else
 			kickMember(client, allChannels, ch_name, targets, message);

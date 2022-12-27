@@ -22,13 +22,13 @@ void QUIT(
 
 	if (client.getChannels().empty() == false)
 	{
-		std::map<std::string, Channel> &channels = client.getChannels();
+		std::map<std::string, Channel*> &channels = client.getChannels();
 		for (
-				std::map<std::string, Channel>::iterator it = channels.begin();
+				std::map<std::string, Channel*>::iterator it = channels.begin();
 				it != channels.end();
 				it++)
 		{
-			const std::vector<Client> &members = it->second.getMember();
+			const std::vector<Client> &members = it->second->getMember();
 			for (
 					std::vector<Client>::const_iterator mem_it = members.begin();
 					mem_it != members.end();
@@ -36,7 +36,7 @@ void QUIT(
 			{
 				const int memFd = mem_it->getFd();
 				if (memFd == clientFd)
-					it->second.eraseMember(client);
+					it->second->eraseMember(client);
 				else
 					sendMessage(memFd, QUIT_MESSAGE(nick, client.getUsername(), client.getHostname(), quitMessage), 0);
 			}

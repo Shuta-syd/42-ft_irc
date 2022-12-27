@@ -10,7 +10,9 @@ const std::string Channel::getTopic() const { return topic_; }
 const std::string Channel::getName() const { return name_; }
 const std::string Channel::getKey() const { return key_; }
 const std::vector<std::string> &Channel::getOper() const { return opers_; }
-void Channel::setMember(Client &member) { members_.push_back(member); }
+void Channel::setMember(Client &member) {
+	members_.push_back(member);
+}
 void Channel::setName(std::string name) { name_ = name; }
 void Channel::setKey(std::string key) { key_ = key; }
 void Channel::setTopic(std::string topic) { topic_ = topic; }

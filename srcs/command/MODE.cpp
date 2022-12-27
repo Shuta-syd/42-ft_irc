@@ -31,7 +31,7 @@ void MODE(
 		return;
 	}
 	const std::string &channelName = &params[0][1];
-	if (findChannel(allChannels, channelName) == false)
+	if (findChannelForServer(allChannels, channelName) == false)
 	{
 		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channelName), 0);
 		return;
