@@ -42,15 +42,12 @@ public:
 	void addInvited(std::string channelName) {isInvited_[channelName] = true;}
 	void delInvited(std::string channelName) { isInvited_.erase(channelName); }
 	bool isInvited(std::string mode, std::string channelName);
-
-	// CAPでcapをすべきか否かをはじめのNICK/USERの段階でチェックしないといけないので、
-	// should_be_capを追加した。
-	// ↑これらが情報として不足している時にはfalseにするという仕様にした
-	bool should_be_cap_nick;
-	bool should_be_cap_pass;
+	bool getIsAuth() { return isAuth_; }
+	void setIsAuth() { isAuth_ = true; }
 
 private:
 	int fd_;
+	bool isAuth_;
 	std::string nickname_; // max len 9
 	std::string username_;
 	std::string hostname_;

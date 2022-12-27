@@ -67,5 +67,6 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define ERR_ERRONEUSNICKNAME(nick) ":ft_irc 432 " + nick + " :Error one use nickname\r\n"
 #define ERR_NICKNAMEINUSE(nick) ":ft_irc 433 " + nick + " :Nickname is already in use\r\n"
 #define ERR_PASSWDMISMATCH(nick) ":ft_irc 464 " + nick + " :Password incorrect\r\n"
+#define PASS_ERROR(host) "ERROR :Closing Link: " + host + "(Bad Password)\r\n"
 
 #endif

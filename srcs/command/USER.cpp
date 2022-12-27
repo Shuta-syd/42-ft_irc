@@ -17,9 +17,7 @@ void USER(Client &client) {
 	int fd = client.getFd();
 	std::string nick = client.getNickname();
 
-	if (client.should_be_cap_pass == false || client.should_be_cap_pass == false)
-		return;
-	else if (client.getParams().size() != 4)
+	if (client.getParams().size() != 4)
 		sendMessage(fd, ERR_NEEDMOREPARAMS(nick, "USER "), 0);
 	else {
 		client.setUsername(client.getParams()[0]);

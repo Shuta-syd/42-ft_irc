@@ -6,17 +6,12 @@ bool is_already_registered(std::string const &nick, std::map<std::string, int> m
  * @brief set nickname client
  * NICK <nickname>
  *
- * bool should_be_cap_nick = true; ← clientごとに終わらせる
- * もし情報が不足していたら、これをfalseにする
  */
 
-	void NICK(Client &client, std::map<std::string, int> &mp_nick_to_fd, std::map<std::string, Channel> &server_channels) {
-	client.should_be_cap_nick = false;
+void NICK(Client &client, std::map<std::string, int> &mp_nick_to_fd, std::map<std::string, Channel> &server_channels) {
 	const int &fd = client.getFd();
 
-	if (client.should_be_cap_pass == false)
-		return;
-	else if (client.getParams().size() < 1) {
+	if (client.getParams().size() < 1) {
 		sendMessage(fd, ERR_NONICKNAMEGIVEN, 0);
 		return ;
 	}
@@ -40,8 +35,8 @@ bool is_already_registered(std::string const &nick, std::map<std::string, int> m
 			}
 		}
 		client.setNickname(newNick);
-		sendMessage(fd, NICK_MESSAGE(oldNick, newNick), 0);
-		client.should_be_cap_nick = true;
+		if (client.getIsAuth())
+			sendMessage(fd, NICK_MESSAGE(oldNick, newNick), 0);
 	}
 }
 
