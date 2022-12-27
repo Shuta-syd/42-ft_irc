@@ -57,6 +57,8 @@ void clearClientInfo(
 	std::map<int, Client> &users,
 	std::map<std::string, int> &nick_to_fd
 	) {
+	const std::string nick = client.getNickname();
+
 	for (std::vector<struct pollfd>::iterator it = pollfds.begin(); it != pollfds.end(); it++)
 	{
 		if (client.getFd() == it->fd)
@@ -66,6 +68,6 @@ void clearClientInfo(
 		}
 	}
 	users.erase(client.getFd());
-	nick_to_fd.erase(client.getNickname());
+	nick_to_fd.erase(nick);
 	close(client.getFd());
 }
