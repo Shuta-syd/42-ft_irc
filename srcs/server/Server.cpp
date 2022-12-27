@@ -111,14 +111,17 @@ void Server::execute(int fd)
 	else if (cmd == "PRIVMSG")
 		PRIVMSG(client, mp_nick_to_fd_, channels_);
 	else if (cmd == "QUIT")
+	{
+		std::cout << 1 << std::endl;
 		QUIT(client, pollfds_, users_, mp_nick_to_fd_, params);
+		std::cout << 100 << std::endl;
+	}
 	else if (cmd == "KICK")
 		KICK(client, channels_, params);
 	else if (cmd == "INVITE")
 		INVITE(client, mp_nick_to_fd_, channels_, users_);
 	else if (cmd == "PART")
 		PART(client, channels_, params);
-	channelDebug(channels_, client.getChannels());
 }
 
 //--------------Functions related to Socket------------------
@@ -196,28 +199,3 @@ void Server::setupServerSocket()
 	/* try to specify maximum of sockets pending connections for the server socket */
 	listen(this->master_sd_, SOMAXCONN);
 }
-
-// void Server::debug_all_channels_situation()
-// {
-// 	std::cerr << "_____CHANNEL SITUATION_______" << std::endl;
-// 	for (auto ch : this->channels_)
-// 	{
-// 		std::cerr << "CHANNEL NAME : " << ch.first << std::endl;
-// 		for (auto member : ch.second.getMember())
-// 		{
-// 			std::cerr << member.getNickname() << std::endl;
-// 		}
-// 	}
-// 	std::cerr << "_____________________________" << std::endl;
-// }
-
-// void Server::debug_all_members() {
-// 	std::cerr << "_____MEMBER SITUATION_______" << std::endl;
-
-// 	std::map<std::string, int>::iterator it = mp_nick_to_fd_.begin();
-
-// 	for (; it != mp_nick_to_fd_.end(); it++) {
-// 		std::cerr << it->first << std::endl;
-// 	}
-// 	std::cerr << "____________________________" << std::endl;
-// }

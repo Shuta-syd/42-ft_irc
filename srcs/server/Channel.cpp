@@ -42,14 +42,16 @@ bool Channel::is_operator(const std::string &nick_name) {
 }
 
 void Channel::eraseMember(Client const &client) {
-	std::cout << "\nthis is in erase member function" << std::endl;
+	std::cout << 11 << std::endl;
 	std::vector<Client *>::iterator it = members_.begin();
+	std::cout << 12 << std::endl;
 	for (; it != members_.end(); it++) {
+		std::cout << 13 << std::endl;
 		if (client.getNickname() == (*it)->getNickname()) {
-			if (!members_.empty()) {
-				members_.erase(it);
-				return ;
-			}
+			std::cout << 14 << std::endl;
+			members_.erase(it);
+			std::cout << 15 << std::endl;
+			return;
 		}
 	}
 }
