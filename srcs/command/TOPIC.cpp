@@ -8,13 +8,13 @@
 void TOPIC(
 		Client &client,
 		const std::vector<std::string> &params,
-		std::map<std::string, Channel> &allChannels)
-{
+		std::map<std::string, Channel> &allChannels
+		) {
 	bool isOper = false;
 	bool isSetTopicAllow = false;
 	int fd = client.getFd();
 	const std::string &nick = client.getNickname();
-	std::map<std::string, Channel> channels = client.getChannels();
+	std::map<std::string, Channel*> channels = client.getChannels();
 
 	if (params.size() < 1)
 	{
@@ -24,7 +24,7 @@ void TOPIC(
 
 	const std::string channelName = &params[0][1];
 	const bool joinedChannel = findChannel(channels, channelName);
-	const bool existChannel = findChannel(allChannels, channelName);
+	const bool existChannel = findChannelForServer(allChannels, channelName);
 
 	if (existChannel)
 	{
@@ -41,7 +41,7 @@ void TOPIC(
 	else if (params.size() == 1 && joinedChannel && existChannel)
 	{
 		// show specific channel topic
-		const Channel &channel = channels[channelName];
+		const Channel &channel = allChannels[channelName];
 		const std::string topic = channel.getTopic();
 		sendMessage(fd, RPL_TOPIC(nick, channelName, topic), 0);
 	}
@@ -52,11 +52,11 @@ void TOPIC(
 		const std::string &newTopic = params.at(1);
 		Channel &channel = allChannels[channelName];
 		channel.setTopic(newTopic);
-		const std::vector<Client> members = channel.getMember();
+		const std::vector<Client *> members = channel.getMember();
 		for (
-			std::vector<Client>::const_iterator it = members.begin(); it != members.end(); it++)
+			std::vector<Client *>::const_iterator it = members.begin(); it != members.end(); it++)
 		{
-			fd = it->getFd();
+			fd = (*it)->getFd();
 			sendMessage(fd, SETTOPIC_MESSAGE(nick, client.getUsername(), client.getHostname(), channelName, newTopic), 0);
 		}
 	}

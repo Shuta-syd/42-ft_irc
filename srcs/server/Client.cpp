@@ -3,7 +3,7 @@
 
 Client::Client() {}
 
-Client::Client(int fd, const std::string &nick) : should_be_cap_nick(false), should_be_cap_pass(false), fd_(fd), nickname_(nick) {}
+Client::Client(int fd, const std::string &nick) :isAuth_(false), fd_(fd), nickname_(nick) {}
 
 Client::~Client() {}
 
@@ -109,11 +109,9 @@ void Client::clearParsedMessage() {
 	params_.clear();
 }
 
-std::map<std::string, Channel> &Client::getChannels() { return channels_; }
+std::map<std::string, Channel*> &Client::getChannels() { return channels_; }
 
-void Client::setChannel(const std::string &name, Channel &channel) {
-	channels_[name] = channel;
-}
+void Client::setChannel(const std::string &name, Channel &channel) { channels_[name] = &channel;}
 
 bool Client::isInvited(std::string mode, std::string channelName)
 {

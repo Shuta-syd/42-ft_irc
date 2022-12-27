@@ -75,7 +75,7 @@ void Server::chat(int fd)
 
 		cmd_line.append(&message[i - len], len + 2);
 		user.parse(cmd_line);
-		this->execute(user);
+		this->execute(fd);
 		user.clearParsedMessage();
 		i += 2;
 	}
@@ -84,8 +84,9 @@ void Server::chat(int fd)
 /**
  * @brief command execute func
  */
-void Server::execute(Client &client)
+void Server::execute(int fd)
 {
+	Client &client = users_[fd];
 	const std::string &cmd = client.getCommand();
 	const std::vector<std::string> &params = client.getParams();
 
@@ -117,6 +118,7 @@ void Server::execute(Client &client)
 		INVITE(client, mp_nick_to_fd_, channels_, users_);
 	else if (cmd == "PART")
 		PART(client, channels_, params);
+	debugUsers();
 }
 
 //--------------Functions related to Socket------------------
@@ -195,27 +197,27 @@ void Server::setupServerSocket()
 	listen(this->master_sd_, SOMAXCONN);
 }
 
-// void Server::debug_all_channels_situation()
-//{
-//	std::cerr << "_____CHANNEL SITUATION_______" << std::endl;
-//	for (auto ch : this->channels_)
-//	{
-//		std::cerr << "CHANNEL NAME : " << ch.first << std::endl;
-//		for (auto member : ch.second.getMember())
-//		{
-//			std::cerr << member.getNickname() << std::endl;
-//		}
-//	}
-//	std::cerr << "_____________________________" << std::endl;
-// }
+void Server::debugUsers() {
+	std::cout<< BLU << "------------poll fd------------" << RES << std::endl;
+	for (size_t i = 0; i < pollfds_.size(); i++)
+		std::cout << "[" << pollfds_[i].fd << "]" << std::endl;
+	std::cout<< BLU << "-------------------------------" << RES << std::endl;
 
-// void Server::debug_all_members() {
-// 	std::cerr << "_____MEMBER SITUATION_______" << std::endl;
+	std::cout << YEL << "------------users------------" << RES << std::endl;
+	for (
+			std::map<int, Client>::iterator it = users_.begin();
+			it != users_.end();
+			it++
+			)
+		std::cout << "[" << it->first << ", " << it->second.getNickname() << "]" << std::endl;
+	std::cout << YEL << "-------------------------------" << RES << std::endl;
 
-// 	std::map<std::string, int>::iterator it = mp_nick_to_fd_.begin();
-
-// 	for (; it != mp_nick_to_fd_.end(); it++) {
-// 		std::cerr << it->first << std::endl;
-// 	}
-// 	std::cerr << "____________________________" << std::endl;
-// }
+	std::cout << RED << "------------nick_to_fd------------" << RES << std::endl;
+	for (
+			std::map<std::string, int>::iterator it = mp_nick_to_fd_.begin();
+			it != mp_nick_to_fd_.end();
+			it++
+			)
+		std::cout << "[" << it->first << ", " << it->second << "]" << std::endl;
+	std::cout << RED << "-------------------------------" << RES << std::endl;
+}

@@ -32,7 +32,7 @@ public:
 	const std::string &getRealname() const { return realname_; }
 	const std::string &getPrefix() const { return prefix_; }
 	const std::string &getCommand() const { return command_; }
-	std::map<std::string, Channel> &getChannels();
+	std::map<std::string, Channel*> &getChannels();
 	const std::vector<std::string> &getParams() const { return params_; }
 	void setNickname(std::string nick) { nickname_ = nick; }
 	void setUsername(std::string username) { username_ = username; }
@@ -42,15 +42,12 @@ public:
 	void addInvited(std::string channelName) {isInvited_[channelName] = true;}
 	void delInvited(std::string channelName) { isInvited_.erase(channelName); }
 	bool isInvited(std::string mode, std::string channelName);
-
-	// CAPでcapをすべきか否かをはじめのNICK/USERの段階でチェックしないといけないので、
-	// should_be_capを追加した。
-	// ↑これらが情報として不足している時にはfalseにするという仕様にした
-	bool should_be_cap_nick;
-	bool should_be_cap_pass;
+	bool getIsAuth() { return isAuth_; }
+	void setIsAuth() { isAuth_ = true; }
 
 private:
 	int fd_;
+	bool isAuth_;
 	std::string nickname_; // max len 9
 	std::string username_;
 	std::string hostname_;
@@ -59,7 +56,7 @@ private:
 	std::string command_;
 	std::vector<std::string> params_;
 	std::map<std::string, bool> isInvited_; // <channelName, isInvited>?
-	std::map<std::string, Channel> channels_; // channels This belong to
+	std::map<std::string, Channel*> channels_; // channels This belong to
 
 	void debug_parser();
 };

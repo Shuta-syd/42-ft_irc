@@ -26,7 +26,7 @@ void PART(
 	for (size_t i = 0; i < channels.size(); i++)
 	{
 		const std::string ch_name = &channels[i][1];
-		if (findChannel(allChannels, ch_name) == false)
+		if (findChannelForServer(allChannels, ch_name) == false)
 			sendMessage(fd, ERR_NOSUCHCHANNEL(nick, ch_name), 0);
 		else
 			leaveChannel(client, allChannels, ch_name, message);
@@ -49,17 +49,17 @@ void leaveChannel(
 		return;
 	}
 
-	const std::vector<Client> members = channel.getMember();
+	const std::vector<Client *> members = channel.getMember();
 	for (
-			std::vector<Client>::const_iterator it = members.begin();
+			std::vector<Client *>::const_iterator it = members.begin();
 			it != members.end();
 			it++)
 	{
-		const int targetFd = (*it).getFd();
-		const std::string &targetNick = (*it).getNickname();
+		const int targetFd = (*it)->getFd();
+		const std::string &targetNick = (*it)->getNickname();
 		sendMessage(targetFd, PART_MESSAGE(nick, client.getUsername(), client.getHostname(), ch_name, message), 0);
 		if (targetNick == nick)
-			channel.eraseMember(*it);
+			channel.eraseMember(**it);
 	}
 	channel.delOper(nick);
 }

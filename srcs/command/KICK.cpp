@@ -23,7 +23,7 @@ void KICK(Client &client, std::map<std::string, Channel> &allChannels, const std
 
 	for (size_t i = 0; i < channels.size(); i++) {
 		const std::string ch_name = &channels[i][1];
-		if (findChannel(allChannels, ch_name) == false)
+		if (findChannelForServer(allChannels, ch_name) == false)
 			sendMessage(fd, ERR_NOSUCHCHANNEL(nick, ch_name), 0);
 		else
 			kickMember(client, allChannels, ch_name, targets, message);
@@ -53,18 +53,18 @@ void kickMember(
 		if (channel.is_inChannel(target) == false)
 				sendMessage(fd, ERR_NOSUCHNICK(target), 0);
 		else {
-				const std::vector<Client> members = channel.getMember();
+				const std::vector<Client *> members = channel.getMember();
 				for (
-						std::vector<Client>::const_iterator it = members.begin();
+						std::vector<Client *>::const_iterator it = members.begin();
 						it != members.end();
 						it++)
 				{
-					const int targetFd = it->getFd();
-					const std::string &targetNick = it->getNickname();
+					const int targetFd = (*it)->getFd();
+					const std::string &targetNick = (*it)->getNickname();
 					sendMessage(targetFd, KICK_MESSAGE(nick, client.getUsername(), client.getHostname(), ch_name, target, message), 0);
 					if (targetNick == target)
 					{
-						channel.eraseMember(*it);
+						channel.eraseMember(**it);
 						if (channel.is_operator(targetNick))
 							channel.delOper(targetNick);
 					}

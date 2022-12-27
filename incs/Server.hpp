@@ -66,9 +66,8 @@ private:
 	void allow();
 
 	void chat(int);
-	void execute(Client & client);
-	void debug_all_channels_situation();
-	void debug_all_members();
+	void execute(int fd);
+	void debugUsers();
 };
 
 void signal_handler(int signal);

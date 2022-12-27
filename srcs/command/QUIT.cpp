@@ -22,23 +22,27 @@ void QUIT(
 
 	if (client.getChannels().empty() == false)
 	{
-		std::map<std::string, Channel> &channels = client.getChannels();
+		std::map<std::string, Channel*> &channels = client.getChannels();
+		std::cout << 4 << std::endl;
 		for (
-				std::map<std::string, Channel>::iterator it = channels.begin();
+				std::map<std::string, Channel*>::iterator it = channels.begin();
 				it != channels.end();
-				it++)
-		{
-			const std::vector<Client> &members = it->second.getMember();
+				it++
+				) {
+			const std::vector<Client *> &members = it->second->getMember();
 			for (
-					std::vector<Client>::const_iterator mem_it = members.begin();
+					std::vector<Client *>::const_iterator mem_it = members.begin();
 					mem_it != members.end();
-					mem_it++)
-			{
-				const int memFd = mem_it->getFd();
+					mem_it++
+					) {
+				const int memFd = (*mem_it)->getFd();
 				if (memFd == clientFd)
-					it->second.eraseMember(client);
+					it->second->eraseMember(client);
 				else
+				{
 					sendMessage(memFd, QUIT_MESSAGE(nick, client.getUsername(), client.getHostname(), quitMessage), 0);
+					std::cout << 10 << std::endl;
+				}
 			}
 		}
 	}
@@ -53,6 +57,8 @@ void clearClientInfo(
 	std::map<int, Client> &users,
 	std::map<std::string, int> &nick_to_fd
 	) {
+	const std::string nick = client.getNickname();
+
 	for (std::vector<struct pollfd>::iterator it = pollfds.begin(); it != pollfds.end(); it++)
 	{
 		if (client.getFd() == it->fd)
@@ -62,6 +68,6 @@ void clearClientInfo(
 		}
 	}
 	users.erase(client.getFd());
-	nick_to_fd.erase(client.getNickname());
+	nick_to_fd.erase(nick);
 	close(client.getFd());
 }
