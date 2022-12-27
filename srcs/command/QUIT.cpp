@@ -28,13 +28,13 @@ void QUIT(
 				it != channels.end();
 				it++)
 		{
-			const std::vector<Client> &members = it->second->getMember();
+			const std::vector<Client *> &members = it->second->getMember();
 			for (
-					std::vector<Client>::const_iterator mem_it = members.begin();
+					std::vector<Client *>::const_iterator mem_it = members.begin();
 					mem_it != members.end();
 					mem_it++)
 			{
-				const int memFd = mem_it->getFd();
+				const int memFd = (*mem_it)->getFd();
 				if (memFd == clientFd)
 					it->second->eraseMember(client);
 				else

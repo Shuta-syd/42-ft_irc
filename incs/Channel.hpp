@@ -10,7 +10,7 @@ class Channel
 public:
 	Channel();
 	~Channel();
-	const std::vector<Client> getMember() const;
+	const std::vector<Client *> getMember() const;
 	const std::string getTopic() const;
 	const std::string getName() const;
 	const std::string getKey() const;
@@ -43,7 +43,7 @@ private:
 	std::string mode_;
 	int maxMember_;
 	std::string createdTime_;
-	std::vector<Client> members_;
+	std::vector<Client*> members_;
 };
 
 #endif

@@ -49,17 +49,17 @@ void leaveChannel(
 		return;
 	}
 
-	const std::vector<Client> members = channel.getMember();
+	const std::vector<Client *> members = channel.getMember();
 	for (
-			std::vector<Client>::const_iterator it = members.begin();
+			std::vector<Client *>::const_iterator it = members.begin();
 			it != members.end();
 			it++)
 	{
-		const int targetFd = (*it).getFd();
-		const std::string &targetNick = (*it).getNickname();
+		const int targetFd = (*it)->getFd();
+		const std::string &targetNick = (*it)->getNickname();
 		sendMessage(targetFd, PART_MESSAGE(nick, client.getUsername(), client.getHostname(), ch_name, message), 0);
 		if (targetNick == nick)
-			channel.eraseMember(*it);
+			channel.eraseMember(**it);
 	}
 	channel.delOper(nick);
 }

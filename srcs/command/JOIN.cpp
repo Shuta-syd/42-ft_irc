@@ -1,6 +1,6 @@
 #include <Command.hpp>
 
-const std::string getMemberNames(std::vector<Client> members, std::vector<std::string> opers);
+const std::string getMemberNames(std::vector<Client *> members, std::vector<std::string> opers);
 bool isChannel(const Client &client, const std::string &channelName);
 const std::vector<std::string> splitKeys(const std::string &param, int size);
 void enterChannel(std::map<std::string, Channel> &allChannel, Client &client, std::string channelName, const std::string &key);
@@ -78,7 +78,7 @@ void enterChannel(
 	const std::string &nick = client.getNickname();
 	Channel &channel = allChannel[channelName];
 	const std::string &channelKey = channel.getKey();
-	const std::vector<Client> &members = channel.getMember();
+	const std::vector<Client *> &members = channel.getMember();
 
 	// create new channel
 	if ((channelName != channel.getName() || channelName.empty())&& (key == channelKey || channelKey.empty())) {
@@ -100,7 +100,7 @@ void enterChannel(
 		const std::string names = getMemberNames(channel.getMember(), channel.getOper());
 
 		for (size_t i = 0; i < members.size(); i++)
-			sendMessage(members.at(i).getFd(), JOIN_MESSAGE(nick, client.getUsername(), client.getHostname(), channelName), 0);
+			sendMessage(members[i]->getFd(), JOIN_MESSAGE(nick, client.getUsername(), client.getHostname(), channelName), 0);
 
 		if (!channel.getTopic().empty())
 			sendMessage(fd, RPL_TOPIC(nick, channelName, channel.getTopic()), 0);
@@ -150,14 +150,14 @@ const std::vector<std::string> splitKeys(const std::string &param, int size)
  * @brief Get the Oper Names string
  *
  */
-const std::string getMemberNames(std::vector<Client> members, std::vector<std::string> opers)
+const std::string getMemberNames(std::vector<Client *> members, std::vector<std::string> opers)
 {
 	std::string names;
 
 	for (size_t i = 0; i < members.size(); i++)
 	{
 		bool isOper = false;
-		const std::string nick = members[i].getNickname();
+		const std::string nick = members[i]->getNickname();
 		for (size_t j = 0; j < opers.size(); j++)
 			nick == opers[j] ? isOper = true : isOper;
 

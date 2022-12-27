@@ -8,8 +8,8 @@
 void TOPIC(
 		Client &client,
 		const std::vector<std::string> &params,
-		std::map<std::string, Channel> &allChannels)
-{
+		std::map<std::string, Channel> &allChannels
+		) {
 	bool isOper = false;
 	bool isSetTopicAllow = false;
 	int fd = client.getFd();
@@ -52,11 +52,11 @@ void TOPIC(
 		const std::string &newTopic = params.at(1);
 		Channel &channel = allChannels[channelName];
 		channel.setTopic(newTopic);
-		const std::vector<Client> members = channel.getMember();
+		const std::vector<Client *> members = channel.getMember();
 		for (
-			std::vector<Client>::const_iterator it = members.begin(); it != members.end(); it++)
+			std::vector<Client *>::const_iterator it = members.begin(); it != members.end(); it++)
 		{
-			fd = it->getFd();
+			fd = (*it)->getFd();
 			sendMessage(fd, SETTOPIC_MESSAGE(nick, client.getUsername(), client.getHostname(), channelName, newTopic), 0);
 		}
 	}

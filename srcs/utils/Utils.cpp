@@ -160,17 +160,17 @@ void channelDebug(std::map<std::string, Channel> server, std::map<std::string, C
 			std::cout << "[" << clientOper[i] << "] ";
 		std::cout << std::endl;
 
-		const std::vector<Client> serverMember = it->second.getMember();
-		const std::vector<Client> clientMember = cit->second->getMember();
+		const std::vector<Client *> serverMember = it->second.getMember();
+		const std::vector<Client *> clientMember = cit->second->getMember();
 
 		std::cout << "---server channel members---" << std::endl;
 		for (size_t i = 0; i < serverMember.size(); i++)
-			std::cout << "[" << serverMember[i].getNickname() << "]";
+			std::cout << "[" << serverMember[i]->getNickname() << "]";
 		std::cout << std::endl;
 
 		std::cout << "---client channel members---" << std::endl;
 		for (size_t i = 0; i < clientMember.size(); i++)
-			std::cout << "[" << clientMember[i].getNickname() << "]";
+			std::cout << "[" << clientMember[i]->getNickname() << "]";
 		std::cout << std::endl;
 
 		std::cout << CYN << "------------------------------------------------------------" << RES << std::endl;

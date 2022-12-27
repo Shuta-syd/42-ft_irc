@@ -197,19 +197,19 @@ void Server::setupServerSocket()
 	listen(this->master_sd_, SOMAXCONN);
 }
 
-void Server::debug_all_channels_situation()
-{
-	std::cerr << "_____CHANNEL SITUATION_______" << std::endl;
-	for (auto ch : this->channels_)
-	{
-		std::cerr << "CHANNEL NAME : " << ch.first << std::endl;
-		for (auto member : ch.second.getMember())
-		{
-			std::cerr << member.getNickname() << std::endl;
-		}
-	}
-	std::cerr << "_____________________________" << std::endl;
-}
+// void Server::debug_all_channels_situation()
+// {
+// 	std::cerr << "_____CHANNEL SITUATION_______" << std::endl;
+// 	for (auto ch : this->channels_)
+// 	{
+// 		std::cerr << "CHANNEL NAME : " << ch.first << std::endl;
+// 		for (auto member : ch.second.getMember())
+// 		{
+// 			std::cerr << member.getNickname() << std::endl;
+// 		}
+// 	}
+// 	std::cerr << "_____________________________" << std::endl;
+// }
 
 // void Server::debug_all_members() {
 // 	std::cerr << "_____MEMBER SITUATION_______" << std::endl;

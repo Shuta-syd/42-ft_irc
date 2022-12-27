@@ -118,7 +118,7 @@ void exec_o(
 {
 	std::string target;
 	const int clientFd = client.getFd();
-	const std::vector<Client> members = channel.getMember();
+	const std::vector<Client *> members = channel.getMember();
 	const std::string channelName = channel.getName();
 	const std::string nick = client.getNickname();
 	const std::vector<std::string> opers = channel.getOper();
@@ -149,7 +149,7 @@ void exec_o(
 	}
 
 	for (size_t i = 0; i < members.size(); i++)
-		sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), client.getHostname(), target, channel.getName(), isAllow, 'o'), 0);
+		sendMessage(members[i]->getFd(), MODE_MESSAGE(nick, client.getUsername(), client.getHostname(), target, channel.getName(), isAllow, 'o'), 0);
 }
 
 /**
@@ -162,7 +162,7 @@ void exec_t(
 {
 	int fd = client.getFd();
 	const std::string nick = client.getNickname();
-	const std::vector<Client> members = channel.getMember();
+	const std::vector<Client *> members = channel.getMember();
 
 	if (channel.is_operator(nick) == false)
 	{
@@ -180,7 +180,7 @@ void exec_t(
 		channel.delMode('t');
 	}
 	for (size_t i = 0; i < members.size(); i++)
-		sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), client.getHostname(), "", channel.getName(), isAllow, 't'), 0);
+		sendMessage(members[i]->getFd(), MODE_MESSAGE(nick, client.getUsername(), client.getHostname(), "", channel.getName(), isAllow, 't'), 0);
 }
 
 /**
@@ -195,7 +195,7 @@ void exec_k(
 {
 	int fd = client.getFd();
 	const std::string nick = client.getNickname();
-	const std::vector<Client> members = channel.getMember();
+	const std::vector<Client *> members = channel.getMember();
 
 	if (channel.is_operator(nick) == false)
 	{
@@ -222,7 +222,7 @@ void exec_k(
 		channel.delMode('k');
 	}
 	for (size_t i = 0; i < members.size(); i++)
-		sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), client.getHostname(), channel.getKey(), channel.getName(), isAllow, 'k'), 0);
+		sendMessage(members[i]->getFd(), MODE_MESSAGE(nick, client.getUsername(), client.getHostname(), channel.getKey(), channel.getName(), isAllow, 'k'), 0);
 }
 
 /**
@@ -238,7 +238,7 @@ void exec_l(
 	std::string maxMember;
 	int fd = client.getFd();
 	const std::string nick = client.getNickname();
-	const std::vector<Client> members = channel.getMember();
+	const std::vector<Client *> members = channel.getMember();
 
 	if (channel.is_operator(nick) == false)
 	{
@@ -266,7 +266,7 @@ void exec_l(
 		channel.delMode('l');
 	}
 	for (size_t i = 0; i < members.size(); i++)
-		sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), client.getHostname(), "", channel.getName(), isAllow, "l " + maxMember), 0);
+		sendMessage(members[i]->getFd(), MODE_MESSAGE(nick, client.getUsername(), client.getHostname(), "", channel.getName(), isAllow, "l " + maxMember), 0);
 }
 
 /**
@@ -280,7 +280,7 @@ void exec_i(
 {
 	int fd = client.getFd();
 	const std::string nick = client.getNickname();
-	const std::vector<Client> members = channel.getMember();
+	const std::vector<Client *> members = channel.getMember();
 
 	if (channel.is_operator(nick) == false)
 	{
@@ -301,5 +301,5 @@ void exec_i(
 		return;
 	}
 	for (size_t i = 0; i < members.size(); i++)
-		sendMessage(members[i].getFd(), MODE_MESSAGE(nick, client.getUsername(), client.getHostname(), channel.getKey(), channel.getName(), isAllow, 'i'), 0);
+		sendMessage(members[i]->getFd(), MODE_MESSAGE(nick, client.getUsername(), client.getHostname(), channel.getKey(), channel.getName(), isAllow, 'i'), 0);
 }
