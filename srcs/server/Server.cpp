@@ -138,7 +138,7 @@ void Server::allow() {
 	do
 	{
 		client_fd = accept(this->master_sd_, NULL, NULL);
-		if (client_fd < 1) { // accept fails with EWOULDBLOCK, then we have accepted all of them.
+		if (client_fd < 0) { // accept fails with EWOULDBLOCK, then we have accepted all of them.
 				throw std::exception();
 		}
 		else {
@@ -181,17 +181,15 @@ void Server::setupServerSocket()
 {
 	/* server socket create */
 	master_sd_ = socket(AF_INET, SOCK_STREAM, 0);
-	if (master_sd_ < -1)
+	if (master_sd_ < 0)
 		throw std::exception();
-
 	/* set socket option to server socket */
 	int enable = 1;
-	if (setsockopt(master_sd_, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(enable)) == false)
+	if (setsockopt(master_sd_, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(enable)) == -1)
 		throw std::exception();
 	/* Change server socket fd from blocking IO to non-blocking IO */
 	if (fcntl(master_sd_, F_SETFL, O_NONBLOCK) == -1)
 		throw std::exception();
-
 	/* create address for server socket fd */
 	struct sockaddr_in addr;
 	bzero(&addr, sizeof(struct sockaddr));
@@ -202,7 +200,6 @@ void Server::setupServerSocket()
 	/* bind address to server socket fd*/
 	if (bind(master_sd_, (struct sockaddr *)&addr, sizeof(addr)) == -1)
 		throw std::exception();
-
 	/* try to specify maximum of sockets pending connections for the server socket */
 	if (listen(this->master_sd_, SOMAXCONN) == -1)
 		throw std::exception();
