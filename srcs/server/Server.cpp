@@ -21,19 +21,22 @@ void Server::start()
 		std::cout << BLU << "-------------Waiting on poll()-------------" << RES << std::endl;
 		if (poll(&(*pollfds_.begin()), pollfds_.size(), TIMEOUT) == -1)
 			throw std::exception();
-		for (size_t i = 0; i < pollfds_.size(); i++) {
+		for (size_t i = 0; i < pollfds_.size(); i++)
+		{
 			// nothing event
 			if (pollfds_[i].revents == 0)
 				continue;
 
 			// not pollin event
-			if (pollfds_[i].revents != POLLIN) {
+			if (pollfds_[i].revents != POLLIN)
+			{
 				std::cerr << "error revents " << pollfds_[i].revents << std::endl;
 				return;
 			}
 
 			// event fd is server fd
-			if (pollfds_[i].fd == master_sd_) {
+			if (pollfds_[i].fd == master_sd_)
+			{
 				std::cout << "Listening socket is readable" << std::endl;
 				this->allow();
 			}
@@ -47,7 +50,8 @@ void Server::start()
  * @brief  for communication between server and client
  * @param fd connected client fd
  */
-void Server::chat(int fd) {
+void Server::chat(int fd)
+{
 	char message[MSG_MAX] = {0};
 
 	ssize_t bytes = recv(fd, message, sizeof(message), 0);
@@ -61,11 +65,13 @@ void Server::chat(int fd) {
 	std::cout << "----------------------------------------" << std::endl;
 
 	size_t i = 0;
-	while (find(&message[i], "\r\n") != -1) {
+	while (find(&message[i], "\r\n") != -1)
+	{
 		int len = 0;
 		std::string cmd_line;
 
-		while (message[i] != '\r' && message[i] != '\n') {
+		while (message[i] != '\r' && message[i] != '\n')
+		{
 			i++;
 			len++;
 		}
@@ -81,15 +87,19 @@ void Server::chat(int fd) {
 /**
  * @brief command execute func
  */
-void Server::execute(int fd) {
+void Server::execute(int fd)
+{
 	Client &client = users_[fd];
 	const std::string &cmd = client.getCommand();
 	const std::vector<std::string> &params = client.getParams();
 
-	if (client.getIsWelcome() == false  && client.getIsConnected() == false && cmd != "NICK" && cmd != "USER" && cmd != "CAP") {
+	if (client.getIsWelcome() == false && client.getIsConnected() == false && cmd != "NICK" && cmd != "USER" && cmd != "CAP")
+	{
 		clearClientInfo(client, pollfds_, users_, mp_nick_to_fd_);
-		return ;
-	} else if (client.getIsWelcome() == false  && client.getIsConnected() == false && cmd == "NICK") {
+		return;
+	}
+	else if (client.getIsWelcome() == false && client.getIsConnected() == false && cmd == "NICK")
+	{
 		NICK(client, mp_nick_to_fd_, channels_);
 		if (client.getIsNick())
 			sendWelcomeMessage(client);
@@ -131,26 +141,28 @@ void Server::execute(int fd) {
 /**
  * @brief to accept connections from clients.
  */
-void Server::allow() {
+void Server::allow()
+{
 	int client_fd = -1;
-	do {
+	do
+	{
 		client_fd = accept(this->master_sd_, NULL, NULL);
-		if (client_fd < 0) { // accept fails with EWOULDBLOCK, then we have accepted all of them.
+		if (client_fd < 0)
 			continue;
-		}
 		else {
 			std::cout << "New incoming connection - " << client_fd << std::endl;
 			this->createPoll(client_fd);
 			setupClient(client_fd);
 		}
-	} while (client_fd != -1);
+	} while (client_fd == -1);
 }
 
 /**
  * @brief create new user client info
  * @param sockfd client socket descriptor
  */
-void Server::setupClient(int sockfd) {
+void Server::setupClient(int sockfd)
+{
 	const std::string nick = "unknow" + std::to_string(sockfd);
 	Client user(sockfd, nick);
 	users_[sockfd] = user;
@@ -161,7 +173,8 @@ void Server::setupClient(int sockfd) {
  * @param sockfd An indication of which fd for which PollMethod to create
  *
  */
-void Server::createPoll(int sockfd) {
+void Server::createPoll(int sockfd)
+{
 	struct pollfd pollfd;
 	pollfd.fd = sockfd;
 	pollfd.events = POLLIN;
@@ -172,7 +185,8 @@ void Server::createPoll(int sockfd) {
 /**
  * @brief to set up a server socket
  */
-void Server::setupServerSocket() {
+void Server::setupServerSocket()
+{
 	/* server socket create */
 	master_sd_ = socket(AF_INET, SOCK_STREAM, 0);
 	if (master_sd_ < 0)
@@ -199,18 +213,18 @@ void Server::setupServerSocket() {
 		throw std::exception();
 }
 
-void Server::debugUsers() {
-	std::cout<< BLU << "------------poll fd------------" << RES << std::endl;
+void Server::debugUsers()
+{
+	std::cout << BLU << "------------poll fd------------" << RES << std::endl;
 	for (size_t i = 0; i < pollfds_.size(); i++)
 		std::cout << "[" << pollfds_[i].fd << "]" << std::endl;
-	std::cout<< BLU << "-------------------------------" << RES << std::endl;
+	std::cout << BLU << "-------------------------------" << RES << std::endl;
 
 	std::cout << YEL << "------------users------------" << RES << std::endl;
 	for (
 			std::map<int, Client>::iterator it = users_.begin();
 			it != users_.end();
-			it++
-			)
+			it++)
 		std::cout << "[" << it->first << ", " << it->second.getNickname() << "]" << std::endl;
 	std::cout << YEL << "-------------------------------" << RES << std::endl;
 
@@ -218,8 +232,7 @@ void Server::debugUsers() {
 	for (
 			std::map<std::string, int>::iterator it = mp_nick_to_fd_.begin();
 			it != mp_nick_to_fd_.end();
-			it++
-			)
+			it++)
 		std::cout << "[" << it->first << ", " << it->second << "]" << std::endl;
 	std::cout << RED << "-------------------------------" << RES << std::endl;
 }
