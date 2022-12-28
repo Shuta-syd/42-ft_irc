@@ -19,23 +19,21 @@ void Server::start()
 	while (true)
 	{
 		std::cout << BLU << "-------------Waiting on poll()-------------" << RES << std::endl;
-		poll(&(*pollfds_.begin()), pollfds_.size(), TIMEOUT);
-		for (size_t i = 0; i < pollfds_.size(); i++)
-		{
+		if (poll(&(*pollfds_.begin()), pollfds_.size(), TIMEOUT) == -1)
+			throw std::exception();
+		for (size_t i = 0; i < pollfds_.size(); i++) {
 			// nothing event
 			if (pollfds_[i].revents == 0)
 				continue;
 
 			// not pollin event
-			if (pollfds_[i].revents != POLLIN)
-			{
+			if (pollfds_[i].revents != POLLIN) {
 				std::cerr << "error revents " << pollfds_[i].revents << std::endl;
 				return;
 			}
 
 			// event fd is server fd
-			if (pollfds_[i].fd == master_sd_)
-			{
+			if (pollfds_[i].fd == master_sd_) {
 				std::cout << "Listening socket is readable" << std::endl;
 				this->allow();
 			}
@@ -54,7 +52,7 @@ void Server::chat(int fd)
 	char message[MSG_MAX] = {0};
 
 	ssize_t bytes = recv(fd, message, sizeof(message), 0);
-	if (bytes == 0)
+	if (bytes < 0)
 		throw std::exception();
 
 	Client &user = users_[fd];
@@ -141,10 +139,7 @@ void Server::allow() {
 	{
 		client_fd = accept(this->master_sd_, NULL, NULL);
 		if (client_fd < 1) { // accept fails with EWOULDBLOCK, then we have accepted all of them.
-			if (errno != EWOULDBLOCK)
 				throw std::exception();
-			else if (client_fd == 0)
-				continue;
 		}
 		else {
 			std::cout << "New incoming connection - " << client_fd << std::endl;
@@ -186,12 +181,16 @@ void Server::setupServerSocket()
 {
 	/* server socket create */
 	master_sd_ = socket(AF_INET, SOCK_STREAM, 0);
+	if (master_sd_ < -1)
+		throw std::exception();
 
 	/* set socket option to server socket */
 	int enable = 1;
-	setsockopt(master_sd_, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(enable));
+	if (setsockopt(master_sd_, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(enable)) == false)
+		throw std::exception();
 	/* Change server socket fd from blocking IO to non-blocking IO */
-	fcntl(master_sd_, O_NONBLOCK, &enable);
+	if (fcntl(master_sd_, F_SETFL, O_NONBLOCK) == -1)
+		throw std::exception();
 
 	/* create address for server socket fd */
 	struct sockaddr_in addr;
@@ -201,10 +200,12 @@ void Server::setupServerSocket()
 	addr.sin_port = htons(port_);
 
 	/* bind address to server socket fd*/
-	bind(master_sd_, (struct sockaddr *)&addr, sizeof(addr));
+	if (bind(master_sd_, (struct sockaddr *)&addr, sizeof(addr)) == -1)
+		throw std::exception();
 
 	/* try to specify maximum of sockets pending connections for the server socket */
-	listen(this->master_sd_, SOMAXCONN);
+	if (listen(this->master_sd_, SOMAXCONN) == -1)
+		throw std::exception();
 }
 
 void Server::debugUsers() {
