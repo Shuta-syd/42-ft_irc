@@ -47,8 +47,7 @@ void Server::start()
  * @brief  for communication between server and client
  * @param fd connected client fd
  */
-void Server::chat(int fd)
-{
+void Server::chat(int fd) {
 	char message[MSG_MAX] = {0};
 
 	ssize_t bytes = recv(fd, message, sizeof(message), 0);
@@ -82,8 +81,7 @@ void Server::chat(int fd)
 /**
  * @brief command execute func
  */
-void Server::execute(int fd)
-{
+void Server::execute(int fd) {
 	Client &client = users_[fd];
 	const std::string &cmd = client.getCommand();
 	const std::vector<std::string> &params = client.getParams();
@@ -135,11 +133,10 @@ void Server::execute(int fd)
  */
 void Server::allow() {
 	int client_fd = -1;
-	do
-	{
+	do {
 		client_fd = accept(this->master_sd_, NULL, NULL);
 		if (client_fd < 0) { // accept fails with EWOULDBLOCK, then we have accepted all of them.
-				throw std::exception();
+			continue;
 		}
 		else {
 			std::cout << "New incoming connection - " << client_fd << std::endl;
@@ -153,8 +150,7 @@ void Server::allow() {
  * @brief create new user client info
  * @param sockfd client socket descriptor
  */
-void Server::setupClient(int sockfd)
-{
+void Server::setupClient(int sockfd) {
 	const std::string nick = "unknow" + std::to_string(sockfd);
 	Client user(sockfd, nick);
 	users_[sockfd] = user;
@@ -165,8 +161,7 @@ void Server::setupClient(int sockfd)
  * @param sockfd An indication of which fd for which PollMethod to create
  *
  */
-void Server::createPoll(int sockfd)
-{
+void Server::createPoll(int sockfd) {
 	struct pollfd pollfd;
 	pollfd.fd = sockfd;
 	pollfd.events = POLLIN;
@@ -177,8 +172,7 @@ void Server::createPoll(int sockfd)
 /**
  * @brief to set up a server socket
  */
-void Server::setupServerSocket()
-{
+void Server::setupServerSocket() {
 	/* server socket create */
 	master_sd_ = socket(AF_INET, SOCK_STREAM, 0);
 	if (master_sd_ < 0)
