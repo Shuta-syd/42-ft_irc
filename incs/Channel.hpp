@@ -16,14 +16,14 @@ public:
 	const std::string getKey() const;
 	const std::vector<std::string> &getOper() const;
 	bool getTopicAllow() const { return topicAllow_; }
-	int getMaxMember() const { return maxMember_; }
+	ssize_t getMaxMember() const { return maxMember_; }
 	std::string getCreatedTime() const { return createdTime_; }
 	std::string getMode() const { return mode_; }
 	void setMember(Client &member);
 	void addMode(const char mode);
 	void setName(std::string name);
 	void setKey(std::string key);
-	void setMaxMember(int max) { maxMember_ = max; }
+	void setMaxMember(ssize_t max) { maxMember_ = max; }
 	void setCreatedTime(std::string time) { createdTime_ = time; }
 	void setTopic(std::string topic);
 	void setTopicAllow(bool isAllow) { topicAllow_ = isAllow; }
@@ -41,7 +41,7 @@ private:
 	bool topicAllow_;
 	std::string topic_;
 	std::string mode_;
-	int maxMember_;
+	ssize_t maxMember_;
 	std::string createdTime_;
 	std::vector<Client*> members_;
 };
