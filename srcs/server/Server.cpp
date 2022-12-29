@@ -21,25 +21,21 @@ void Server::start()
 		std::cout << BLU << "-------------Waiting on poll()-------------" << RES << std::endl;
 		if (poll(&(*pollfds_.begin()), pollfds_.size(), TIMEOUT) == -1)
 			throw std::exception();
-		for (size_t i = 0; i < pollfds_.size(); i++)
-		{
+		for (size_t i = 0; i < pollfds_.size(); i++) {
 			// nothing event
 			if (pollfds_[i].revents == 0)
 				continue;
 
 			// not pollin event
-			if (pollfds_[i].revents != POLLIN) {
-				std::cerr << "error revents " << pollfds_[i].revents << std::endl;
-				return;
+			if (pollfds_[i].revents == POLLIN) {
+				// event fd is server fd
+				if (pollfds_[i].fd == master_sd_) {
+					std::cout << "Listening socket is readable" << std::endl;
+					this->allow();
+				}
+				else // This is not the listening socket, therefore an existing connection must be readable
+					this->chat(pollfds_[i].fd);
 			}
-
-			// event fd is server fd
-			if (pollfds_[i].fd == master_sd_) {
-				std::cout << "Listening socket is readable" << std::endl;
-				this->allow();
-			}
-			else // This is not the listening socket, therefore an existing connection must be readable
-				this->chat(pollfds_[i].fd);
 		}
 	}
 }

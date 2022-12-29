@@ -1,8 +1,8 @@
 #include <Bot.hpp>
 
-Bot::Bot(){}
+Bot::Bot() {}
 
-Bot::Bot(int port, std::string password, std::string ch): isAuth_(false), port_(port), password_(password), nick_("FT_BOT"), channelName_(ch) {}
+Bot::Bot(int port, std::string password, std::string ch): isAuth_(false), port_(port), password_(password), nick_("Mr.Bot"), channelName_(ch), auth_counter_(1){}
 
 Bot::~Bot(){}
 
@@ -23,10 +23,15 @@ void Bot::start() {
 	}
 }
 /**
- * @brief
+ * @brief  recv message from irc server
  */
 void Bot::receive() {
 	char message[MSG_MAX] = {0};
+
+	if (auth_counter_ < 2 && isAuth_ == false) {
+		std::cerr << RED << "[ERR] Password Incorrect" << RES << std::endl;
+		sendMessage(bot_sd_, "QUIT :leaving\r\n", 0);
+	}
 
 	std::cout << BLU << "--------Waiting Message--------" << RES << std::endl;
 	ssize_t bytes = recv(bot_sd_, message, sizeof(message), 0);
@@ -47,12 +52,14 @@ void Bot::receive() {
 		i++;
 	}
 	std::cout << "ParsedMessage: [" << message_ << "]" << std::endl;
+	auth_counter_ += 1;
 }
 
 /**
  * @brief
  */
 void Bot::execute() {
+
 	if (find(message_, "CAP") == 1)
 		authorize();
 	else if (find(message_, "NICK") == 1){

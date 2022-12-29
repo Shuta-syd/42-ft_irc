@@ -29,6 +29,7 @@ private:
 	std::string channelName_;
 	struct pollfd pollfd_;
 	std::string message_;
+	int auth_counter_;
 
 	void receive();
 	void execute();
