@@ -2,7 +2,7 @@
 
 Bot::Bot() {}
 
-Bot::Bot(int port, std::string password, std::string ch): isAuth_(false), port_(port), password_(password), nick_("Mr.Bot"), channelName_(ch), auth_counter_(1){}
+Bot::Bot(int port, std::string password, std::string ch): isAuth_(false), port_(port), password_(password), nick_("Mr.Bot"), channelName_(ch), auth_counter_(1), isVoted_(false) {}
 
 Bot::~Bot(){}
 
@@ -19,7 +19,7 @@ void Bot::start() {
 	while (1)	{
 		receive();
 		execute();
-		sleep(1);
+		sleep(2);
 	}
 }
 /**
@@ -28,7 +28,7 @@ void Bot::start() {
 void Bot::receive() {
 	char message[MSG_MAX] = {0};
 
-	if (auth_counter_ < 2 && isAuth_ == false) {
+	if (auth_counter_ == 3 && isAuth_ == false) {
 		std::cerr << RED << "[ERR] Password Incorrect" << RES << std::endl;
 		sendMessage(bot_sd_, "QUIT :leaving\r\n", 0);
 	}
@@ -43,9 +43,9 @@ void Bot::receive() {
 	std::cout << "-------------------------------" << std::endl;
 
 	int i = 0;
-	while (message[i] != ' ' && message[i] != '\r')
+	while (message[i] != ' ' && message[i] != '\r' && message[i] != '\n')
 		i++;
-	while (message[i] == ' ' && message[i] != '\r')
+	while (message[i] == ' ' && message[i] != '\r' && message[i] != '\n')
 		i++;
 	while (message[i] != '\r' && message[i] != '\n') {
 		message_.push_back(message[i]);
@@ -67,8 +67,58 @@ void Bot::execute() {
 			sendMessage(bot_sd_, "CAP END\r\n", 0);
 			isAuth_ = true;
 		}
+		sendMessage(bot_sd_, "JOIN #" + channelName_ + "\r\n", 0);
+	}
+	else if (find(message_, "PRIVMSG") == 1) {
+		this->parseMessage();
+		int pos = find(parsedMessage_, "POLL");
+		if (pos == 1)
+			this->vote(&parsedMessage_[4]);
+		pos = find(parsedMessage_, "NG");
+		if (pos == 1)
+			this->addNG_Keyword(&parsedMessage_[2]);
 	}
 	message_.clear();
+}
+
+void Bot::vote(std::string message) {
+	int i = 0;
+	std::string topic;
+
+	std::cout << "Vote Feature Started" << std::endl;
+
+	while ((message[i] == ' ' || message[i] == ':') && message[i] != '\r' && message[i] != '\n')
+		i++;
+
+	while (message[i] && message[i] != '\r' && message[i] != '\n') {
+		topic.push_back(message[i]);
+		i++;
+	}
+
+
+}
+
+void Bot::addNG_Keyword(std::string message) {
+	std::string keyword;
+
+	std::cout << "Register NG Word" << std::endl;
+}
+
+void Bot::parseMessage() {
+	int i = 0;
+
+	while (message_[i] != ':' && message_[i] != '\r' && message_[i] != '\n')
+		i++;
+
+	i += 1;
+
+	while (message_[i] && message_[i] != '\r' && message_[i] != '\n') {
+		parsedMessage_.push_back(message_[i]);
+		i++;
+	}
+
+	sendMessage(bot_sd_, VOTE_WELCOME(channelName_), 0);
+	isVoted_ = true;
 }
 
 /**

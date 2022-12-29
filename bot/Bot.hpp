@@ -29,7 +29,9 @@ private:
 	std::string channelName_;
 	struct pollfd pollfd_;
 	std::string message_;
+	std::string parsedMessage_;
 	int auth_counter_;
+	bool isVoted_;
 
 	void receive();
 	void execute();
@@ -37,6 +39,10 @@ private:
 	void setupBotSocket();
 	void createPoll();
 	void authorize();
+
+	void parseMessage();
+	void vote(std::string);
+	void addNG_Keyword(std::string);
 };
 
 int find(const std::string &str, const std::string &target);
