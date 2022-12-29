@@ -12,26 +12,32 @@
 #define MSG_MAX 1024
 #define TIMEOUT 3 * 60 * 1000
 
-class Bot
-{
+class Bot {
 public:
 	Bot();
-	Bot(int port, std::string password);
+	Bot(int port, std::string password, std::string ch);
 	~Bot();
 
 	void start();
 
 private:
+	bool isAuth_;
 	int bot_sd_;
 	int port_;
 	std::string password_;
 	std::string nick_;
+	std::string channelName_;
 	struct pollfd pollfd_;
+	std::string message_;
 
 	void receive();
+	void execute();
+
 	void setupBotSocket();
 	void createPoll();
 	void authorize();
 };
+
+int find(const std::string &str, const std::string &target);
 
 #endif

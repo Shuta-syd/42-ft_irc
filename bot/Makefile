@@ -2,14 +2,14 @@ NAME := ircbot
 CXX := c++
 RM := rm -rf
 
-srcs := main.cpp BotReply.cpp Bot.cpp
+srcs := main.cpp BotReply.cpp Bot.cpp Utils.cpp
 
 objs := $(srcs:%.cpp=%.o)
 deps := $(srcs:%.cpp=%.d)
 
 debugflags := -g3 -fsanitize=address
 headerflags := -MMD -MP
-CXXFLAGS := -Wall -Werror -Wextra -std=c++98 -pedantic
+CXXFLAGS := #-Wall -Werror -Wextra -std=c++98 -pedantic
 
 ############# basic rules ##############
 .PHONY: all clean fclean re
@@ -46,7 +46,7 @@ debug: CXXFLAGS += $(debugflags)
 debug: re
 
 run: all
-	./ircserv 8080 password
+	./ircbot 8080 password 42
 RED = \033[31m
 GRN = \033[32m
 YEL = \033[33m

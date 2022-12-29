@@ -28,15 +28,13 @@ void Server::start()
 				continue;
 
 			// not pollin event
-			if (pollfds_[i].revents != POLLIN)
-			{
+			if (pollfds_[i].revents != POLLIN) {
 				std::cerr << "error revents " << pollfds_[i].revents << std::endl;
 				return;
 			}
 
 			// event fd is server fd
-			if (pollfds_[i].fd == master_sd_)
-			{
+			if (pollfds_[i].fd == master_sd_) {
 				std::cout << "Listening socket is readable" << std::endl;
 				this->allow();
 			}

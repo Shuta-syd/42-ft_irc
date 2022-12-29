@@ -41,6 +41,7 @@ void sendWelcomeMessage(const Client &client)
 	sendMessage(fd, RPL_MYINFO(nick), 0);
 }
 
+
 /**
  * @brief send auth fail message to the client
  */

@@ -9,5 +9,5 @@
 
 void sendMessage(int fd, const std::string &msg, int flag) {
 	send(fd, msg.c_str(), msg.size(), flag);
-	std::cout << YEL << msg << RES << std::endl;
+	std::cout << YEL << msg << RES;
 }
