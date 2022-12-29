@@ -72,13 +72,16 @@ void Bot::execute() {
 	else if (find(message_, "PRIVMSG") == 1) {
 		this->parseMessage();
 		int pos = find(parsedMessage_, "POLL");
+		std::cout << pos << std::endl;
 		if (pos == 1)
 			this->vote(&parsedMessage_[4]);
 		pos = find(parsedMessage_, "NG");
+		std::cout << pos << std::endl;
 		if (pos == 1)
 			this->addNG_Keyword(&parsedMessage_[2]);
 	}
 	message_.clear();
+	parsedMessage_.clear();
 }
 
 void Bot::vote(std::string message) {
@@ -86,7 +89,7 @@ void Bot::vote(std::string message) {
 	std::string topic;
 
 	std::cout << "Vote Feature Started" << std::endl;
-
+	std::cout << message << std::endl;
 	while ((message[i] == ' ' || message[i] == ':') && message[i] != '\r' && message[i] != '\n')
 		i++;
 
@@ -95,13 +98,32 @@ void Bot::vote(std::string message) {
 		i++;
 	}
 
+	sendMessage(bot_sd_, VOTE_WELCOME(channelName_), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "\033[32m[  " + topic + "  ]\033[m"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "------------------------"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "|           |          |"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "|  YES [0]  |  NO [0]  |"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "|           |          |"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "------------------------"), 0);
 
+	isVoted_ = true;
+	topic.clear();
 }
 
 void Bot::addNG_Keyword(std::string message) {
+	int i = 0;
 	std::string keyword;
 
-	std::cout << "Register NG Word" << std::endl;
+	while ((message[i] == ' ' || message[i] == ':') && message[i] != '\r' && message[i] != '\n')
+		i++;
+
+	while (message[i] && message[i] != '\r' && message[i] != '\n') {
+		keyword.push_back(message[i]);
+		i++;
+	}
+
+	sendMessage(bot_sd_, NG_REGISTERED(channelName_, keyword), 0);
+	ng_words_.push_back(keyword);
 }
 
 void Bot::parseMessage() {
@@ -116,9 +138,6 @@ void Bot::parseMessage() {
 		parsedMessage_.push_back(message_[i]);
 		i++;
 	}
-
-	sendMessage(bot_sd_, VOTE_WELCOME(channelName_), 0);
-	isVoted_ = true;
 }
 
 /**

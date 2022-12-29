@@ -2,6 +2,7 @@
 #define DEFINE_IRC_BOT
 
 #include <string>
+#include <vector>
 #include <iostream>
 #include <sys/socket.h>
 #include <sys/poll.h>
@@ -32,6 +33,7 @@ private:
 	std::string parsedMessage_;
 	int auth_counter_;
 	bool isVoted_;
+	std::vector<std::string> ng_words_;
 
 	void receive();
 	void execute();

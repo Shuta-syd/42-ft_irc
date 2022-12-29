@@ -20,10 +20,12 @@
 #define PASS_MESSAGE(pass) "PASS " + pass + "\r\n"
 #define NICK_MESSAGE(nick) "NICK " + nick + "\r\n"
 #define USER_MESSAGE(user, host, server, real) "USER " + user + " " + host + " " + server + " :" + real + "\r\n"
+#define PRIVMSG(ch, msg) "PRIVMSG #" + ch + " :" + msg + "\r\n"
 
 #define VOTE_WELCOME(ch) "PRIVMSG #" + ch + " :" + "\033[32m--------------[VOTE TIME]--------------" + "\033[m" + "\r\n"
-
 #define VOTE_END(ch) "PRIVMSG #" + ch + " :" + "\033[32m--------------[VOTE END]--------------" + "\033[m" + "\r\n"
+
+#define NG_REGISTERED(ch, word) "PRIVMSG #" + ch + " :" + "--------------NG REGISTERED [\033[33m" + word + "\033[m]--------------\r\n"
 
 void sendMessage(int fd, const std::string &msg, int flag);
 
