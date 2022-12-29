@@ -8,12 +8,13 @@ int main(int argc, char const *argv[])
 		Bot IrcBot(port, password);
 
 		try {
-			Bot.start();
+			IrcBot.start();
 		}
-		catch(const std::exception& e)
+		catch(const std::exception& e) {
 			std::cerr << "ERROR:" << e.what() << std::endl;
+		}
 	} else {
-		std::err << "[Usage] ./ircbot [Port] [Password] " << std::endl;
+		std::cerr << "[Usage] ./ircbot [Port] [Password] " << std::endl;
 		return 1;
 	}
 }

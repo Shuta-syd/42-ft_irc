@@ -2,10 +2,13 @@
 #define DEFINE_IRC_BOT
 
 #include <string>
+#include <iostream>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
-#include <Colors.hpp>
+#include <BotReply.hpp>
+
+#define MSG_MAX 1024
 
 class Bot {
 public:
@@ -14,6 +17,7 @@ public:
 	~Bot();
 
 	void start();
+	void receive(int fd);
 	void setupBotSocket();
 	void authorize();
 

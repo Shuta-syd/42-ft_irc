@@ -25,6 +25,7 @@ void sendERROR(int fd, const std::string &msg, int flag)
 	throw std::runtime_error(msg.c_str());
 	std::cout << YEL << msg << RES << std::endl;
 }
+
 /**
  * @brief send welcome message at the first connection
  * @param client
@@ -39,7 +40,6 @@ void sendWelcomeMessage(const Client &client)
 	sendMessage(fd, RPL_CREATED(nick), 0);
 	sendMessage(fd, RPL_MYINFO(nick), 0);
 }
-
 
 /**
  * @brief send auth fail message to the client
