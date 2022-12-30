@@ -12,9 +12,9 @@ Bot::~Bot(){}
 void Bot::start() {
 	this->setupBotSocket();
 	std::cout << BLU << "-----------CONNECTED-----------" << RES << std::endl;
+	std::cout << "\e[01mYou can see help `bot help` in irssi\e[m" << std::endl;
 
 	sendMessage(bot_sd_, CAP_MESSAGE, 0);
-
 	while (1)	{
 		receive();
 		execute();
@@ -32,14 +32,14 @@ void Bot::receive() {
 		sendMessage(bot_sd_, "QUIT :leaving\r\n", 0);
 	}
 
-	std::cout << BLU << "--------Waiting Message--------" << RES << std::endl;
+	// std::cout << BLU << "--------Waiting Message--------" << RES << std::endl;
 	ssize_t bytes = recv(bot_sd_, message, sizeof(message), 0);
 	if (bytes < 0)
 		throw std::exception();
 
-	std::cout << "--------RECEIVE Message--------" << std::endl;
-	std::cout << "client : " << message << std::endl;
-	std::cout << "-------------------------------" << std::endl;
+	// std::cout << "--------RECEIVE Message--------" << std::endl;
+	// std::cout << "client : " << message << std::endl;
+	// std::cout << "-------------------------------" << std::endl;
 
 	int i = 0;
 	int j = 1;
@@ -55,7 +55,7 @@ void Bot::receive() {
 		message_.push_back(message[i]);
 		i++;
 	}
-	std::cout << "ParsedMessage: [" << message_ << "]" << std::endl;
+	// std::cout << "ParsedMessage: [" << message_ << "]" << std::endl;
 	auth_counter_ += 1;
 }
 
