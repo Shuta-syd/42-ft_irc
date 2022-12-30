@@ -143,8 +143,6 @@ void Bot::voteConter(std::string message) {
 		sendMessage(bot_sd_, PRIVMSG(channelName_, "\033[31m" + sender_ + " already voted" + "\033[m"), 0);
 		return;
 	}
-	else
-		return;
 
 	sendMessage(bot_sd_, PRIVMSG(channelName_, "\033[32m[  " + topic_ + "  ]\033[m"), 0);
 	sendMessage(bot_sd_, PRIVMSG(channelName_, "------------------------"), 0);
