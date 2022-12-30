@@ -76,13 +76,9 @@ void Bot::execute() {
 	}
 	else if (find(message_, "PRIVMSG") == 1) {
 		this->parseMessage();
-		int pos = find(parsedMessage_, "POLL");
-		std::cout << pos << std::endl;
-		if (pos == 1)
+		if (find(parsedMessage_, "POLL") == 1 || find(parsedMessage_, "poll") == 1)
 			this->vote(&parsedMessage_[4]);
-		pos = find(parsedMessage_, "NG");
-		std::cout << pos << std::endl;
-		if (pos == 1)
+		if (find(parsedMessage_, "NG") == 1 || find(parsedMessage_, "ng") == 1)
 			this->addNG_Keyword(&parsedMessage_[2]);
 	}
 	sender_.clear();
@@ -131,17 +127,22 @@ void Bot::voteConter(std::string message) {
 		i++;
 	}
 
-	std::cout << sender_ << std::endl;
-	if (yes_or_no == "YES" && this->isVoted()) {
+	if ((yes_or_no == "YES" || yes_or_no == "yes" )&& this->isVoted() == false) {
 		vote_yes_ += 1;
 		votedNicks_.push_back(sender_);
 	}
-	else if (yes_or_no == "NO" && this->isVoted()) {
-		votedNicks_.push_back(sender_);
+	else if ((yes_or_no == "NO" || yes_or_no == "no") && this->isVoted() == false) {
 		vote_no_ += 1;
+		votedNicks_.push_back(sender_);
 	}
-	else if (yes_or_no == "END")
+	else if (yes_or_no == "END" || yes_or_no == "end") {
 		this->voteEnd();
+		return ;
+	}
+	else if (this->isVoted() && (yes_or_no == "YES" || yes_or_no == "NO"|| yes_or_no == "yes"  || yes_or_no == "no")) {
+		sendMessage(bot_sd_, PRIVMSG(channelName_, "\033[31m" + sender_ + " already voted" + "\033[m"), 0);
+		return;
+	}
 	else
 		return;
 
@@ -154,8 +155,17 @@ void Bot::voteConter(std::string message) {
 }
 
 void Bot::voteEnd() {
+	sendMessage(bot_sd_, VOTE_END(channelName_), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "------------------------"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "|           |          |"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "|  YES [" + std::to_string(vote_yes_) + "]  |  NO [" + std::to_string(vote_no_) + "]  |"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "|           |          |"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "------------------------"), 0);
+
 	isVoted_ = false;
 	votedNicks_.clear();
+	vote_yes_ = 0;
+	vote_no_ = 0;
 }
 
 bool Bot::isVoted() {
@@ -165,9 +175,9 @@ bool Bot::isVoted() {
 		it++
 		) {
 		if (*it == sender_)
-			return false;
+			return true;
 	}
-	return true;
+	return false;
 }
 
 void Bot::addNG_Keyword(std::string message) {
