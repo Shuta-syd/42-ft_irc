@@ -95,9 +95,13 @@ void enterChannel(
 			(channel.getMaxMember() > static_cast<int>(channel.getMember().size()) || channel.getMaxMember() == -1) &&
 			client.isInvited(channel.getMode(), channelName)
 			) { // already exist
+		if ((!channel.getOper().empty() && channel.getOper()[0] == "Mr.Bot" && channel.getOper().size() == 1) || nick == "Mr.Bot")
+			channel.addOper(nick);
 		channel.setMember(client);
 		client.setChannel(channelName, channel);
 		const std::string names = getMemberNames(channel.getMember(), channel.getOper());
+
+
 
 		for (size_t i = 0; i < members.size(); i++)
 			sendMessage(members[i]->getFd(), JOIN_MESSAGE(nick, client.getUsername(), client.getHostname(), channelName), 0);

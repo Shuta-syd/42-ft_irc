@@ -6,3 +6,5 @@ DEPS/
 ircserv
 **idea**
 **Cmake**
+bot/*.o
+bot/ircbot

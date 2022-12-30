@@ -25,6 +25,7 @@ void sendERROR(int fd, const std::string &msg, int flag)
 	throw std::runtime_error(msg.c_str());
 	std::cout << YEL << msg << RES << std::endl;
 }
+
 /**
  * @brief send welcome message at the first connection
  * @param client

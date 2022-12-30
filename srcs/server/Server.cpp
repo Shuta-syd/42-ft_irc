@@ -10,14 +10,12 @@ Server::~Server() {}
 /**
  *@brief to start IRC Server
  */
-void Server::start()
-{
+void Server::start() {
 	this->signal_setup();
 	this->setupServerSocket();
 	this->createPoll(master_sd_);
 
-	while (true)
-	{
+	while (true) {
 		std::cout << BLU << "-------------Waiting on poll()-------------" << RES << std::endl;
 		if (poll(&(*pollfds_.begin()), pollfds_.size(), TIMEOUT) == -1)
 			throw std::exception();
@@ -27,18 +25,15 @@ void Server::start()
 				continue;
 
 			// not pollin event
-			if (pollfds_[i].revents != POLLIN) {
-				std::cerr << "error revents " << pollfds_[i].revents << std::endl;
-				return;
+			if (pollfds_[i].revents == POLLIN) {
+				// event fd is server fd
+				if (pollfds_[i].fd == master_sd_) {
+					std::cout << "Listening socket is readable" << std::endl;
+					this->allow();
+				}
+				else // This is not the listening socket, therefore an existing connection must be readable
+					this->chat(pollfds_[i].fd);
 			}
-
-			// event fd is server fd
-			if (pollfds_[i].fd == master_sd_) {
-				std::cout << "Listening socket is readable" << std::endl;
-				this->allow();
-			}
-			else // This is not the listening socket, therefore an existing connection must be readable
-				this->chat(pollfds_[i].fd);
 		}
 	}
 }
@@ -86,10 +81,11 @@ void Server::execute(int fd) {
 	const std::string &cmd = client.getCommand();
 	const std::vector<std::string> &params = client.getParams();
 
-	if (client.getIsWelcome() == false  && client.getIsConnected() == false && cmd != "NICK" && cmd != "USER" && cmd != "CAP") {
+	if (client.getIsWelcome() == false && client.getIsConnected() == false && cmd != "NICK" && cmd != "USER" && cmd != "CAP") {
 		clearClientInfo(client, pollfds_, users_, mp_nick_to_fd_);
-		return ;
-	} else if (client.getIsWelcome() == false  && client.getIsConnected() == false && cmd == "NICK") {
+		return;
+	}
+	else if (client.getIsWelcome() == false && client.getIsConnected() == false && cmd == "NICK") {
 		NICK(client, mp_nick_to_fd_, channels_);
 		if (client.getIsNick())
 			sendWelcomeMessage(client);
@@ -135,15 +131,14 @@ void Server::allow() {
 	int client_fd = -1;
 	do {
 		client_fd = accept(this->master_sd_, NULL, NULL);
-		if (client_fd < 0) { // accept fails with EWOULDBLOCK, then we have accepted all of them.
+		if (client_fd < 0)
 			continue;
-		}
 		else {
 			std::cout << "New incoming connection - " << client_fd << std::endl;
 			this->createPoll(client_fd);
 			setupClient(client_fd);
 		}
-	} while (client_fd != -1);
+	} while (client_fd == -1);
 }
 
 /**
@@ -200,17 +195,16 @@ void Server::setupServerSocket() {
 }
 
 void Server::debugUsers() {
-	std::cout<< BLU << "------------poll fd------------" << RES << std::endl;
+	std::cout << BLU << "------------poll fd------------" << RES << std::endl;
 	for (size_t i = 0; i < pollfds_.size(); i++)
 		std::cout << "[" << pollfds_[i].fd << "]" << std::endl;
-	std::cout<< BLU << "-------------------------------" << RES << std::endl;
+	std::cout << BLU << "-------------------------------" << RES << std::endl;
 
 	std::cout << YEL << "------------users------------" << RES << std::endl;
 	for (
 			std::map<int, Client>::iterator it = users_.begin();
 			it != users_.end();
-			it++
-			)
+			it++)
 		std::cout << "[" << it->first << ", " << it->second.getNickname() << "]" << std::endl;
 	std::cout << YEL << "-------------------------------" << RES << std::endl;
 
@@ -218,8 +212,7 @@ void Server::debugUsers() {
 	for (
 			std::map<std::string, int>::iterator it = mp_nick_to_fd_.begin();
 			it != mp_nick_to_fd_.end();
-			it++
-			)
+			it++)
 		std::cout << "[" << it->first << ", " << it->second << "]" << std::endl;
 	std::cout << RED << "-------------------------------" << RES << std::endl;
 }
