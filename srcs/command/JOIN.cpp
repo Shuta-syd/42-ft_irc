@@ -81,7 +81,7 @@ void enterChannel(
 	const std::vector<Client *> &members = channel.getMember();
 
 	// create new channel
-	if ((channelName != channel.getName() || channelName.empty())&& (key == channelKey || channelKey.empty())) {
+	if (((channelName != channel.getName() || channelName.empty()) || (channel.getMember().empty())) && (key == channelKey || channelKey.empty()) ) {
 		channel.setName(channelName);
 		channel.setMember(client);
 		channel.addOper(nick);

@@ -11,7 +11,7 @@ void PART(
 	std::map<std::string, Channel> &allChannels,
 	const std::vector<std::string> &params
 	) {
-	std::string message;
+	std::string message = " byebye";
 	int fd = client.getFd();
 	std::string const &nick = client.getNickname();
 
@@ -43,8 +43,7 @@ void leaveChannel(
 	std::string const &nick = client.getNickname();
 	Channel &channel = allChannels[ch_name];
 
-	if (channel.is_inChannel(nick) == false)
-	{
+	if (channel.is_inChannel(nick) == false) {
 		sendMessage(fd, ERR_NOTONCHANNEL(nick, ch_name), 0);
 		return;
 	}
@@ -57,9 +56,8 @@ void leaveChannel(
 	{
 		const int targetFd = (*it)->getFd();
 		const std::string &targetNick = (*it)->getNickname();
-		sendMessage(targetFd, PART_MESSAGE(nick, client.getUsername(), client.getHostname(), ch_name, message), 0);
-		if (targetNick == nick)
-		{
+			sendMessage(targetFd, PART_MESSAGE(nick, client.getUsername(), client.getHostname(), ch_name, message), 0);
+		if (targetNick == nick) {
 			if (channel.is_operator(targetNick))
 				channel.delOper(targetNick);
 			channel.eraseMember(**it);
