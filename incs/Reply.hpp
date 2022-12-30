@@ -32,6 +32,7 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define MODE_MESSAGE(operNick, user, host, target, channelName, isAllow, mode) ":" + operNick + "!" + user + "@" + host + " MODE #" + channelName + " " + isAllow + mode + " " + target + "\r\n"
 #define QUIT_MESSAGE(nick, user, host, msg) ":" + nick + "!" + user + "@" + host + " QUIT :Quit: " + msg + "\r\n"
 #define PRIVMSG_MESSAGE(nick, user, host, target, msg) ":" + nick + "!" + user + "@" + host + " PRIVMSG " + target + " :" + msg + "\r\n"
+#define NOTICE_MESSAGE(nick, user, host, target, msg) ":" + nick + "!" + user + "@" + host + " NOTICE " + target + " :" + msg + "\r\n"
 #define INVITE_MESSAGE(nick, user, host, target, channelName) ":" + nick + "!" + user + "@" + host + " INVITE " + target + " #" + channelName + "\r\n"
 #define KICK_MESSAGE(nick, user, host, channelName, target, message) ":" + nick + "!" + user + "@" + host + " KICK #" + channelName + " " + target +  message + "\r\n"
 #define PART_MESSAGE(nick, user, host, channelName, message) ":" + nick + "!" + user + "@" + host + " PART #" + channelName + "" + message + "\r\n"

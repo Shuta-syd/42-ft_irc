@@ -112,6 +112,8 @@ void Server::execute(int fd) {
 		MODE(client, params, channels_);
 	else if (cmd == "PRIVMSG")
 		PRIVMSG(client, mp_nick_to_fd_, channels_);
+	else if (cmd == "NOTICE")
+		NOTICE(client, mp_nick_to_fd_, channels_);
 	else if (cmd == "QUIT")
 		QUIT(client, pollfds_, users_, mp_nick_to_fd_, params);
 	else if (cmd == "KICK")
