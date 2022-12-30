@@ -192,6 +192,24 @@ void Bot::addNG_Keyword(std::string message) {
 		i++;
 	}
 
+	if (find(keyword, "DEL") == 1 || find(keyword, "del") == 1) {
+		std::string word = &keyword[4];
+
+		for (
+				std::vector<std::string>::iterator it = ng_words_.begin();
+				it != ng_words_.end();
+				it++
+				) {
+			if (*it == word) {
+				ng_words_.erase(it);
+				sendMessage(bot_sd_, NG_DELETED(channelName_, word), 0);
+				return;
+			}
+		}
+		sendMessage(bot_sd_, NG_NOT_DELETE(channelName_), 0);
+		return;
+	}
+
 	sendMessage(bot_sd_, NG_REGISTERED(channelName_, keyword), 0);
 	ng_words_.push_back(keyword);
 }
