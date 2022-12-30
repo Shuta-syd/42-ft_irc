@@ -59,7 +59,7 @@ void MODE(
 /**
  * @brief execute specified mode
  *
- * can execute mode -> o, t, k, l, i, I
+ * can execute mode -> o, t, k, l, i
  */
 void executeMode(
 		const char isAllow,
