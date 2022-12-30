@@ -44,7 +44,6 @@ private:
 	void execute();
 
 	void setupBotSocket();
-	void createPoll();
 	void authorize();
 
 	void parseMessage();
@@ -54,6 +53,8 @@ private:
 	bool isVoted();
 	void addNG_Keyword(std::string);
 	void checkNG_keyword();
+
+	void usage();
 };
 
 int find(const std::string &str, const std::string &target);

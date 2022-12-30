@@ -11,7 +11,6 @@ Bot::~Bot(){}
  */
 void Bot::start() {
 	this->setupBotSocket();
-	this->createPoll();
 	std::cout << BLU << "-----------CONNECTED-----------" << RES << std::endl;
 
 	sendMessage(bot_sd_, CAP_MESSAGE, 0);
@@ -76,16 +75,33 @@ void Bot::execute() {
 	}
 	else if (find(message_, "PRIVMSG") == 1) {
 		this->parseMessage();
-		if (find(parsedMessage_, "POLL") == 1 || find(parsedMessage_, "poll") == 1)
+		if (find(parsedMessage_, "VOTE") == 1 || find(parsedMessage_, "vote") == 1)
 			this->vote(&parsedMessage_[4]);
 		if (find(parsedMessage_, "NG") == 1 || find(parsedMessage_, "ng") == 1)
 			this->addNG_Keyword(&parsedMessage_[2]);
-		else
-			checkNG_keyword();
+		else if (
+			find(parsedMessage_, "BOT help") == 1 || find(parsedMessage_, "Bot help") == 1 ||
+			find(parsedMessage_, "BOT HELP") == 1|| find(parsedMessage_, "bot help") == 1
+			) {
+			this->usage();
+		}
+			else checkNG_keyword();
 	}
 	sender_.clear();
 	message_.clear();
 	parsedMessage_.clear();
+}
+
+void Bot::usage() {
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "\e[01m1. vote: Function to vote YES or NO on your favorite theme\e[m"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "\e[01m2. NG  : You can register NG words on this channel, and people who say NG words will be kicked from the channel.\e[m"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, ""), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "vote [topic]: You can begin voting"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "vote yes: You can vote YES"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "vote no: You can vote NO\n"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "vote end: You can end voting\n"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "ng [word]: You can register NG word"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "ng del [word]: You can delete NG word"), 0);
 }
 
 void Bot::vote(std::string message) {
@@ -272,15 +288,4 @@ void Bot::setupBotSocket() {
 		close(bot_sd_);
 		throw std::exception();
 	}
-}
-
-/**
- * @brief to create polling method corresponding to the num of fds (include server socket fd)
- * @param sockfd An indication of which fd for which PollMethod to create
- *
- */
-void Bot::createPoll() {
-	pollfd_.fd = bot_sd_;
-	pollfd_.events = POLLIN;
-	pollfd_.revents = 0;
 }
