@@ -2,7 +2,7 @@
 
 Bot::Bot() {}
 
-Bot::Bot(int port, std::string password, std::string ch): isAuth_(false), port_(port), password_(password), nick_("Mr.Bot"), channelName_(ch), auth_counter_(1), isVoted_(false) {}
+Bot::Bot(int port, std::string password, std::string ch): isAuth_(false), port_(port), password_(password), nick_("Mr.Bot"), channelName_(ch), auth_counter_(1), isVoted_(false), vote_yes_(0), vote_no_(0) {}
 
 Bot::~Bot(){}
 
@@ -43,10 +43,15 @@ void Bot::receive() {
 	std::cout << "-------------------------------" << std::endl;
 
 	int i = 0;
-	while (message[i] != ' ' && message[i] != '\r' && message[i] != '\n')
+	int j = 1;
+	while (message[i] != ' ' && message[i] != '\r' && message[i] != '\n') {
+		if (message[i] == ':')
+			while (message[j] != '!' && message[j])
+				sender_.push_back(message[j++]);
 		i++;
+	}
 	while (message[i] == ' ' && message[i] != '\r' && message[i] != '\n')
-		i++;
+	i++;
 	while (message[i] != '\r' && message[i] != '\n') {
 		message_.push_back(message[i]);
 		i++;
@@ -80,13 +85,17 @@ void Bot::execute() {
 		if (pos == 1)
 			this->addNG_Keyword(&parsedMessage_[2]);
 	}
+	sender_.clear();
 	message_.clear();
 	parsedMessage_.clear();
 }
 
 void Bot::vote(std::string message) {
 	int i = 0;
-	std::string topic;
+	if (isVoted_) {
+		this->voteConter(message);
+		return;
+	}
 
 	std::cout << "Vote Feature Started" << std::endl;
 	std::cout << message << std::endl;
@@ -94,12 +103,12 @@ void Bot::vote(std::string message) {
 		i++;
 
 	while (message[i] && message[i] != '\r' && message[i] != '\n') {
-		topic.push_back(message[i]);
+		topic_.push_back(message[i]);
 		i++;
 	}
 
 	sendMessage(bot_sd_, VOTE_WELCOME(channelName_), 0);
-	sendMessage(bot_sd_, PRIVMSG(channelName_, "\033[32m[  " + topic + "  ]\033[m"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "\033[32m[  " + topic_ + "  ]\033[m"), 0);
 	sendMessage(bot_sd_, PRIVMSG(channelName_, "------------------------"), 0);
 	sendMessage(bot_sd_, PRIVMSG(channelName_, "|           |          |"), 0);
 	sendMessage(bot_sd_, PRIVMSG(channelName_, "|  YES [0]  |  NO [0]  |"), 0);
@@ -107,7 +116,58 @@ void Bot::vote(std::string message) {
 	sendMessage(bot_sd_, PRIVMSG(channelName_, "------------------------"), 0);
 
 	isVoted_ = true;
-	topic.clear();
+}
+
+
+void Bot::voteConter(std::string message) {
+	int i = 0;
+	std::string yes_or_no;
+
+	while ((message[i] == ' ' || message[i] == ':') && message[i] != '\r' && message[i] != '\n')
+		i++;
+
+	while (message[i] && message[i] != ' ' && message[i] != '\r' && message[i] != '\n') {
+		yes_or_no.push_back(message[i]);
+		i++;
+	}
+
+	std::cout << sender_ << std::endl;
+	if (yes_or_no == "YES" && this->isVoted()) {
+		vote_yes_ += 1;
+		votedNicks_.push_back(sender_);
+	}
+	else if (yes_or_no == "NO" && this->isVoted()) {
+		votedNicks_.push_back(sender_);
+		vote_no_ += 1;
+	}
+	else if (yes_or_no == "END")
+		this->voteEnd();
+	else
+		return;
+
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "\033[32m[  " + topic_ + "  ]\033[m"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "------------------------"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "|           |          |"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "|  YES [" + std::to_string(vote_yes_) + "]  |  NO [" + std::to_string(vote_no_) + "]  |"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "|           |          |"), 0);
+	sendMessage(bot_sd_, PRIVMSG(channelName_, "------------------------"), 0);
+}
+
+void Bot::voteEnd() {
+	isVoted_ = false;
+	votedNicks_.clear();
+}
+
+bool Bot::isVoted() {
+	for (
+		std::vector<std::string>::iterator it = votedNicks_.begin();
+		it != votedNicks_.end();
+		it++
+		) {
+		if (*it == sender_)
+			return false;
+	}
+	return true;
 }
 
 void Bot::addNG_Keyword(std::string message) {

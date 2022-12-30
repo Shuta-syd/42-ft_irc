@@ -30,10 +30,15 @@ private:
 	std::string channelName_;
 	struct pollfd pollfd_;
 	std::string message_;
+	std::string sender_;
 	std::string parsedMessage_;
 	int auth_counter_;
 	bool isVoted_;
+	std::string topic_;
+	int vote_yes_;
+	int vote_no_;
 	std::vector<std::string> ng_words_;
+	std::vector<std::string> votedNicks_;
 
 	void receive();
 	void execute();
@@ -44,6 +49,9 @@ private:
 
 	void parseMessage();
 	void vote(std::string);
+	void voteConter(std::string);
+	void voteEnd();
+	bool isVoted();
 	void addNG_Keyword(std::string);
 };
 
