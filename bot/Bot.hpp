@@ -53,6 +53,7 @@ private:
 	void voteEnd();
 	bool isVoted();
 	void addNG_Keyword(std::string);
+	void checkNG_keyword();
 };
 
 int find(const std::string &str, const std::string &target);

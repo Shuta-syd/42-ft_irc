@@ -80,6 +80,8 @@ void Bot::execute() {
 			this->vote(&parsedMessage_[4]);
 		if (find(parsedMessage_, "NG") == 1 || find(parsedMessage_, "ng") == 1)
 			this->addNG_Keyword(&parsedMessage_[2]);
+		else
+			checkNG_keyword();
 	}
 	sender_.clear();
 	message_.clear();
@@ -192,6 +194,22 @@ void Bot::addNG_Keyword(std::string message) {
 
 	sendMessage(bot_sd_, NG_REGISTERED(channelName_, keyword), 0);
 	ng_words_.push_back(keyword);
+}
+
+void Bot::checkNG_keyword() {
+	bool isNG = false;
+
+	for (
+		std::vector<std::string>::iterator it = ng_words_.begin();
+		it != ng_words_.end();
+		it++
+		) {
+		if (find(parsedMessage_, *it) != -1)
+			isNG = true;
+	}
+
+	if (isNG)
+		sendMessage(bot_sd_, KICK_MESSAGE(channelName_, sender_), 0);
 }
 
 void Bot::parseMessage() {
