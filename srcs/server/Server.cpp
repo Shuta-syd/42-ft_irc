@@ -10,14 +10,12 @@ Server::~Server() {}
 /**
  *@brief to start IRC Server
  */
-void Server::start()
-{
+void Server::start() {
 	this->signal_setup();
 	this->setupServerSocket();
 	this->createPoll(master_sd_);
 
-	while (true)
-	{
+	while (true) {
 		std::cout << BLU << "-------------Waiting on poll()-------------" << RES << std::endl;
 		if (poll(&(*pollfds_.begin()), pollfds_.size(), TIMEOUT) == -1)
 			throw std::exception();
@@ -44,8 +42,7 @@ void Server::start()
  * @brief  for communication between server and client
  * @param fd connected client fd
  */
-void Server::chat(int fd)
-{
+void Server::chat(int fd) {
 	char message[MSG_MAX] = {0};
 
 	ssize_t bytes = recv(fd, message, sizeof(message), 0);
@@ -59,13 +56,11 @@ void Server::chat(int fd)
 	std::cout << "----------------------------------------" << std::endl;
 
 	size_t i = 0;
-	while (find(&message[i], "\r\n") != -1)
-	{
+	while (find(&message[i], "\r\n") != -1) {
 		int len = 0;
 		std::string cmd_line;
 
-		while (message[i] != '\r' && message[i] != '\n')
-		{
+		while (message[i] != '\r' && message[i] != '\n') {
 			i++;
 			len++;
 		}
@@ -81,19 +76,16 @@ void Server::chat(int fd)
 /**
  * @brief command execute func
  */
-void Server::execute(int fd)
-{
+void Server::execute(int fd) {
 	Client &client = users_[fd];
 	const std::string &cmd = client.getCommand();
 	const std::vector<std::string> &params = client.getParams();
 
-	if (client.getIsWelcome() == false && client.getIsConnected() == false && cmd != "NICK" && cmd != "USER" && cmd != "CAP")
-	{
+	if (client.getIsWelcome() == false && client.getIsConnected() == false && cmd != "NICK" && cmd != "USER" && cmd != "CAP") {
 		clearClientInfo(client, pollfds_, users_, mp_nick_to_fd_);
 		return;
 	}
-	else if (client.getIsWelcome() == false && client.getIsConnected() == false && cmd == "NICK")
-	{
+	else if (client.getIsWelcome() == false && client.getIsConnected() == false && cmd == "NICK") {
 		NICK(client, mp_nick_to_fd_, channels_);
 		if (client.getIsNick())
 			sendWelcomeMessage(client);
@@ -135,11 +127,9 @@ void Server::execute(int fd)
 /**
  * @brief to accept connections from clients.
  */
-void Server::allow()
-{
+void Server::allow() {
 	int client_fd = -1;
-	do
-	{
+	do {
 		client_fd = accept(this->master_sd_, NULL, NULL);
 		if (client_fd < 0)
 			continue;
@@ -155,8 +145,7 @@ void Server::allow()
  * @brief create new user client info
  * @param sockfd client socket descriptor
  */
-void Server::setupClient(int sockfd)
-{
+void Server::setupClient(int sockfd) {
 	const std::string nick = "unknow" + std::to_string(sockfd);
 	Client user(sockfd, nick);
 	users_[sockfd] = user;
@@ -167,8 +156,7 @@ void Server::setupClient(int sockfd)
  * @param sockfd An indication of which fd for which PollMethod to create
  *
  */
-void Server::createPoll(int sockfd)
-{
+void Server::createPoll(int sockfd) {
 	struct pollfd pollfd;
 	pollfd.fd = sockfd;
 	pollfd.events = POLLIN;
@@ -179,8 +167,7 @@ void Server::createPoll(int sockfd)
 /**
  * @brief to set up a server socket
  */
-void Server::setupServerSocket()
-{
+void Server::setupServerSocket() {
 	/* server socket create */
 	master_sd_ = socket(AF_INET, SOCK_STREAM, 0);
 	if (master_sd_ < 0)
@@ -207,8 +194,7 @@ void Server::setupServerSocket()
 		throw std::exception();
 }
 
-void Server::debugUsers()
-{
+void Server::debugUsers() {
 	std::cout << BLU << "------------poll fd------------" << RES << std::endl;
 	for (size_t i = 0; i < pollfds_.size(); i++)
 		std::cout << "[" << pollfds_[i].fd << "]" << std::endl;
