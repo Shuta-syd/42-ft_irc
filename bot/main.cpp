@@ -9,6 +9,7 @@ int main(int argc, char const *argv[])
 		Bot IrcBot(port, password, channelName);
 
 		try {
+			signal(SIGINT, SIG_IGN);
 			IrcBot.start();
 		}
 		catch(const std::exception& e) {
