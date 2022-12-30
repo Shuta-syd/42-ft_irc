@@ -25,6 +25,10 @@ int main(int argc, char const *argv[])
 {
 	if (argc == 3) {
 		int port = atoi(argv[1]);
+		if (port < 1024 || port > 65565) {
+			std::cerr << "Incorrect port number. use 1024-65565" << std::endl;
+			return 1;
+		}
 		std::string password(argv[2]);
 
 		Server Irc(port, password);

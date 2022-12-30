@@ -34,7 +34,7 @@ void JOIN(
 	else if (params.size() == 2)
 		keyParam = params[1];
 
-	const std::vector<std::string> channels = splitChannel(params[0]);
+	const std::vector<std::string> channels = splitBycomma(params[0]);
 	keys = splitKeys(keyParam, channels.size());
 
 	for (size_t i = 0; i < channels.size(); i++) {

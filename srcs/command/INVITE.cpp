@@ -57,7 +57,7 @@ bool validateMessage(Client &client, const std::vector<std::string> &params, std
 	}
 	else if (channel.is_inChannel(params[0]) == true)
 	{
-		sendMessage(client.getFd(), ERR_USERONCHANNEL(nick, params.at(0), &params.at(0)[1]), 0);
+		sendMessage(client.getFd(), ERR_USERONCHANNEL(nick, params[0], &params[0][1]), 0);
 		return false;
 	} else {
 		return true;

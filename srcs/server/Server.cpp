@@ -16,7 +16,7 @@ void Server::start() {
 	this->createPoll(master_sd_);
 
 	while (true) {
-		std::cout << BLU << "-------------Waiting on poll()-------------" << RES << std::endl;
+		// std::cout << BLU << "-------------Waiting on poll()-------------" << RES << std::endl;
 		if (poll(&(*pollfds_.begin()), pollfds_.size(), TIMEOUT) == -1)
 			throw std::exception();
 		for (size_t i = 0; i < pollfds_.size(); i++) {
@@ -112,6 +112,8 @@ void Server::execute(int fd) {
 		MODE(client, params, channels_);
 	else if (cmd == "PRIVMSG")
 		PRIVMSG(client, mp_nick_to_fd_, channels_);
+	else if (cmd == "NOTICE")
+		NOTICE(client, mp_nick_to_fd_, channels_);
 	else if (cmd == "QUIT")
 		QUIT(client, pollfds_, users_, mp_nick_to_fd_, params);
 	else if (cmd == "KICK")

@@ -1,7 +1,6 @@
 #include <Utils.hpp>
 #include <Client.hpp>
 
-
 /**
  * @brief find target from str
  *
@@ -9,14 +8,15 @@
  * @param target
  * @return int index
  */
-int find(const std::string &str, const std::string &target) {
+int find(const std::string &str, const std::string &target)
+{
 	size_t i = 0;
 	size_t j = 0;
 
 	while (str[i])
 	{
 		j = 0;
-		if (str[i] == target.at(0))
+		if (str[i] == target[0])
 		{
 			while (str[i] && target[j] && str[i] == target[j])
 			{
@@ -36,12 +36,12 @@ int find(const std::string &str, const std::string &target) {
  * @brief
  * @param target (does not include #)
  */
-bool findChannel(std::map<std::string, Channel*>channels, const std::string &target) {
+bool findChannel(std::map<std::string, Channel *> channels, const std::string &target)
+{
 	for (
-			std::map<std::string, Channel*>::const_iterator it = channels.begin();
+			std::map<std::string, Channel *>::const_iterator it = channels.begin();
 			it != channels.end();
-			it++
-			)
+			it++)
 	{
 		const std::string &channelName = (*it).first;
 		if (channelName == target)
@@ -67,7 +67,7 @@ bool findChannelForServer(std::map<std::string, Channel> channels, const std::st
 /**
  * @brief Function to split channel names by ','
  */
-const std::vector<std::string> splitChannel(const std::string &param)
+const std::vector<std::string> splitBycomma(const std::string &param)
 {
 	std::vector<std::string> channels;
 
@@ -89,20 +89,24 @@ const std::vector<std::string> splitChannel(const std::string &param)
 /**
  * @brief
  */
-std::vector<std::string> split(std::string str, std::string del) {
+std::vector<std::string> split(std::string str, std::string del)
+{
 	uint64_t first = 0;
 	uint64_t last = str.find_first_of(del);
 	std::vector<std::string> res;
-	if (last == std::string::npos) {
+	if (last == std::string::npos)
+	{
 		res.push_back(str);
 		return res;
 	}
-	while (first < str.size()) {
+	while (first < str.size())
+	{
 		std::string trim_str(str, first, last - first);
 		res.push_back(trim_str);
 		first = last + 1;
 		last = str.find_first_of(del, first);
-		if (last == std::string::npos) {
+		if (last == std::string::npos)
+		{
 			last = str.size();
 		}
 	}
@@ -123,14 +127,16 @@ bool is_number(const std::string &s)
 /**
  * @brief get current time
  */
-std::string getTimestamp() {
+std::string getTimestamp()
+{
 	std::time_t timestamp = std::time(0);
 	std::string time = std::to_string(timestamp);
 
 	return time;
 }
 
-void channelDebug(std::map<std::string, Channel> server, std::map<std::string, Channel*> client) {
+void channelDebug(std::map<std::string, Channel> server, std::map<std::string, Channel *> client)
+{
 	std::cout << CYN << "------------------------Channel diff------------------------" << RES << std::endl;
 	for (
 			std::map<std::string, Channel>::iterator it = server.begin();
@@ -171,7 +177,6 @@ void channelDebug(std::map<std::string, Channel> server, std::map<std::string, C
 							<< "client [" << it->second->getTopic() << "]" << std::endl;
 		const std::vector<std::string> clientOper = it->second->getOper();
 
-
 		std::cout << "---client channel opers---" << std::endl;
 		for (size_t i = 0; i < clientOper.size(); i++)
 			std::cout << "[" << clientOper[i] << "] ";
@@ -184,6 +189,6 @@ void channelDebug(std::map<std::string, Channel> server, std::map<std::string, C
 			std::cout << "[" << clientMember[i]->getNickname() << "]";
 		std::cout << std::endl;
 
-	std::cout << CYN << "------------------------------------------------------------" << RES << std::endl;
+		std::cout << CYN << "------------------------------------------------------------" << RES << std::endl;
 	}
 }

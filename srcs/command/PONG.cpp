@@ -7,7 +7,7 @@
  */
 void PONG(Client &client, const std::vector<std::string> &params) {
 	const int &fd = client.getFd();
-	const std::string &serverName = params.at(0);
+	const std::string &serverName = params[0];
 
 	sendMessage(fd, PONG_MESSAGE(serverName), 0);
 }

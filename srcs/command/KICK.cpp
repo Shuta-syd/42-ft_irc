@@ -18,8 +18,8 @@ void KICK(Client &client, std::map<std::string, Channel> &allChannels, const std
 	}	else if (params.size() == 3)
 		message = " " + params[2];
 
-	const std::vector<std::string> channels = splitChannel(params[0]);
-	const std::vector<std::string> targets = splitChannel(params[1]);
+	const std::vector<std::string> channels = splitBycomma(params[0]);
+	const std::vector<std::string> targets = splitBycomma(params[1]);
 
 	for (size_t i = 0; i < channels.size(); i++) {
 		const std::string ch_name = &channels[i][1];

@@ -14,7 +14,7 @@ int find(const std::string &str, const std::string &target) {
 	while (str[i])
 	{
 		j = 0;
-		if (str[i] == target.at(0)) {
+		if (str[i] == target[0]) {
 			while (str[i] && target[j] && str[i] == target[j]) {
 				i++;
 				j++;
