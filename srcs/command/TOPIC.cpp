@@ -35,7 +35,7 @@ void TOPIC(
 	}
 
 	if (joinedChannel == false && existChannel)
-		sendMessage(fd, ERR_NOTJOINCHANNEL(nick, channelName), 0);
+		sendMessage(fd, ERR_NOTONCHANNEL(nick, channelName), 0);
 	else if (existChannel == false)
 		sendMessage(fd, ERR_NOSUCHCHANNEL(nick, channelName), 0);
 	else if (params.size() == 1 && joinedChannel && existChannel)
