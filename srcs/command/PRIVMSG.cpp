@@ -34,6 +34,15 @@ bool isCorrectFmt(std::vector<std::string> const &params, Client &client) {
 	}
 }
 
+bool isInmember(std::vector<std::string> const &members, std::string const &name)
+{
+	for (std::vector<std::string >::const_iterator it = members.begin(); it != members.end(); it++) {
+		if (*it == name)
+			return true;
+	}
+	return false;
+}
+
 void sendPrivmsg(
 	std::string target,
 	std::string message,
@@ -47,11 +56,14 @@ void sendPrivmsg(
 		const std::string channelName = &target[1];
 		/* in the case of "No such a channel" */
 		if (findChannelForServer(channels, channelName) == false) {
-			sendMessage(client.getFd(), ERR_NOTONCHANNEL(client.getNickname(), target), 0);
+			sendMessage(client.getFd(), ERR_NOSUCHCHANNEL(client.getNickname(), target), 0);
 		}
 		else {
 			const Channel &channel = channels[channelName];
 			const std::vector<Client *> &members = channel.getMember();
+
+			/* check if they are in the channel */
+			if ()
 			for (std::vector<Client *>::const_iterator it = members.begin(); it != members.end(); it++
 			) {
 				if ((*it)->getNickname() != nick)
