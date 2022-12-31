@@ -73,7 +73,6 @@ void sendPrivmsg(
 						sendMessage((*it)->getFd(), PRIVMSG_MESSAGE(nick, client.getUsername(), client.getHostname(), "#" + channelName, message), 0);
 				}
 			}
-
 		}
 	}
 	else {
