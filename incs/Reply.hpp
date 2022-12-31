@@ -48,6 +48,8 @@ void sendERROR(int fd, const std::string &msg, int flag);
 /**
  * ERROR Response
  */
+
+#define ERR_NOTJOINCHANNEL(nick, channelName) ":ft_irc 404 " + nick + " #" + channelName + " :Cannot send to channel (+n)\r\n"
 #define ERR_NOSUCHCHANNEL(nick, channelName) ":ft_irc 403 " + nick + " #" + channelName + " :No such channel\r\n"
 #define ERR_TOOMANYCHANNELS(nick, channelName) ":ft_irc 405 " + nick + " #" + channelName + " :Too many channel\r\n"
 #define ERR_BADCHANNELKEY(nick, channelName) ":ft_irc 457 " + nick + " #" + channelName + " :Cannot join channel (+k) - bad key\r\n"
@@ -56,7 +58,6 @@ void sendERROR(int fd, const std::string &msg, int flag);
 #define ERR_NOCHANMODES(nick, mode) ":ft_irc 472 " + nick + " " + mode + " :is an unknown mode character to me\r\n"
 #define ERR_CHANOPRIVSNEEDED(channelName) ":ft_irc 482 #" + channelName + " :You're not a channel operator\r\n"
 #define ERR_NOSUCHNICK(nick, target) ":ft_irc 401 " + nick + " " + target  + " :No such nick\r\n"
-#define ERR_NOTJOIN(nick, channelName) ":ft_irc #" + channelName + " You're not on that channel\r\n"
 #define ERR_NOTONCHANNEL(nick, channel) ":ft_irc 442 " + nick + " #" + channel + " :You're not on that channel\r\n"
 #define ERR_USERONCHANNEL(nick, target, channelName) ":ft_irc 443 " + nick + " " + target + " #" + channelName + " :User is already on that channel\r\n"
 #define ERR_ALREADYREGISTRED(nick) ":ft_irc 462 " + nick + " :You may not reregister\r\n"

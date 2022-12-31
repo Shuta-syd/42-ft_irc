@@ -34,10 +34,10 @@ bool isCorrectFmt(std::vector<std::string> const &params, Client &client) {
 	}
 }
 
-bool isInmember(std::vector<std::string> const &members, std::string const &name)
+bool isInmember(std::vector<Client *> const &members, std::string const &name)
 {
-	for (std::vector<std::string >::const_iterator it = members.begin(); it != members.end(); it++) {
-		if (*it == name)
+	for (std::vector<Client *>::const_iterator it = members.begin(); it != members.end(); it++) {
+		if ((*it)->getNickname() == name)
 			return true;
 	}
 	return false;
@@ -63,12 +63,17 @@ void sendPrivmsg(
 			const std::vector<Client *> &members = channel.getMember();
 
 			/* check if they are in the channel */
-			if ()
-			for (std::vector<Client *>::const_iterator it = members.begin(); it != members.end(); it++
-			) {
-				if ((*it)->getNickname() != nick)
-					sendMessage((*it)->getFd(), PRIVMSG_MESSAGE(nick, client.getUsername(), client.getHostname(), "#" + channelName, message), 0);
+			if (isInmember(members, client.getNickname()) == false) {
+				sendMessage(client.getFd(), ERR_NOTJOINCHANNEL(client.getNickname(), channelName), 0);
+			} else {
+
+				for (std::vector<Client *>::const_iterator it = members.begin(); it != members.end(); it++
+						) {
+					if ((*it)->getNickname() != nick)
+						sendMessage((*it)->getFd(), PRIVMSG_MESSAGE(nick, client.getUsername(), client.getHostname(), "#" + channelName, message), 0);
+				}
 			}
+
 		}
 	}
 	else {
