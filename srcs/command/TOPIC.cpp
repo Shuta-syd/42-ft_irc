@@ -33,7 +33,6 @@ void TOPIC(
 		isOper = channel.is_operator(nick);
 		isSetTopicAllow = channel.getTopicAllow();
 	}
-
 	if (joinedChannel == false && existChannel)
 		sendMessage(fd, ERR_NOTONCHANNEL(nick, channelName), 0);
 	else if (existChannel == false)
